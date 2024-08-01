@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:project_3_forex_signals_daily/features/all_signals_list/presentation/widgets/all_signals.dart';
+import 'package:project_3_forex_signals_daily/features/premium_signals_list/view/widgets/premium_all_signals.dart';
 
 class Body extends StatelessWidget {
   @override
@@ -7,7 +7,7 @@ class Body extends StatelessWidget {
     return const Column(
       children: [
         // It will cover 20% of our total height
-        AllSignals()
+        PremiumAllSignals()
       ],
     );
   }
