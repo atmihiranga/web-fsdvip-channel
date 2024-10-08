@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:project_3_forex_signals_daily/core/theme/app_colors.dart';
-import 'package:project_3_forex_signals_daily/features/premium_signal_widget/view/widgets/premium_signal_widget.dart';
+import 'package:project_3_forex_signals_daily/features/premium_signals_list/view/widgets/premium_signal.dart';
+import 'package:project_3_forex_signals_daily/features/premium_signals_list/view/widgets/premium_signal_widget.dart';
 
-class PremiumAllSignals extends StatelessWidget {
-  const PremiumAllSignals({super.key});
+class PremiumSignalsList extends StatelessWidget {
+  const PremiumSignalsList({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:project_3_forex_signals_daily/core/theme/app_colors.dart';
 import 'package:project_3_forex_signals_daily/debug/random_list.dart';
-import 'package:project_3_forex_signals_daily/features/premium_signal_widget/view/widgets/premium_more_details_row.dart';
-import 'package:project_3_forex_signals_daily/features/signal_title_row/view/widgets/signal_title_row.dart';
-import 'package:project_3_forex_signals_daily/features/premium_signal_widget/view/widgets/premium_sl_tp_price_data_row.dart';
+import 'package:project_3_forex_signals_daily/features/premium_signals_list/view/widgets/premium_more_details_row.dart';
+import 'package:project_3_forex_signals_daily/features/premium_signals_list/view/widgets/premium_signal_title_row.dart';
+import 'package:project_3_forex_signals_daily/features/premium_signals_list/view/widgets/premium_sl_tp_price_data_row.dart';
 
 class PremiumSignalWidget extends StatefulWidget {
   const PremiumSignalWidget({super.key});
@@ -55,10 +55,7 @@ class _PremiumSignalWidgetState extends State<PremiumSignalWidget> {
                 const Expanded(child: SignalTitleRow()),
                 const SizedBox(width: 10),
                 getRandomItem([
-                  const SpinKitThreeBounce(
-                    color: AppColors.blue,
-                    size: 20,
-                  ),
+                  const Text('active'),
                   const Icon(Icons.check_circle, color: AppColors.green),
                   const Icon(Icons.cancel, color: AppColors.red),
                 ]),

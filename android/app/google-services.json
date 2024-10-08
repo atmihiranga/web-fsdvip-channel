@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "872438871135",
+    "firebase_url": "https://forex-signals-daily-9ca6e-default-rtdb.firebaseio.com",
+    "project_id": "forex-signals-daily-9ca6e",
+    "storage_bucket": "forex-signals-daily-9ca6e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:872438871135:android:a2547a84964718ec7c57ea",
+        "android_client_info": {
+          "package_name": "com.educationalapps923.ForexSignals"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "872438871135-p1oc6spppcd9ui9nei6m7mk24cvfakgf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.educationalapps923.ForexSignals",
+            "certificate_hash": "d74092f775657b379091ed95bc808d294e8a8a75"
+          }
+        },
+        {
+          "client_id": "872438871135-v9qa844ggktr71bbo0t5pgc5bo2e1u54.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAOig4cYU797XWwLW1Z3fgRCcxYo_n-kOw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "872438871135-jgmkico149h9s11rqan6gkrmipaqetu1.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "872438871135-kr49p3au7ci8bi4elb55oduu9a3bp537.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.kluster.forexsignals"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

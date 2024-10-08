@@ -3,6 +3,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:project_3_forex_signals_daily/features/firebase_anonymous_auth/view/auth_widget.dart';
 
 class SideDrawer extends ConsumerWidget {
   const SideDrawer({super.key});
@@ -17,7 +18,7 @@ class SideDrawer extends ConsumerWidget {
             decoration: BoxDecoration(
               color: Colors.blue,
             ),
-            child: Text('Drawer Header'),
+            child: AuthWidget(),
           ),
           ListTile(
             title: const Text('Item 1'),

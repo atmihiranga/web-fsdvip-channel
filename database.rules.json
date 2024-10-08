@@ -1,0 +1,42 @@
+{
+  "rules": {
+    ".read":false,
+    ".write": "auth.uid == 'Bn0HtyOZfANuG13Q8CNoI2z62Yn1'", //only i can write
+    "signaldb": {
+    		".read": true,//"auth.uid !== null", //any auth user can read
+    		".write": "auth.uid == 'Bn0HtyOZfANuG13Q8CNoI2z62Yn1'" //only i can write. dont change this because it was automated with a cloud function or a script in google sheets
+    },
+      
+    //Keydatabase is not readable
+    	"keydb":{
+        //key details are readable if provided correctly
+				"$key":{
+          ".read" :true,
+            	"devices":{
+            		"$deviceid":{
+                  //device id is writable for the respective key
+            	  	".write" :true
+            }
+            }
+        }
+    },
+    
+    //Userdatabase is not readable
+    	"userdb":{
+        //user details are readable if provided correctly
+				"$user":{
+          ".read" :true,
+          ".write" :true
+        }
+      },
+      "authuserdb":{
+        ".write":true,
+      },
+        
+    //configdatabase readable
+    	"config":{
+        ".read" :true,
+        ".write" :false
+      },
+  }
+}
