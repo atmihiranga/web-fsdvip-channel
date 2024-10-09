@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:project_3_forex_signals_daily/core/theme/app_colors.dart';
-import 'package:project_3_forex_signals_daily/features/premium_signals_list/view/widgets/premium_signal.dart';
 import 'package:project_3_forex_signals_daily/features/premium_signals_list/view/widgets/premium_signal_widget.dart';
 
 class PremiumSignalsList extends StatelessWidget {
