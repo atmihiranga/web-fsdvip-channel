@@ -7,7 +7,7 @@ part of 'connectivity_repository.dart';
 // **************************************************************************
 
 String _$connectivityRepositoryHash() =>
-    r'c6e1e21c7bdf39e06c7d99808077f61bb200d805';
+    r'1ace8ebc6b66a4f42a461f9e07cb79cbad48a9ea';
 
 /// See also [connectivityRepository].
 @ProviderFor(connectivityRepository)
@@ -22,7 +22,9 @@ final connectivityRepositoryProvider =
   allTransitiveDependencies: null,
 );
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 typedef ConnectivityRepositoryRef
     = AutoDisposeProviderRef<ConnectivityRepository>;
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

@@ -7,7 +7,7 @@ part of 'connectivity_check_viewmodell.dart';
 // **************************************************************************
 
 String _$connectivityViewModelHash() =>
-    r'a638d0e037f632b4a8e08f9ddfa0727228bda9a8';
+    r'31b7f0b098dd7a78171673740948f2f8d149bfb4';
 
 /// See also [ConnectivityViewModel].
 @ProviderFor(ConnectivityViewModel)
@@ -24,4 +24,4 @@ final connectivityViewModelProvider = AutoDisposeNotifierProvider<
 
 typedef _$ConnectivityViewModel = AutoDisposeNotifier<AsyncValue<bool>>;
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:project_3_forex_signals_daily/core/failure/failure.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -7,7 +8,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 part 'connectivity_repository.g.dart';
 
 @riverpod
-ConnectivityRepository connectivityRepository(ConnectivityRepositoryRef ref) {
+ConnectivityRepository connectivityRepository(Ref ref) {
   return ConnectivityRepository();
 }
 
@@ -26,4 +27,6 @@ class ConnectivityRepository {
       return Left(AppFailure(e.toString()));
     }
   }
+
+  // TODO: Implement a way to track connection status with a Stream
 }

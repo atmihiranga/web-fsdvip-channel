@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:project_3_forex_signals_daily/core/failure/failure.dart';
 import 'package:project_3_forex_signals_daily/debug/print_debug.dart';
@@ -8,8 +9,10 @@ part 'firebase_anonymous_auth_repository.g.dart';
 
 // this generates a simple provider for the FirebaseAuthRepository so that it
 // can be injected into the viewmodel
+// https://riverpod.dev/docs/essentials/first_request#creating-the-provider
+
 @riverpod
-FirebaseAuthRepository firebaseAuthRepository(FirebaseAuthRepositoryRef ref) {
+FirebaseAuthRepository firebaseAuthRepository(Ref ref) {
   return FirebaseAuthRepository();
 }
 

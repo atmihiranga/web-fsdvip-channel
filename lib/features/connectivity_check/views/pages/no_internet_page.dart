@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:project_3_forex_signals_daily/features/connectivity_check/view_models/connectivity_check_viewmodell.dart';
 
-class NoInternetPage extends StatelessWidget {
+class NoInternetPage extends ConsumerWidget {
   const NoInternetPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    //final internetConnection = ref.watch(connectivityViewModelProvider);
     return Scaffold(
       body: Center(
         child: Column(
@@ -16,6 +19,9 @@ class NoInternetPage extends StatelessWidget {
             ElevatedButton(
               onPressed: () {
                 // Trigger reconnection attempt
+                ref
+                    .read(connectivityViewModelProvider.notifier)
+                    .checkInternetConnectivity();
               },
               child: const Text('Retry'),
             ),

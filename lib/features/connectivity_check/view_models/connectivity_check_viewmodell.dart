@@ -6,7 +6,11 @@ part 'connectivity_check_viewmodell.g.dart';
 
 @riverpod
 class ConnectivityViewModel extends _$ConnectivityViewModel {
+  // we instantiate ConnectivityRepository late inside the build function  with
+  // ConnectivityRepository exposed through a provider, so that it is aware of the changes in the ConnectivityRepository
+  // explaination : https://youtu.be/CWvlOU2Y3Ik?t=13716
   late final ConnectivityRepository _connectivityRepository;
+
   @override
   AsyncValue<bool> build() {
     _connectivityRepository = ref.watch(connectivityRepositoryProvider);
@@ -18,7 +22,7 @@ class ConnectivityViewModel extends _$ConnectivityViewModel {
     printDebug('=====> Checking internet connectivity');
     state = const AsyncValue.loading();
     final result = await _connectivityRepository.checkConnectivity();
-    printDebug('=====> Result: $result');
+    printDebug('=====> Connectivity Result: $result');
     final val = switch (result) {
       Left(value: final l) => state = AsyncValue.error(l, StackTrace.current),
       Right(value: final r) => state = AsyncValue.data(r),
