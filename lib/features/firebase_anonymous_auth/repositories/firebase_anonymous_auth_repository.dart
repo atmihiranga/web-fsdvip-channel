@@ -10,7 +10,6 @@ part 'firebase_anonymous_auth_repository.g.dart';
 // this generates a simple provider for the FirebaseAuthRepository so that it
 // can be injected into the viewmodel
 // https://riverpod.dev/docs/essentials/first_request#creating-the-provider
-
 @riverpod
 FirebaseAuthRepository firebaseAuthRepository(Ref ref) {
   return FirebaseAuthRepository();
@@ -19,7 +18,9 @@ FirebaseAuthRepository firebaseAuthRepository(Ref ref) {
 // this is the actual repository class
 class FirebaseAuthRepository {
   final FirebaseAuth _firebaseAuth;
-
+  // above _firebaseAuth variable of FirebaseAuth type is initialized before the constructor using 'Initializer List' like below
+  // https://dart.dev/language/constructors#use-an-initializer-list
+  // if firebaseAuth is null, we create a FirebaseAuth.instance and set it to _firebaseAuth variable, else we set firebaseAuth to _firebaseAuth
   FirebaseAuthRepository({FirebaseAuth? firebaseAuth})
       : _firebaseAuth = firebaseAuth ?? FirebaseAuth.instance;
 

@@ -7,7 +7,7 @@ part of 'connectivity_check_viewmodell.dart';
 // **************************************************************************
 
 String _$connectivityViewModelHash() =>
-    r'31b7f0b098dd7a78171673740948f2f8d149bfb4';
+    r'dc058a1680a4526739d3d548c34a341b3fe7acf3';
 
 /// See also [ConnectivityViewModel].
 @ProviderFor(ConnectivityViewModel)

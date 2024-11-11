@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:project_3_forex_signals_daily/core/widgets/loading_widget.dart';
@@ -8,7 +9,7 @@ class AuthWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final authState = ref.watch(authViewModelProvider);
+    final AsyncValue<User?> authState = ref.watch(authViewModelProvider);
 
     return authState.when(
       data: (user) {

@@ -1,8 +1,6 @@
 import 'dart:async';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:fpdart/fpdart.dart';
-import 'package:project_3_forex_signals_daily/core/failure/failure.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'connectivity_repository.g.dart';
@@ -15,18 +13,7 @@ ConnectivityRepository connectivityRepository(Ref ref) {
 class ConnectivityRepository {
   final Connectivity _connectivity = Connectivity();
 
-  Future<Either<AppFailure, bool>> checkConnectivity() async {
-    try {
-      final result = await _connectivity.checkConnectivity();
-      bool isConnected = false;
-      if (!result.contains(ConnectivityResult.none)) {
-        isConnected = true;
-      }
-      return Right(isConnected);
-    } catch (e) {
-      return Left(AppFailure(e.toString()));
-    }
+  Stream<List<ConnectivityResult>> connectivityStatus() {
+    return _connectivity.onConnectivityChanged;
   }
-
-  // TODO: Implement a way to track connection status with a Stream
 }

@@ -12,6 +12,24 @@ class PremiumMoreDetailsRow extends ConsumerWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
+        Material(
+          borderRadius: BorderRadius.circular(8),
+          color: AppColors.lightOpacity1,
+          child: InkWell(
+            onTap: () {},
+            borderRadius: BorderRadius.circular(8),
+            child: const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 2.0),
+              child: Row(
+                children: <Widget>[
+                  Icon(size: 16, Icons.candlestick_chart),
+                  SizedBox(width: 4),
+                  Text('Chart'),
+                ],
+              ),
+            ),
+          ),
+        ),
         Row(
           children: <Widget>[
             Icon(
@@ -22,23 +40,6 @@ class PremiumMoreDetailsRow extends ConsumerWidget {
             const SizedBox(width: 4),
             const Text('SL/TP'),
           ],
-        ),
-        Material(
-          borderRadius: BorderRadius.circular(6),
-          color: AppColors.lightOpacity1,
-          child: InkWell(
-            onTap: () {},
-            child: const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 8.0),
-              child: Row(
-                children: <Widget>[
-                  Icon(size: 16, Icons.candlestick_chart),
-                  SizedBox(width: 4),
-                  Text('Chart'),
-                ],
-              ),
-            ),
-          ),
         ),
       ],
     );

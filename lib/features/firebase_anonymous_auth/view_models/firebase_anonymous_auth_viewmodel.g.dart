@@ -6,7 +6,7 @@ part of 'firebase_anonymous_auth_viewmodel.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$authViewModelHash() => r'b4f77c5e91f8f2737a8d47e320a8053c256ea576';
+String _$authViewModelHash() => r'9d525b3b49a5c8aebd0cb836a19bfaaedf87b0a1';
 
 /// See also [AuthViewModel].
 @ProviderFor(AuthViewModel)

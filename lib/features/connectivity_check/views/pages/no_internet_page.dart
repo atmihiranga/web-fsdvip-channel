@@ -19,9 +19,9 @@ class NoInternetPage extends ConsumerWidget {
             ElevatedButton(
               onPressed: () {
                 // Trigger reconnection attempt
-                ref
-                    .read(connectivityViewModelProvider.notifier)
-                    .checkInternetConnectivity();
+                // ref
+                //     .read(connectivityViewModelProvider.notifier)
+                //     .checkInternetConnectivity();
               },
               child: const Text('Retry'),
             ),
