@@ -16,7 +16,7 @@ class FsdApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final connectivityRepo = ref.watch(connectivityRepositoryProvider);
+    ref.watch(connectivityRepositoryProvider);
     final authentication = ref.watch(authViewModelProvider);
     final internetConnection = ref.watch(connectivityViewModelProvider);
 

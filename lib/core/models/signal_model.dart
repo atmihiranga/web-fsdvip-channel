@@ -20,6 +20,7 @@ class SignalModel {
   final bool isTp3Hit;
   final bool isActive;
   final double result;
+  final String note;
 
   SignalModel({
     required this.id,
@@ -37,6 +38,7 @@ class SignalModel {
     required this.isTp3Hit,
     required this.isActive,
     required this.result,
+    required this.note,
   });
 
   SignalModel copyWith({
@@ -55,6 +57,7 @@ class SignalModel {
     bool? isTp3Hit,
     bool? isActive,
     double? result,
+    String? note,
   }) {
     return SignalModel(
       id: id ?? this.id,
@@ -72,6 +75,7 @@ class SignalModel {
       isTp3Hit: isTp3Hit ?? this.isTp3Hit,
       isActive: isActive ?? this.isActive,
       result: result ?? this.result,
+      note: note ?? this.note,
     );
   }
 
@@ -92,6 +96,7 @@ class SignalModel {
       'isTp3Hit': isTp3Hit,
       'isActive': isActive,
       'result': result,
+      'note': note,
     };
   }
 
@@ -112,6 +117,7 @@ class SignalModel {
       isTp3Hit: map['isTp3Hit'] as bool,
       isActive: map['isActive'] as bool,
       result: map['result'] as double,
+      note: map['note'] as String,
     );
   }
 
@@ -122,7 +128,7 @@ class SignalModel {
 
   @override
   String toString() {
-    return 'SignalModel(id: $id, timestamp: $timestamp, symbol: $symbol, action: $action, entry: $entry, sl: $sl, isSlHit: $isSlHit, tp1: $tp1, isTp1Hit: $isTp1Hit, tp2: $tp2, isTp2Hit: $isTp2Hit, tp3: $tp3, isTp3Hit: $isTp3Hit, isActive: $isActive, result: $result)';
+    return 'SignalModel(id: $id, timestamp: $timestamp, symbol: $symbol, action: $action, entry: $entry, sl: $sl, isSlHit: $isSlHit, tp1: $tp1, isTp1Hit: $isTp1Hit, tp2: $tp2, isTp2Hit: $isTp2Hit, tp3: $tp3, isTp3Hit: $isTp3Hit, isActive: $isActive, result: $result, note: $note)';
   }
 
   @override
@@ -143,7 +149,8 @@ class SignalModel {
         other.tp3 == tp3 &&
         other.isTp3Hit == isTp3Hit &&
         other.isActive == isActive &&
-        other.result == result;
+        other.result == result &&
+        other.note == note;
   }
 
   @override
@@ -162,6 +169,7 @@ class SignalModel {
         tp3.hashCode ^
         isTp3Hit.hashCode ^
         isActive.hashCode ^
-        result.hashCode;
+        result.hashCode ^
+        note.hashCode;
   }
 }

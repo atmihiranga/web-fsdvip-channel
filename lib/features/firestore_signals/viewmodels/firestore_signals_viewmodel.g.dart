@@ -7,7 +7,7 @@ part of 'firestore_signals_viewmodel.dart';
 // **************************************************************************
 
 String _$firestoreSignalsViewmodelHash() =>
-    r'19f309cc7b7cd4d9e07633bb2b7fe170aa850898';
+    r'5fa574cddbe63e28d2f0e5d3216898fbf815cf8f';
 
 /// See also [FirestoreSignalsViewmodel].
 @ProviderFor(FirestoreSignalsViewmodel)

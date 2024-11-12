@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:project_3_forex_signals_daily/core/models/signal_model.dart';
 
 import 'package:project_3_forex_signals_daily/core/theme/app_colors.dart';
+import 'package:project_3_forex_signals_daily/features/firestore_signals/views/pages/edit_signal_page.dart';
 import 'package:project_3_forex_signals_daily/features/premium_signals_list/view/widgets/premium_more_details_row.dart';
 import 'package:project_3_forex_signals_daily/features/premium_signals_list/view/widgets/premium_signal_title_row.dart';
 import 'package:project_3_forex_signals_daily/features/premium_signals_list/view/widgets/premium_sl_tp_price_data_row.dart';
@@ -93,6 +94,18 @@ class _PremiumSignalWidgetState extends ConsumerState<PremiumSignalWidget> {
                   PremiumSLTPRow(
                       label: 'Stop Loss',
                       price: widget.signaldata.sl.toString()),
+                  TextButton(
+                      onPressed: () {
+                        // _showMyDialog();
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                EditSignalPage(signalData: widget.signaldata),
+                          ),
+                        );
+                      },
+                      child: Text('edit'))
                 ],
               ),
             ),

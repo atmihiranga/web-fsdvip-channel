@@ -12,7 +12,11 @@ class HomePage extends ConsumerWidget {
       appBar: AppBar(
         title: const Text('Forex Signals Daily'),
       ),
-      body: const PremiumSignalsList(),
+      body: Column(
+        children: [
+          Expanded(child: const PremiumSignalsList()),
+        ],
+      ),
       drawer: const SideDrawer(),
     );
   }
