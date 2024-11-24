@@ -3,13 +3,13 @@ import 'package:project_3_forex_signals_daily/core/theme/app_colors.dart';
 
 class AppTheme {
   static final darkTheme = ThemeData.dark().copyWith(
-    primaryColor: AppColors.green,
+    primaryColor: AppColors.orange,
     scaffoldBackgroundColor: AppColors.background,
     appBarTheme: const AppBarTheme(
       color: AppColors.background,
       elevation: 0,
       iconTheme: IconThemeData(
-        color: AppColors.green,
+        color: AppColors.orange,
       ),
     ),
     textButtonTheme: TextButtonThemeData(

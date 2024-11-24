@@ -10,7 +10,7 @@ class LoadingWidget extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        const CircularProgressIndicator(),
+        const CircularProgressIndicator.adaptive(),
         if (message != null)
           Padding(
             padding: const EdgeInsets.all(8.0),

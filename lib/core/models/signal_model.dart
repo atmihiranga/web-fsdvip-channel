@@ -21,6 +21,7 @@ class SignalModel {
   final bool isActive;
   final double result;
   final String note;
+  final bool isExpanded;
 
   SignalModel({
     required this.id,
@@ -39,6 +40,7 @@ class SignalModel {
     required this.isActive,
     required this.result,
     required this.note,
+    required this.isExpanded,
   });
 
   SignalModel copyWith({
@@ -58,6 +60,7 @@ class SignalModel {
     bool? isActive,
     double? result,
     String? note,
+    bool? isExpanded,
   }) {
     return SignalModel(
       id: id ?? this.id,
@@ -76,6 +79,7 @@ class SignalModel {
       isActive: isActive ?? this.isActive,
       result: result ?? this.result,
       note: note ?? this.note,
+      isExpanded: isExpanded ?? this.isExpanded,
     );
   }
 
@@ -97,6 +101,7 @@ class SignalModel {
       'isActive': isActive,
       'result': result,
       'note': note,
+      'isExpanded': isExpanded,
     };
   }
 
@@ -118,6 +123,7 @@ class SignalModel {
       isActive: map['isActive'] as bool,
       result: map['result'] as double,
       note: map['note'] as String,
+      isExpanded: map['isExpanded'] ?? false,
     );
   }
 
@@ -128,7 +134,7 @@ class SignalModel {
 
   @override
   String toString() {
-    return 'SignalModel(id: $id, timestamp: $timestamp, symbol: $symbol, action: $action, entry: $entry, sl: $sl, isSlHit: $isSlHit, tp1: $tp1, isTp1Hit: $isTp1Hit, tp2: $tp2, isTp2Hit: $isTp2Hit, tp3: $tp3, isTp3Hit: $isTp3Hit, isActive: $isActive, result: $result, note: $note)';
+    return 'SignalModel(id: $id, timestamp: $timestamp, symbol: $symbol, action: $action, entry: $entry, sl: $sl, isSlHit: $isSlHit, tp1: $tp1, isTp1Hit: $isTp1Hit, tp2: $tp2, isTp2Hit: $isTp2Hit, tp3: $tp3, isTp3Hit: $isTp3Hit, isActive: $isActive, result: $result, note: $note, isExpanded: $isExpanded)';
   }
 
   @override
@@ -150,7 +156,8 @@ class SignalModel {
         other.isTp3Hit == isTp3Hit &&
         other.isActive == isActive &&
         other.result == result &&
-        other.note == note;
+        other.note == note &&
+        other.isExpanded == isExpanded;
   }
 
   @override
@@ -170,6 +177,7 @@ class SignalModel {
         isTp3Hit.hashCode ^
         isActive.hashCode ^
         result.hashCode ^
-        note.hashCode;
+        note.hashCode ^
+        isExpanded.hashCode;
   }
 }

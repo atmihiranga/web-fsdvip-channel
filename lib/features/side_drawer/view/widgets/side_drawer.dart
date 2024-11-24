@@ -3,7 +3,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:project_3_forex_signals_daily/features/firebase_anonymous_auth/views/auth_widget.dart';
+import 'package:project_3_forex_signals_daily/features/anonymous_authentication/views/auth_widget.dart';
+import 'package:project_3_forex_signals_daily/features/user_account/views/widgets/user_account_widget.dart';
 
 class SideDrawer extends ConsumerWidget {
   const SideDrawer({super.key});
@@ -20,17 +21,9 @@ class SideDrawer extends ConsumerWidget {
             ),
             child: AuthWidget(),
           ),
+          UserAccountWidget(),
           ListTile(
             title: const Text('Item 1'),
-            onTap: () {
-              // Update the state of the app
-              // ...
-              // Then close the drawer
-              Navigator.pop(context);
-            },
-          ),
-          ListTile(
-            title: const Text('Item 2'),
             onTap: () {
               // Update the state of the app
               // ...
