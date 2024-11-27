@@ -9,7 +9,7 @@ class AppColors {
   static Color white = Colors.white.withOpacity(0.9);
   static const Color green = Color.fromRGBO(127, 207, 169, 1);
   static const Color red = Color.fromRGBO(246, 80, 100, 1);
-  static const Color blue = Color.fromRGBO(56, 160, 237, 1);
+  static const Color blue = Color.fromARGB(255, 59, 170, 255);
   static const Color orange = Color.fromRGBO(247, 142, 105, 1);
   static Color darkOpacity1 = Colors.black.withOpacity(0.1);
   static Color darkOpacity2 = Colors.black.withOpacity(0.2);

@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:project_3_forex_signals_daily/core/theme/app_colors.dart';
+import 'package:project_3_forex_signals_daily/features/premium_user/view/widgets/unlock_button.dart';
 
 class SlTpPriceRow extends StatelessWidget {
   const SlTpPriceRow({
     super.key,
-    required this.label,
+    required this.priceLabel,
     required this.price,
+    required this.isLocked,
   });
 
-  final String label;
+  final String priceLabel;
   final String price;
+  final bool isLocked;
 
   @override
   Widget build(BuildContext context) {
@@ -28,13 +31,27 @@ class SlTpPriceRow extends StatelessWidget {
               Expanded(
                   child: Padding(
                 padding: const EdgeInsets.only(left: 24),
-                child: Text(label),
+                child: Text(priceLabel),
               )),
               Expanded(child: Text(price)),
-              const Icon(
-                Icons.copy,
-                size: 12.0,
-              ),
+              isLocked
+                  ? Row(
+                      children: [
+                        Icon(Icons.lock_open,
+                            size: 12.0, color: AppColors.orange),
+                        SizedBox(
+                          width: 4,
+                        ),
+                        Text(
+                          'Unlock',
+                          style: TextStyle(color: AppColors.orange),
+                        ),
+                      ],
+                    )
+                  : const Icon(
+                      Icons.copy,
+                      size: 12.0,
+                    ),
             ],
           ),
         ),

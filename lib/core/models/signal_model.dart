@@ -1,7 +1,10 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
-// NOTE : This data class is a generated code, if regenerate modify SignalModel.fromMap functions 'as String' type casting to ?? ' ' to avoid null errors
+import 'package:project_3_forex_signals_daily/core/helpers/convert_date.dart';
+
+// NOTE : This data class is a generated code, if regenerate modify SignalModel.fromMap functions 'as String' type casting to ?? ' ' and
+// NOTE : use convertToDouble avoid errors
 // tutorial : https://youtu.be/CWvlOU2Y3Ik?t=10781
 
 class SignalModel {
@@ -108,20 +111,20 @@ class SignalModel {
   factory SignalModel.fromMap(Map<String, dynamic> map) {
     return SignalModel(
       id: map['id'] as String,
-      timestamp: map['timestamp'] as int,
+      timestamp: (map['timestamp'] as num?)?.toInt() ?? 0,
       symbol: map['symbol'] as String,
       action: map['action'] as String,
-      entry: map['entry'] as double,
-      sl: map['sl'] as double,
+      entry: convertToDouble(map['entry']) ?? 0.0,
+      sl: convertToDouble(map['sl']) ?? 0.0,
       isSlHit: map['isSlHit'] as bool,
-      tp1: map['tp1'] as double,
+      tp1: convertToDouble(map['tp1']) ?? 0.0,
       isTp1Hit: map['isTp1Hit'] as bool,
-      tp2: map['tp2'] as double,
+      tp2: convertToDouble(map['tp2']) ?? 0.0,
       isTp2Hit: map['isTp2Hit'] as bool,
-      tp3: map['tp3'] as double,
+      tp3: convertToDouble(map['tp3']) ?? 0.0,
       isTp3Hit: map['isTp3Hit'] as bool,
       isActive: map['isActive'] as bool,
-      result: map['result'] as double,
+      result: convertToDouble(map['result']) ?? 0.0,
       note: map['note'] as String,
       isExpanded: map['isExpanded'] ?? false,
     );

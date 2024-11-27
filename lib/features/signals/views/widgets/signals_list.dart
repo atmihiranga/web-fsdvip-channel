@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:project_3_forex_signals_daily/core/failure/failure_page.dart';
+import 'package:project_3_forex_signals_daily/core/failure/failure_widget.dart';
+import 'package:project_3_forex_signals_daily/core/models/signal_model.dart';
 import 'package:project_3_forex_signals_daily/core/theme/app_colors.dart';
 import 'package:project_3_forex_signals_daily/core/widgets/loading_widget.dart';
 import 'package:project_3_forex_signals_daily/debug/print_debug.dart';
 import 'package:project_3_forex_signals_daily/features/signals/viewmodels/signals_viewmodel.dart';
 import 'package:project_3_forex_signals_daily/features/signals/views/widgets/signal_widget.dart';
+import 'package:project_3_forex_signals_daily/features/user_account/viewmodels/user_account_viewmodel.dart';
 
 class SignalsList extends ConsumerStatefulWidget {
   const SignalsList({super.key});
@@ -47,49 +50,73 @@ class _PremiumSignalsListState extends ConsumerState<SignalsList> {
   @override
   Widget build(BuildContext context) {
     final signalList = ref.watch(signalsViewmodelProvider);
+    final userAccount = ref.watch(userAccountViewmodelProvider);
 
-    return signalList.when(
-        data: (data) {
-          return ListView.builder(
-            controller: _scrollController, // Attach the controller
-            itemCount: data.length + 1,
-            itemBuilder: (context, index) {
-              if (index == data.length) {
-                // Display a loading indicator at the end of the list
-                return _isLoadingMore
-                    ? Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Center(
-                          child: LoadingWidget(),
+    return userAccount.when(
+        data: (userAccount) {
+          return signalList.when(
+              data: (data) {
+                return ListView.builder(
+                  controller: _scrollController, // Attach the controller
+                  itemCount: data.length + 1,
+                  itemBuilder: (context, index) {
+                    if (index == data.length) {
+                      // Display a loading indicator at the end of the list
+                      return _isLoadingMore
+                          ? Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Center(
+                                child: LoadingWidget(),
+                              ),
+                            )
+                          : SizedBox.shrink();
+                    }
+                    if (data[index] != null) {
+                      bool islocked = true;
+                      SignalModel signal = data[index]!;
+                      if (userAccount.isPremium) {
+                        islocked = false;
+                      } else {
+                        if (signal.isSlHit || signal.isTp1Hit) {
+                          islocked = false;
+                        } else {
+                          islocked = true;
+                        }
+                      }
+                      return Container(
+                        margin: const EdgeInsets.all(8.0),
+                        decoration: BoxDecoration(
+                          color: AppColors.backgroundDarker2,
+                          borderRadius: BorderRadius.circular(8),
+                          // border: snapshot.data![index].isActive
+                          //     ? Border(left: BorderSide(color: AppColors.blue))
+                          //     : Border(),
                         ),
-                      )
-                    : SizedBox.shrink();
-              }
-              if (data[index] != null) {
-                return Container(
-                  margin: const EdgeInsets.all(8.0),
-                  decoration: BoxDecoration(
-                    color: AppColors.backgroundDarker2,
-                    borderRadius: BorderRadius.circular(8),
-                    // border: snapshot.data![index].isActive
-                    //     ? Border(left: BorderSide(color: AppColors.blue))
-                    //     : Border(),
-                  ),
-                  child: Column(
-                    children: [
-                      SignalWidget(
-                        signaldata: data[index]!,
-                      ),
-                    ],
-                  ),
+                        child: Column(
+                          children: [
+                            SignalWidget(
+                              signaldata: signal,
+                              isLocked: islocked,
+                            ),
+                          ],
+                        ),
+                      );
+                    } else {
+                      return SizedBox.shrink();
+                    }
+                  },
                 );
-              } else {
-                return SizedBox.shrink();
-              }
-            },
+              },
+              error: (error, stackTrace) => FailurePage(
+                    errorMessage: 'Error fetching signal data',
+                  ),
+              loading: () => LoadingWidget());
+        },
+        error: (error, stack) {
+          return FailureWidget(
+            message: 'Error getting user',
           );
         },
-        error: (error, stackTrace) => FailurePage(),
-        loading: () => Center(child: LoadingWidget()));
+        loading: () => LoadingWidget());
   }
 }

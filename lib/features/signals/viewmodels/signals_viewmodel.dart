@@ -9,7 +9,7 @@ part 'signals_viewmodel.g.dart';
 
 @riverpod
 class SignalsViewmodel extends _$SignalsViewmodel {
-  late final SignalsRepository _signalsRepository;
+  late SignalsRepository _signalsRepository;
   StreamSubscription? _signalsSubscription;
   // Keep track of signals using a Map to prevent duplicates
   final Map<String, SignalModel?> _signalsMap = {};
@@ -32,21 +32,22 @@ class SignalsViewmodel extends _$SignalsViewmodel {
   void _setupFirestoreSignalsListner() {
     _signalsSubscription?.cancel();
     _signalsSubscription = _signalsRepository.signalStream().listen((snapshot) {
-      printDebug('=====> firestore_signals_viewmodel : data changed');
+      printDebug('=====> signals_viewmodel : data changed');
       // below code will convert QuerySnapshot<Map<String, dynamic>> to a List<SignalModel?> and save in signalList variable
       final signalList = snapshot.docs
           .map((doc) {
             final data = doc.data();
             data['id'] = doc.id;
             try {
-              final signal = SignalModel.fromMap(data);
+              final signal =
+                  SignalModel.fromMap(data).copyWith(isExpanded: false);
               _signalsMap[signal.id] = signal;
               printDebug(
-                  '=====> firestore_signals_viewmodel : signal id: ${signal.id}');
+                  '=====> signals_viewmodel : signal id: ${signal.id}, ${signal.isExpanded}');
               return signal;
             } catch (e) {
               printDebug(
-                  '=====> firestore_signals_viewmodel : Error converting doc to SignalModel: doc : ${doc.id}, Error : $e');
+                  '=====> signals_viewmodel : Error converting doc to SignalModel: doc : ${doc.id}, Error : $e');
               _signalsMap.remove(doc.id);
               return null;
             }
@@ -85,12 +86,11 @@ class SignalsViewmodel extends _$SignalsViewmodel {
             try {
               final signal = SignalModel.fromMap(data);
               _signalsMap[signal.id] = signal;
-              printDebug(
-                  '=====> firestore_signals_viewmodel : signal id: ${signal.id}');
+              printDebug('=====> signals_viewmodel : signal id: ${signal.id}');
               return signal;
             } catch (e) {
               printDebug(
-                  '=====> firestore_signals_viewmodel : Error converting document to SignalModel: $e');
+                  '=====> signals_viewmodel : Error converting document to SignalModel: $e');
               return null;
             }
           })
@@ -117,8 +117,7 @@ class SignalsViewmodel extends _$SignalsViewmodel {
   Future<void> updateSignal(SignalModel updatedSignal) async {
     final existingSignal = _signalsMap[updatedSignal.id];
     if (existingSignal == null) {
-      printDebug(
-          '=====> firestore_signals_viewmodel : Signal not found locally.');
+      printDebug('=====> signals_viewmodel : Signal not found locally.');
       return;
     }
     // Convert updatedSignal and existingSignal to maps for comparison
@@ -129,7 +128,7 @@ class SignalsViewmodel extends _$SignalsViewmodel {
     updatedMap.removeWhere((key, value) => existingMap[key] == value);
 
     if (updatedMap.isEmpty) {
-      printDebug('=====> firestore_signals_viewmodel : No changes detected.');
+      printDebug('=====> signals_viewmodel : No changes detected.');
       return;
     }
 

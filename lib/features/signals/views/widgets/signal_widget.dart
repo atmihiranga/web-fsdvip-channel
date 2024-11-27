@@ -1,25 +1,22 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:project_3_forex_signals_daily/core/failure/failure_widget.dart';
 import 'package:project_3_forex_signals_daily/core/models/signal_model.dart';
 import 'package:project_3_forex_signals_daily/core/theme/app_colors.dart';
-import 'package:project_3_forex_signals_daily/core/widgets/loading_widget.dart';
 import 'package:project_3_forex_signals_daily/debug/print_debug.dart';
-import 'package:project_3_forex_signals_daily/features/free_signals/views/free_signal_more_details.dart';
-import 'package:project_3_forex_signals_daily/features/premium_signals/view/widgets/premium_signal_more_details.dart';
-import 'package:project_3_forex_signals_daily/features/update_signal/views/pages/update_signal_data.dart';
+import 'package:project_3_forex_signals_daily/features/free_user/views/free_signal_more_details.dart';
+import 'package:project_3_forex_signals_daily/features/premium_user/view/widgets/premium_user_more_signal_details.dart';
 import 'package:project_3_forex_signals_daily/features/signals/views/widgets/signal_buttons_row.dart';
 import 'package:project_3_forex_signals_daily/features/signals/views/widgets/signal_title_row.dart';
-import 'package:project_3_forex_signals_daily/features/signals/views/widgets/sl_tp_price_data_row.dart';
-import 'package:project_3_forex_signals_daily/features/user_account/viewmodels/user_account_viewmodel.dart';
 
 class SignalWidget extends ConsumerStatefulWidget {
   final SignalModel signaldata;
+  final bool isLocked;
 
   const SignalWidget({
     super.key,
     required this.signaldata,
+    required this.isLocked,
   });
 
   @override
@@ -30,26 +27,27 @@ class SignalWidget extends ConsumerStatefulWidget {
 
 class _PremiumSignalWidgetState extends ConsumerState<SignalWidget> {
   late SignalModel _currentSignalData;
+  late bool _isLocked;
 
   @override
   void initState() {
-    printDebug('=====> premium signal widget : ');
     _currentSignalData = widget.signaldata;
+    _isLocked = widget.isLocked;
+    printDebug('=====> signal widget init ${_currentSignalData.isExpanded}');
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    final userAccountModel = ref.watch(userAccountViewmodelProvider);
+    //final userAccountModel = ref.watch(userAccountViewmodelProvider);
+    printDebug('=====> signal widget');
     return InkWell(
       splashFactory: NoSplash.splashFactory, // Disables the splash effect
       onTap: () {
         setState(() {
-          printDebug('=====> ${_currentSignalData.isExpanded}');
           _currentSignalData = _currentSignalData.copyWith(
               isExpanded: !_currentSignalData.isExpanded);
         });
-        printDebug('=====> ${_currentSignalData.isExpanded}');
       },
       child: Container(
         padding: const EdgeInsets.all(8),
@@ -79,9 +77,17 @@ class _PremiumSignalWidgetState extends ConsumerState<SignalWidget> {
                 )),
                 const SizedBox(width: 10),
                 _currentSignalData.isActive
-                    ? Text(
-                        'active',
-                        style: TextStyle(color: AppColors.blue),
+                    ? Container(
+                        margin: EdgeInsets.only(left: 4),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 8, vertical: 0),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(6),
+                            color: AppColors.blue.withOpacity(0.2)),
+                        child: Text(
+                          'active',
+                          style: TextStyle(color: AppColors.blue),
+                        ),
                       )
                     : _currentSignalData.result < 0
                         ? const Icon(Icons.cancel, color: AppColors.red)
@@ -95,32 +101,12 @@ class _PremiumSignalWidgetState extends ConsumerState<SignalWidget> {
             ),
             const SizedBox(height: 4),
             Visibility(
-              visible: _currentSignalData.isExpanded,
-              child: userAccountModel.when(
-                  data: (userAccount) {
-                    // todo check if signal is active
-                    if (userAccount.isPremium) {
-                      return SignalMoreDetailsUnlocked(
+                visible: _currentSignalData.isExpanded,
+                child: _isLocked
+                    ? FreeUserMoreSignalDetails()
+                    : PremiumUserMoreSignalDetails(
                         signaldata: _currentSignalData,
-                      );
-                    } else {
-                      if (_currentSignalData.isSlHit ||
-                          _currentSignalData.isTp1Hit) {
-                        return SignalMoreDetailsUnlocked(
-                          signaldata: _currentSignalData,
-                        );
-                      } else {
-                        return SignalMoreDetailsLocked();
-                      }
-                    }
-                  },
-                  error: (error, stack) {
-                    return FailureWidget(
-                      message: error.toString(),
-                    );
-                  },
-                  loading: () => LoadingWidget()),
-            ),
+                      )),
           ],
         ),
       ),

@@ -12,7 +12,7 @@ class LoadingPage extends ConsumerWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            LoadingWidget(message: 'loading...'),
+            LoadingWidget(),
           ],
         ),
       ),

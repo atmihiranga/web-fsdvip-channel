@@ -39,12 +39,12 @@ class SignalsRepository {
 
   Future<void> updateSignalDoc(String id, Map<String, dynamic> updates) async {
     try {
-      printDebug('=====> firestore_signals : updating doc id : $id');
-      printDebug('=====> firestore_signals : updates : ${updates.toString()}');
+      printDebug('=====> signals repo : updating doc id : $id');
+      printDebug('=====> signals repo : updates : ${updates.toString()}');
 
       await _firebaseFirestore.collection('signaldb').doc(id).update(updates);
     } catch (e) {
-      printDebug('=====> error : $e');
+      printDebug('=====> signals repo update error : $e');
     }
   }
 

@@ -10,3 +10,11 @@ String formatTimestamp(int timestamp) {
   // Format the date and return it as a string
   return formatter.format(date);
 }
+
+// Helper function to safely convert numeric values to double
+double? convertToDouble(dynamic value) {
+  if (value == null) return null;
+  if (value is double) return value;
+  if (value is int) return value.toDouble();
+  return null;
+}
