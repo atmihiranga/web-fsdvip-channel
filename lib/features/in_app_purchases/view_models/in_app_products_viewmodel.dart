@@ -1,5 +1,6 @@
 import 'package:fpdart/fpdart.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
+import 'package:project_3_forex_signals_daily/debug/print_debug.dart';
 import 'package:project_3_forex_signals_daily/features/in_app_purchases/repositories/in_app_products_repository.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 part 'in_app_products_viewmodel.g.dart';
@@ -17,9 +18,9 @@ class InAppProductsViewModel extends _$InAppProductsViewModel {
   Future<void> _loadProductDetailsList() async {
     final productDetailsResult =
         await _inAppProductsRepository.loadProductDetailsList();
-    final val = switch (productDetailsResult) {
-      Left(value: final l) => state = AsyncValue.error(l, StackTrace.current),
-      Right(value: final r) => state = AsyncValue.data(r),
+    state = switch (productDetailsResult) {
+      Left(value: final l) => AsyncValue.error(l, StackTrace.current),
+      Right(value: final r) => AsyncValue.data(r)
     };
   }
 }

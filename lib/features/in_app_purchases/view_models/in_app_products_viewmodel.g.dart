@@ -7,7 +7,7 @@ part of 'in_app_products_viewmodel.dart';
 // **************************************************************************
 
 String _$inAppProductsViewModelHash() =>
-    r'e209b02735ca88f0e89bf00ae21e7d8c6bafda48';
+    r'3435c8e5ede2cd53ed57b8f25c51a3622df74bfc';
 
 /// See also [InAppProductsViewModel].
 @ProviderFor(InAppProductsViewModel)

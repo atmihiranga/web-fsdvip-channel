@@ -25,6 +25,16 @@ if (flutterVersionName == null) {
     flutterVersionName = '1.0'
 }
 
+def keystoreProperties = new Properties()
+def keystorePropertiesFile = rootProject.file('key.properties')
+def configured = true
+try {
+    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+    } catch (IOException e) {
+    configured = false
+    logger.error('Release signing information not found.')
+    }
+
 android {
     namespace "com.example.project_3_forex_signals_daily"
     compileSdk flutter.compileSdkVersion
@@ -33,6 +43,8 @@ android {
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
+        // Flag to enable support for the new language APIs
+        coreLibraryDesugaringEnabled true
     }
 
     kotlinOptions {
@@ -55,11 +67,29 @@ android {
         multiDexEnabled true
     }
 
-    buildTypes {
+    signingConfigs {
+       release {
+           keyAlias keystoreProperties['keyAlias']
+           keyPassword keystoreProperties['keyPassword']
+           storeFile keystoreProperties['storeFile'] ? file(keystoreProperties['storeFile']) : null
+           storePassword keystoreProperties['storePassword']
+       }
+    }
+     buildTypes {
+        // Google Play Billing APIs only work with apps signed for production.
+        debug {
+            if (configured) {
+                signingConfig signingConfigs.release
+            } else {
+                signingConfig signingConfigs.debug
+            }
+        }
         release {
-            // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now, so `flutter run --release` works.
-            signingConfig signingConfigs.debug
+            if (configured) {
+                signingConfig signingConfigs.release
+            } else {
+                signingConfig signingConfigs.debug
+            }
         }
     }
 }
@@ -68,4 +98,6 @@ flutter {
     source '../..'
 }
 
-dependencies {}
+dependencies {
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.2.2'
+}

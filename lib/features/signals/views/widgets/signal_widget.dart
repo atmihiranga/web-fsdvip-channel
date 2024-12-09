@@ -8,15 +8,16 @@ import 'package:project_3_forex_signals_daily/features/free_user/views/free_sign
 import 'package:project_3_forex_signals_daily/features/premium_user/view/widgets/premium_user_more_signal_details.dart';
 import 'package:project_3_forex_signals_daily/features/signals/views/widgets/signal_buttons_row.dart';
 import 'package:project_3_forex_signals_daily/features/signals/views/widgets/signal_title_row.dart';
+import 'package:project_3_forex_signals_daily/features/user_account/viewmodels/user_account_viewmodel.dart';
 
 class SignalWidget extends ConsumerStatefulWidget {
   final SignalModel signaldata;
-  final bool isLocked;
+  //final bool isLocked;
 
   const SignalWidget({
     super.key,
     required this.signaldata,
-    required this.isLocked,
+    // required this.isLocked,
   });
 
   @override
@@ -27,19 +28,36 @@ class SignalWidget extends ConsumerStatefulWidget {
 
 class _PremiumSignalWidgetState extends ConsumerState<SignalWidget> {
   late SignalModel _currentSignalData;
-  late bool _isLocked;
+  bool isLocked = true;
+  bool isPremium = false;
 
   @override
   void initState() {
     _currentSignalData = widget.signaldata;
-    _isLocked = widget.isLocked;
+    //_isLocked = widget.isLocked;
     printDebug('=====> signal widget init ${_currentSignalData.isExpanded}');
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    //final userAccountModel = ref.watch(userAccountViewmodelProvider);
+    final userAccountModel = ref.watch(userAccountViewmodelProvider);
+    userAccountModel.whenData(
+      (value) {
+        isPremium = value.isPremium;
+      },
+    );
+
+    if (isPremium) {
+      isLocked = false;
+    } else {
+      if (_currentSignalData.isSlHit || _currentSignalData.isTp1Hit) {
+        isLocked = false;
+      } else {
+        isLocked = true;
+      }
+    }
+
     printDebug('=====> signal widget');
     return InkWell(
       splashFactory: NoSplash.splashFactory, // Disables the splash effect
@@ -102,7 +120,7 @@ class _PremiumSignalWidgetState extends ConsumerState<SignalWidget> {
             const SizedBox(height: 4),
             Visibility(
                 visible: _currentSignalData.isExpanded,
-                child: _isLocked
+                child: isLocked
                     ? FreeUserMoreSignalDetails()
                     : PremiumUserMoreSignalDetails(
                         signaldata: _currentSignalData,

@@ -6,19 +6,17 @@ class LoadingWidget extends StatelessWidget {
   final String? message;
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          const CircularProgressIndicator.adaptive(),
-          if (message != null)
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(message!),
-            )
-        ],
-      ),
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        const CircularProgressIndicator.adaptive(),
+        if (message != null)
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(message!),
+          )
+      ],
     );
   }
 }

@@ -20,7 +20,7 @@ class UserAccountRepository {
       : _firebaseFirestore = firebaseFirestore ?? FirebaseFirestore.instance;
 
   Future<Either<AppFailure, UserAccountModel>> getOrCreateUserAccount(
-      String userUid) async {
+      String userUid, String fcmToken) async {
     try {
       printDebug('=====> user account repo : tryng to get user acc');
       final userAccountDoc =
@@ -36,11 +36,13 @@ class UserAccountRepository {
         printDebug(
             '=====> user account repo : user account doc dont exist, creating user account');
         // create user if user does not exist
+
         final userdAccountData = UserAccountModel(
                 id: userUid,
                 platform: defaultTargetPlatform.toString(),
                 installedTimestamp: Timestamp.now().millisecondsSinceEpoch,
-                isPremium: false)
+                isPremium: false,
+                fcmToken: fcmToken)
             .toMap();
         try {
           await userAccountDoc.set(userdAccountData);
@@ -56,6 +58,24 @@ class UserAccountRepository {
       printDebug('=====> user account repo : error getting user account : $e');
       return Left(AppFailure(e.toString()));
     }
+  }
+
+  Stream<DocumentSnapshot<Map<String, dynamic>>> userAccountStream(
+      String userId) {
+    return _firebaseFirestore
+        .collection('userdb')
+        // .where('isActive', isEqualTo: true)
+        .doc(userId)
+        .snapshots();
+  }
+
+  Stream<QuerySnapshot<Map<String, dynamic>>> purchasesStream(String userId) {
+    final purchasesStream = _firebaseFirestore
+        .collection('purchases')
+        .where('userId', isEqualTo: userId)
+        .where('status', isEqualTo: 'ACTIVE')
+        .snapshots();
+    return purchasesStream;
   }
 
   Future<void> addUser() async {}

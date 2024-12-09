@@ -7,6 +7,7 @@ import 'package:project_3_forex_signals_daily/core/theme/app_colors.dart';
 import 'package:project_3_forex_signals_daily/core/widgets/loading_widget.dart';
 import 'package:project_3_forex_signals_daily/debug/print_debug.dart';
 import 'package:project_3_forex_signals_daily/features/signals/viewmodels/signals_viewmodel.dart';
+import 'package:project_3_forex_signals_daily/features/signals/views/widgets/list_item_shimmer.dart';
 import 'package:project_3_forex_signals_daily/features/signals/views/widgets/signal_widget.dart';
 import 'package:project_3_forex_signals_daily/features/user_account/viewmodels/user_account_viewmodel.dart';
 
@@ -54,6 +55,7 @@ class _PremiumSignalsListState extends ConsumerState<SignalsList> {
 
     return userAccount.when(
         data: (userAccount) {
+          printDebug('=====> user account premium : ${userAccount.isPremium}');
           return signalList.when(
               data: (data) {
                 return ListView.builder(
@@ -72,17 +74,8 @@ class _PremiumSignalsListState extends ConsumerState<SignalsList> {
                           : SizedBox.shrink();
                     }
                     if (data[index] != null) {
-                      bool islocked = true;
                       SignalModel signal = data[index]!;
-                      if (userAccount.isPremium) {
-                        islocked = false;
-                      } else {
-                        if (signal.isSlHit || signal.isTp1Hit) {
-                          islocked = false;
-                        } else {
-                          islocked = true;
-                        }
-                      }
+
                       return Container(
                         margin: const EdgeInsets.all(8.0),
                         decoration: BoxDecoration(
@@ -96,7 +89,6 @@ class _PremiumSignalsListState extends ConsumerState<SignalsList> {
                           children: [
                             SignalWidget(
                               signaldata: signal,
-                              isLocked: islocked,
                             ),
                           ],
                         ),
@@ -117,6 +109,9 @@ class _PremiumSignalsListState extends ConsumerState<SignalsList> {
             message: 'Error getting user',
           );
         },
-        loading: () => LoadingWidget());
+        loading: () => ListView.builder(
+              itemCount: 5, // Number of shimmer placeholders
+              itemBuilder: (context, index) => ListItemShimmer(),
+            ));
   }
 }

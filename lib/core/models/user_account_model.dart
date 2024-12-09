@@ -6,12 +6,14 @@ class UserAccountModel {
   final String platform;
   final int installedTimestamp;
   final bool isPremium;
+  final String fcmToken;
 
   UserAccountModel({
     required this.id,
     required this.platform,
     required this.installedTimestamp,
     required this.isPremium,
+    required this.fcmToken,
   });
 
   UserAccountModel copyWith({
@@ -19,12 +21,14 @@ class UserAccountModel {
     String? platform,
     int? installedTimestamp,
     bool? isPremium,
+    String? fcmToken,
   }) {
     return UserAccountModel(
       id: id ?? this.id,
       platform: platform ?? this.platform,
       installedTimestamp: installedTimestamp ?? this.installedTimestamp,
       isPremium: isPremium ?? this.isPremium,
+      fcmToken: fcmToken ?? this.fcmToken,
     );
   }
 
@@ -34,6 +38,7 @@ class UserAccountModel {
       'platform': platform,
       'installedTimestamp': installedTimestamp,
       'isPremium': isPremium,
+      'fcmToken': fcmToken,
     };
   }
 
@@ -43,6 +48,7 @@ class UserAccountModel {
       platform: map['platform'] as String,
       installedTimestamp: map['installedTimestamp'] as int,
       isPremium: map['isPremium'] as bool,
+      fcmToken: map['fcmToken'] ?? '',
     );
   }
 
@@ -53,7 +59,7 @@ class UserAccountModel {
 
   @override
   String toString() {
-    return 'UserModel(id: $id, platform: $platform, installedTimestamp: $installedTimestamp, isPremium: $isPremium)';
+    return 'UserModel(id: $id, platform: $platform, installedTimestamp: $installedTimestamp, isPremium: $isPremium, fcmToken :$fcmToken)';
   }
 
   @override
@@ -63,7 +69,8 @@ class UserAccountModel {
     return other.id == id &&
         other.platform == platform &&
         other.installedTimestamp == installedTimestamp &&
-        other.isPremium == isPremium;
+        other.isPremium == isPremium &&
+        other.fcmToken == fcmToken;
   }
 
   @override
@@ -71,6 +78,7 @@ class UserAccountModel {
     return id.hashCode ^
         platform.hashCode ^
         installedTimestamp.hashCode ^
-        isPremium.hashCode;
+        isPremium.hashCode ^
+        fcmToken.hashCode;
   }
 }

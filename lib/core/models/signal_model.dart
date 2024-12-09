@@ -4,7 +4,9 @@ import 'dart:convert';
 import 'package:project_3_forex_signals_daily/core/helpers/convert_date.dart';
 
 // NOTE : This data class is a generated code, if regenerate modify SignalModel.fromMap functions 'as String' type casting to ?? ' ' and
-// NOTE : use convertToDouble avoid errors
+// NOTE : use convertToDouble avoid errors.
+// NOTE : Example note: map['note'] as String
+// NOTE : Example entry: convertToDouble(map['entry']) ?? 0.0,
 // tutorial : https://youtu.be/CWvlOU2Y3Ik?t=10781
 
 class SignalModel {
