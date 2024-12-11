@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:project_3_forex_signals_daily/core/theme/app_colors.dart';
+import 'package:project_3_forex_signals_daily/features/chart/views/pages/chart_page.dart';
 
 class SignalButtonsRow extends ConsumerWidget {
   final bool isExpanded;
+  final String symbol;
 
-  const SignalButtonsRow({super.key, required this.isExpanded});
+  const SignalButtonsRow(
+      {super.key, required this.isExpanded, required this.symbol});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -16,7 +19,16 @@ class SignalButtonsRow extends ConsumerWidget {
           borderRadius: BorderRadius.circular(6),
           color: AppColors.lightOpacity1,
           child: InkWell(
-            onTap: () {},
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ChartPage(
+                    symbol: symbol,
+                  ),
+                ),
+              );
+            },
             borderRadius: BorderRadius.circular(6),
             child: const Padding(
               padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),

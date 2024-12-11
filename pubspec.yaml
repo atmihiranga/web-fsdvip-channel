@@ -50,6 +50,7 @@ dependencies:
   shimmer: ^3.0.0
   confetti: ^0.7.0
   flutter_local_notifications: ^18.0.1
+  flutter_inappwebview: ^6.1.5
   
 
 dev_dependencies:

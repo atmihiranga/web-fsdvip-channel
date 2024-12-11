@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:project_3_forex_signals_daily/core/theme/app_colors.dart';
+import 'package:project_3_forex_signals_daily/features/chart/views/pages/chart_page.dart';
 import 'package:project_3_forex_signals_daily/features/firebase_cloud_messaging/repositories/firebase_cloud_messaging_repository.dart';
 import 'package:project_3_forex_signals_daily/features/firebase_cloud_messaging/viewmodels/firebase_cloud_messaging_viewmodel.dart';
 import 'package:project_3_forex_signals_daily/features/in_app_purchases/views/pages/in_app_purchase_page.dart';
@@ -21,18 +22,11 @@ class HomePage extends ConsumerWidget {
       appBar: AppBar(
         title: const Text('Forex Signals Daily'),
         actions: [
-          IconButton(onPressed: () {}, icon: Icon(Icons.abc)),
+          IconButton(onPressed: () {}, icon: Icon(Icons.info)),
           userAccountModel.when(
             data: (user) {
               return InkWell(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => InAppPurchasePage(),
-                    ),
-                  );
-                },
+                onTap: () {},
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Icon(

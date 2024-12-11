@@ -5,7 +5,11 @@ import 'package:project_3_forex_signals_daily/features/in_app_purchases/views/wi
 import 'package:project_3_forex_signals_daily/features/user_account/viewmodels/user_account_viewmodel.dart';
 
 class InAppPurchasePage extends ConsumerWidget {
-  const InAppPurchasePage({super.key});
+  final String symbol;
+  const InAppPurchasePage({
+    super.key,
+    required this.symbol,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

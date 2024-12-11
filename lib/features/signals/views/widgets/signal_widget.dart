@@ -115,8 +115,8 @@ class _PremiumSignalWidgetState extends ConsumerState<SignalWidget> {
             ),
             const SizedBox(height: 4),
             SignalButtonsRow(
-              isExpanded: _currentSignalData.isExpanded,
-            ),
+                isExpanded: _currentSignalData.isExpanded,
+                symbol: _currentSignalData.symbol.toUpperCase()),
             const SizedBox(height: 4),
             Visibility(
                 visible: _currentSignalData.isExpanded,
