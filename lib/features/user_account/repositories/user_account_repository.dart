@@ -32,6 +32,12 @@ class UserAccountRepository {
         // return user account
         printDebug('=====> user account repo : user account exists');
         final userAccount = UserAccountModel.fromMap(userdAccountData);
+
+        if (userAccount.isAnonymous && !user.isAnonymous) {
+          printDebug(
+              '=====> user account repo : existing user is anonymous, auth user is not anonymous ');
+          updateExistingUser(user);
+        }
         return Right(userAccount);
       } else {
         printDebug(
@@ -44,7 +50,7 @@ class UserAccountRepository {
           installedTimestamp: Timestamp.now().millisecondsSinceEpoch,
           isPremium: false,
           fcmToken: fcmToken,
-          authProvider: user.providerData.toString(),
+          email: '',
           isAnonymous: true,
         ).toMap();
         try {
@@ -81,10 +87,24 @@ class UserAccountRepository {
     return purchasesStream;
   }
 
-  Future<void> setOrUpdateFcmToken(String userUid, String token) async {
+  Future<void> updateExistingUser(User user) async {
+    final userAccountDoc =
+        _firebaseFirestore.collection('userdb').doc(user.uid);
+    await userAccountDoc.set(
+      {
+        'isAnonymous': false,
+        'email': user.email,
+      },
+      SetOptions(
+        merge: true,
+      ),
+    );
+  }
+
+  Future<void> setOrUpdateFcmToken(String userUid, String fcmToken) async {
     final userAccountDoc = _firebaseFirestore.collection('userdb').doc(userUid);
     await userAccountDoc.set(
-      {'fcmToken': token},
+      {'fcmToken': fcmToken},
       SetOptions(
         merge: true,
       ),

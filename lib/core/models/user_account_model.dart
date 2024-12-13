@@ -9,7 +9,7 @@ class UserAccountModel {
   final int installedTimestamp;
   final bool isPremium;
   final String fcmToken;
-  final String authProvider;
+  final String email;
   final bool isAnonymous;
 
   UserAccountModel({
@@ -18,7 +18,7 @@ class UserAccountModel {
     required this.installedTimestamp,
     required this.isPremium,
     required this.fcmToken,
-    required this.authProvider,
+    required this.email,
     required this.isAnonymous,
   });
 
@@ -28,7 +28,7 @@ class UserAccountModel {
     int? installedTimestamp,
     bool? isPremium,
     String? fcmToken,
-    String? authProvider,
+    String? email,
     bool? isAnonymous,
   }) {
     return UserAccountModel(
@@ -37,7 +37,7 @@ class UserAccountModel {
       installedTimestamp: installedTimestamp ?? this.installedTimestamp,
       isPremium: isPremium ?? this.isPremium,
       fcmToken: fcmToken ?? this.fcmToken,
-      authProvider: authProvider ?? this.authProvider,
+      email: email ?? this.email,
       isAnonymous: isAnonymous ?? this.isAnonymous,
     );
   }
@@ -49,7 +49,7 @@ class UserAccountModel {
       'installedTimestamp': installedTimestamp,
       'isPremium': isPremium,
       'fcmToken': fcmToken,
-      'authProvider': authProvider,
+      'email': email,
       'isAnonymous': isAnonymous,
     };
   }
@@ -61,7 +61,7 @@ class UserAccountModel {
       installedTimestamp: map['installedTimestamp'] ?? 0,
       isPremium: map['isPremium'] ?? false,
       fcmToken: map['fcmToken'] ?? '',
-      authProvider: map['authProvider'] ?? '',
+      email: map['email'] ?? '',
       isAnonymous: map['isAnonymous'] ?? true,
     );
   }
@@ -73,7 +73,7 @@ class UserAccountModel {
 
   @override
   String toString() {
-    return 'UserModel(id: $id, platform: $platform, installedTimestamp: $installedTimestamp, isPremium: $isPremium, fcmToken :$fcmToken, authProvider : $authProvider, isAnonymous: $isAnonymous)';
+    return 'UserModel(id: $id, platform: $platform, installedTimestamp: $installedTimestamp, isPremium: $isPremium, fcmToken :$fcmToken, email : $email, isAnonymous: $isAnonymous)';
   }
 
   @override
@@ -85,7 +85,7 @@ class UserAccountModel {
         other.installedTimestamp == installedTimestamp &&
         other.isPremium == isPremium &&
         other.fcmToken == fcmToken &&
-        other.authProvider == authProvider &&
+        other.email == email &&
         other.isAnonymous == isAnonymous;
   }
 
@@ -96,7 +96,7 @@ class UserAccountModel {
         installedTimestamp.hashCode ^
         isPremium.hashCode ^
         fcmToken.hashCode ^
-        authProvider.hashCode ^
+        email.hashCode ^
         isAnonymous.hashCode;
   }
 }

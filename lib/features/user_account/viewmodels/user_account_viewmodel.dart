@@ -97,7 +97,7 @@ class UserAccountViewmodel extends _$UserAccountViewmodel {
       installedTimestamp: 0,
       isPremium: false,
       fcmToken: '',
-      authProvider: '',
+      email: '',
       isAnonymous: true,
     ));
   }
