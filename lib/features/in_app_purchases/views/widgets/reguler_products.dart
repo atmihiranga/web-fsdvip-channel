@@ -14,8 +14,7 @@ class RegularProducts extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final productDetails = ref.watch(inAppProductsViewModelProvider);
-    final activeSubscriptions =
-        ref.watch(userActiveSubscriptionsViewmodelProvider);
+    ref.watch(userActiveSubscriptionsViewmodelProvider);
     return productDetails.when(
         data: (productList) {
           final sortedProducts = productList.toList()

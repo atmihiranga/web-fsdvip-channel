@@ -1,27 +1,27 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'anonymous_auth_viewmodel.dart';
+part of 'auth_repository.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$anonymousAuthViewModelHash() =>
-    r'57eb2fab4de59839f6e67211d233537c2c26c076';
+String _$authRepositoryHash() => r'19a3485653561ac2f781b997131430c5659286d1';
 
-/// See also [AnonymousAuthViewModel].
-@ProviderFor(AnonymousAuthViewModel)
-final anonymousAuthViewModelProvider = AutoDisposeNotifierProvider<
-    AnonymousAuthViewModel, AsyncValue<User?>>.internal(
-  AnonymousAuthViewModel.new,
-  name: r'anonymousAuthViewModelProvider',
+/// See also [authRepository].
+@ProviderFor(authRepository)
+final authRepositoryProvider = AutoDisposeProvider<AuthRepository>.internal(
+  authRepository,
+  name: r'authRepositoryProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
-      : _$anonymousAuthViewModelHash,
+      : _$authRepositoryHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef _$AnonymousAuthViewModel = AutoDisposeNotifier<AsyncValue<User?>>;
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+typedef AuthRepositoryRef = AutoDisposeProviderRef<AuthRepository>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

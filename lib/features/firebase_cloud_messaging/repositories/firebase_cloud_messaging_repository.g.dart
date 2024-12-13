@@ -7,12 +7,12 @@ part of 'firebase_cloud_messaging_repository.dart';
 // **************************************************************************
 
 String _$notificationRepositoryHash() =>
-    r'30f9b069679a4dd2537b0e66a71826e8349a5512';
+    r'38b445d04c69c43950a8cd906a43e1afbc212e37';
 
 /// See also [notificationRepository].
 @ProviderFor(notificationRepository)
 final notificationRepositoryProvider =
-    AutoDisposeProvider<NotificationRepository>.internal(
+    AutoDisposeProvider<FirebaseCloudMessagingRepo>.internal(
   notificationRepository,
   name: r'notificationRepositoryProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -25,6 +25,6 @@ final notificationRepositoryProvider =
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef NotificationRepositoryRef
-    = AutoDisposeProviderRef<NotificationRepository>;
+    = AutoDisposeProviderRef<FirebaseCloudMessagingRepo>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

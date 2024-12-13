@@ -60,11 +60,11 @@ Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 }
 
 @riverpod
-NotificationRepository notificationRepository(Ref ref) {
-  return NotificationRepository();
+FirebaseCloudMessagingRepo notificationRepository(Ref ref) {
+  return FirebaseCloudMessagingRepo();
 }
 
-class NotificationRepository {
+class FirebaseCloudMessagingRepo {
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
   final FlutterLocalNotificationsPlugin _localNotifications =
       FlutterLocalNotificationsPlugin();
@@ -82,7 +82,8 @@ class NotificationRepository {
       criticalAlert: true, // Added critical alert permission
     );
 
-    printDebug('User granted permission: ${settings.authorizationStatus}');
+    printDebug(
+        '=====> User granted permission: ${settings.authorizationStatus}');
 
     // Set foreground notification presentation options for iOS
     await FirebaseMessaging.instance
@@ -123,12 +124,14 @@ class NotificationRepository {
     final initialMessage = await FirebaseMessaging.instance.getInitialMessage();
     if (initialMessage != null) {
       printDebug(
-          'App opened from terminated state with message: ${initialMessage.messageId}');
+          '=====> App opened from terminated state with message: ${initialMessage.messageId}');
     }
   }
 
   Future<String?> getFCMToken() async {
-    return await _firebaseMessaging.getToken();
+    final token = await _firebaseMessaging.getToken();
+    printDebug('=====>> getting token : $token');
+    return token;
   }
 
   Future<void> _createNotificationChannel() async {

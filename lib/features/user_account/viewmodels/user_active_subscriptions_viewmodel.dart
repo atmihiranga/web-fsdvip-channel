@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:project_3_forex_signals_daily/core/models/purchase_details_model.dart';
 import 'package:project_3_forex_signals_daily/debug/print_debug.dart';
-import 'package:project_3_forex_signals_daily/features/anonymous_authentication/view_models/anonymous_auth_viewmodel.dart';
+import 'package:project_3_forex_signals_daily/features/anonymous_authentication/view_models/auth_viewmodel.dart';
 import 'package:project_3_forex_signals_daily/features/user_account/repositories/user_account_repository.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 part 'user_active_subscriptions_viewmodel.g.dart';
@@ -17,7 +17,7 @@ class UserActiveSubscriptionsViewmodel
   @override
   AsyncValue<List<PurchaseDetailsModel>> build() {
     // Watch the AnonymousAuthViewModel to get the current user
-    final authState = ref.watch(anonymousAuthViewModelProvider);
+    final authState = ref.watch(authViewModelProvider);
     _userAccountRepository = ref.watch(userAccountRepositoryProvider);
 
     authState.when(data: (user) {

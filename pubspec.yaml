@@ -51,7 +51,8 @@ dependencies:
   confetti: ^0.7.0
   flutter_local_notifications: ^18.0.1
   flutter_inappwebview: ^6.1.5
-  
+  url_launcher: ^6.3.1
+  google_sign_in: ^6.2.2
 
 dev_dependencies:
   flutter_test:

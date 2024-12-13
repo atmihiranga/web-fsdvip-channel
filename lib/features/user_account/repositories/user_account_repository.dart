@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
@@ -20,11 +21,11 @@ class UserAccountRepository {
       : _firebaseFirestore = firebaseFirestore ?? FirebaseFirestore.instance;
 
   Future<Either<AppFailure, UserAccountModel>> getOrCreateUserAccount(
-      String userUid, String fcmToken) async {
+      User user, String fcmToken) async {
     try {
       printDebug('=====> user account repo : tryng to get user acc');
       final userAccountDoc =
-          _firebaseFirestore.collection('userdb').doc(userUid);
+          _firebaseFirestore.collection('userdb').doc(user.uid);
       final userAccountSnap = await userAccountDoc.get();
       if (userAccountSnap.exists) {
         final userdAccountData = userAccountSnap.data() as Map<String, dynamic>;
@@ -38,12 +39,14 @@ class UserAccountRepository {
         // create user if user does not exist
 
         final userdAccountData = UserAccountModel(
-                id: userUid,
-                platform: defaultTargetPlatform.toString(),
-                installedTimestamp: Timestamp.now().millisecondsSinceEpoch,
-                isPremium: false,
-                fcmToken: fcmToken)
-            .toMap();
+          id: user.uid,
+          platform: defaultTargetPlatform.toString(),
+          installedTimestamp: Timestamp.now().millisecondsSinceEpoch,
+          isPremium: false,
+          fcmToken: fcmToken,
+          authProvider: user.providerData.toString(),
+          isAnonymous: true,
+        ).toMap();
         try {
           await userAccountDoc.set(userdAccountData);
           final userAccount = UserAccountModel.fromMap(userdAccountData);
@@ -78,7 +81,15 @@ class UserAccountRepository {
     return purchasesStream;
   }
 
-  Future<void> addUser() async {}
+  Future<void> setOrUpdateFcmToken(String userUid, String token) async {
+    final userAccountDoc = _firebaseFirestore.collection('userdb').doc(userUid);
+    await userAccountDoc.set(
+      {'fcmToken': token},
+      SetOptions(
+        merge: true,
+      ),
+    );
+  }
 
   Future<void> updateUser() async {}
 }

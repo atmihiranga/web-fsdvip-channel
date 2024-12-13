@@ -1,12 +1,15 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:project_3_forex_signals_daily/debug/print_debug.dart';
+import 'package:project_3_forex_signals_daily/features/anonymous_authentication/view_models/auth_viewmodel.dart';
 import 'package:project_3_forex_signals_daily/features/firebase_cloud_messaging/repositories/firebase_cloud_messaging_repository.dart';
+import 'package:project_3_forex_signals_daily/features/user_account/viewmodels/user_account_viewmodel.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 part 'firebase_cloud_messaging_viewmodel.g.dart';
 
 @riverpod
-class NotificationViewModel extends _$NotificationViewModel {
-  late final NotificationRepository _repository;
+class FirebaseCloudMessagingViewmodel
+    extends _$FirebaseCloudMessagingViewmodel {
+  late final FirebaseCloudMessagingRepo _repository;
 
   @override
   FutureOr<void> build() async {
@@ -28,13 +31,6 @@ class NotificationViewModel extends _$NotificationViewModel {
     if (initialMessage != null) {
       _handleInitialMessage(initialMessage);
     }
-
-    // Get initial FCM token
-    final token = await _repository.getFCMToken();
-    if (token != null) {
-      // TODO: Send token to your backend
-      printDebug('====> FCM Token: $token');
-    }
   }
 
   void _handleForegroundMessage(RemoteMessage message) {
@@ -51,14 +47,30 @@ class NotificationViewModel extends _$NotificationViewModel {
 
   void _handleTokenRefresh(String? token) {
     if (token != null) {
-      // TODO: Send updated token to your backend
+      // get auth user
+      final user = ref.read(authViewModelProvider.notifier).getCurrentUser();
+
+      if (user != null) {
+        final userUid = user.uid;
+        printDebug('====> FCM Refreshing Token: $token');
+        ref
+            .read(userAccountViewmodelProvider.notifier)
+            .setOrUpdateFcmToken(userUid, token);
+      }
       printDebug('=====> Updated FCM Token: $token');
     }
   }
 
+  void sendFcmTokenToBackend(String token) {}
+
   void _handleInitialMessage(RemoteMessage message) {
     printDebug('Handling initial message: ${message.messageId}');
     // Navigate or perform actions based on the initial message
+  }
+
+  Future<String?> getFCMToken() async {
+    final token = await _repository.getFCMToken();
+    return token;
   }
 
   // Method to show a local notification manually if needed

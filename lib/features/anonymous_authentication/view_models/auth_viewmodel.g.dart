@@ -1,28 +1,26 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'user_account_viewmodel.dart';
+part of 'auth_viewmodel.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$userAccountViewmodelHash() =>
-    r'd50c4a62d6ecaf3836e4c60e9bb27b840b9723a1';
+String _$authViewModelHash() => r'1c52bdf524dcf7117544f9edb042f6a791adff6f';
 
-/// See also [UserAccountViewmodel].
-@ProviderFor(UserAccountViewmodel)
-final userAccountViewmodelProvider = AutoDisposeNotifierProvider<
-    UserAccountViewmodel, AsyncValue<UserAccountModel>>.internal(
-  UserAccountViewmodel.new,
-  name: r'userAccountViewmodelProvider',
+/// See also [AuthViewModel].
+@ProviderFor(AuthViewModel)
+final authViewModelProvider =
+    AutoDisposeNotifierProvider<AuthViewModel, AsyncValue<User?>>.internal(
+  AuthViewModel.new,
+  name: r'authViewModelProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
-      : _$userAccountViewmodelHash,
+      : _$authViewModelHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef _$UserAccountViewmodel
-    = AutoDisposeNotifier<AsyncValue<UserAccountModel>>;
+typedef _$AuthViewModel = AutoDisposeNotifier<AsyncValue<User?>>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

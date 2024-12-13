@@ -8,7 +8,7 @@ import 'package:project_3_forex_signals_daily/debug/print_debug.dart';
 import 'package:project_3_forex_signals_daily/features/connectivity_check/repositories/connectivity_repository.dart';
 import 'package:project_3_forex_signals_daily/features/connectivity_check/view_models/connectivity_check_viewmodell.dart';
 import 'package:project_3_forex_signals_daily/features/connectivity_check/views/pages/no_internet_page.dart';
-import 'package:project_3_forex_signals_daily/features/anonymous_authentication/view_models/anonymous_auth_viewmodel.dart';
+import 'package:project_3_forex_signals_daily/features/anonymous_authentication/view_models/auth_viewmodel.dart';
 import 'package:project_3_forex_signals_daily/features/home/view/pages/home_page.dart';
 
 class FsdApp extends ConsumerWidget {
@@ -17,7 +17,7 @@ class FsdApp extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     ref.watch(connectivityRepositoryProvider);
-    final authentication = ref.watch(anonymousAuthViewModelProvider);
+    final authentication = ref.watch(authViewModelProvider);
     final internetConnection = ref.watch(connectivityViewModelProvider);
 
     return MaterialApp(
@@ -35,7 +35,9 @@ class FsdApp extends ConsumerWidget {
                             return HomePage();
                           },
                           error: (error, stackTrace) {
-                            return FailurePage();
+                            return FailurePage(
+                              errorMessage: error.toString(),
+                            );
                           },
                           loading: () => LoadingPage())
                       : NoInternetPage();

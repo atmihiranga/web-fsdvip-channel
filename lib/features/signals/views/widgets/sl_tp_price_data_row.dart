@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:project_3_forex_signals_daily/core/theme/app_colors.dart';
-import 'package:project_3_forex_signals_daily/features/premium_user/view/widgets/unlock_button.dart';
+import 'package:project_3_forex_signals_daily/features/in_app_purchases/views/pages/in_app_purchase_page.dart';
 
 class SlTpPriceRow extends StatelessWidget {
   const SlTpPriceRow({
@@ -22,7 +23,25 @@ class SlTpPriceRow extends StatelessWidget {
       child: InkWell(
         // hoverColor: AppColors.orange,
         borderRadius: BorderRadius.circular(8),
-        onTap: () {},
+        onTap: () {
+          if (isLocked) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => InAppPurchasePage(),
+              ),
+            );
+          } else {
+            Clipboard.setData(ClipboardData(text: price));
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              content: Text('$price copied to clipboard'),
+              elevation: 0,
+              behavior: SnackBarBehavior.floating, // Makes it floating
+              margin: EdgeInsets.all(10),
+              duration: Duration(milliseconds: 700),
+            ));
+          }
+        },
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Row(

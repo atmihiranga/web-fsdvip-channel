@@ -2,15 +2,14 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:project_3_forex_signals_daily/core/widgets/loading_widget.dart';
-import 'package:project_3_forex_signals_daily/features/anonymous_authentication/view_models/anonymous_auth_viewmodel.dart';
+import 'package:project_3_forex_signals_daily/features/anonymous_authentication/view_models/auth_viewmodel.dart';
 
 class AuthWidget extends ConsumerWidget {
   const AuthWidget({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final AsyncValue<User?> authState =
-        ref.watch(anonymousAuthViewModelProvider);
+    final AsyncValue<User?> authState = ref.watch(authViewModelProvider);
 
     return authState.when(
       data: (user) {
@@ -20,7 +19,7 @@ class AuthWidget extends ConsumerWidget {
               Text('Signed in uid: ${user.uid}'),
               TextButton(
                   onPressed: () {
-                    ref.read(anonymousAuthViewModelProvider.notifier).signOut();
+                    ref.read(authViewModelProvider.notifier).signOut();
                   },
                   child: const Text('Sign out')),
             ],
