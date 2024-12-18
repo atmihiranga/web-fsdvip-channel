@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:project_3_forex_signals_daily/core/models/signal_model.dart';
 import 'package:project_3_forex_signals_daily/core/theme/app_colors.dart';
-import 'package:project_3_forex_signals_daily/debug/print_debug.dart';
 import 'package:project_3_forex_signals_daily/features/free_user/views/free_signal_more_details.dart';
 import 'package:project_3_forex_signals_daily/features/premium_user/view/widgets/premium_user_more_signal_details.dart';
 import 'package:project_3_forex_signals_daily/features/signals/views/widgets/signal_buttons_row.dart';
 import 'package:project_3_forex_signals_daily/features/signals/views/widgets/signal_title_row.dart';
+import 'package:project_3_forex_signals_daily/features/update_signal/views/pages/update_signal_data.dart';
 import 'package:project_3_forex_signals_daily/features/user_account/viewmodels/user_account_viewmodel.dart';
 
 class SignalWidget extends ConsumerStatefulWidget {
@@ -30,12 +30,13 @@ class _PremiumSignalWidgetState extends ConsumerState<SignalWidget> {
   late SignalModel _currentSignalData;
   bool isLocked = true;
   bool isPremium = false;
+  bool isAdmin = false;
 
   @override
   void initState() {
     _currentSignalData = widget.signaldata;
-    //_isLocked = widget.isLocked;
-    printDebug('=====> signal widget init ${_currentSignalData.isExpanded}');
+    // printDebug(
+    //     '=====> signal widget init isExpanded: ${_currentSignalData.isExpanded}');
     super.initState();
   }
 
@@ -45,6 +46,7 @@ class _PremiumSignalWidgetState extends ConsumerState<SignalWidget> {
     userAccountModel.whenData(
       (value) {
         isPremium = value.isPremium;
+        isAdmin = value.isAdmin ?? false;
       },
     );
 
@@ -58,7 +60,6 @@ class _PremiumSignalWidgetState extends ConsumerState<SignalWidget> {
       }
     }
 
-    printDebug('=====> signal widget');
     return InkWell(
       splashFactory: NoSplash.splashFactory, // Disables the splash effect
       onTap: () {
@@ -128,6 +129,30 @@ class _PremiumSignalWidgetState extends ConsumerState<SignalWidget> {
                     : PremiumUserMoreSignalDetails(
                         signaldata: _currentSignalData,
                       )),
+            Visibility(
+              visible: isAdmin,
+              child: Row(
+                children: [
+                  TextButton.icon(
+                      icon: Icon(Icons.send),
+                      onPressed: () {},
+                      label: Text('Send Notification')),
+                  TextButton.icon(
+                    icon: Icon(Icons.edit),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => UpdateSignalDataPage(
+                              signalData: _currentSignalData),
+                        ),
+                      );
+                    },
+                    label: Text('Edit'),
+                  )
+                ],
+              ),
+            )
           ],
         ),
       ),

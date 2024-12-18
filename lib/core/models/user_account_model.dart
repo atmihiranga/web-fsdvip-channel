@@ -11,6 +11,7 @@ class UserAccountModel {
   final String fcmToken;
   final String email;
   final bool isAnonymous;
+  final bool? isAdmin;
 
   UserAccountModel({
     required this.id,
@@ -20,6 +21,7 @@ class UserAccountModel {
     required this.fcmToken,
     required this.email,
     required this.isAnonymous,
+    required this.isAdmin,
   });
 
   UserAccountModel copyWith({
@@ -30,6 +32,7 @@ class UserAccountModel {
     String? fcmToken,
     String? email,
     bool? isAnonymous,
+    bool? isAdmin,
   }) {
     return UserAccountModel(
       id: id ?? this.id,
@@ -39,6 +42,7 @@ class UserAccountModel {
       fcmToken: fcmToken ?? this.fcmToken,
       email: email ?? this.email,
       isAnonymous: isAnonymous ?? this.isAnonymous,
+      isAdmin: isAdmin ?? this.isAdmin,
     );
   }
 
@@ -51,6 +55,7 @@ class UserAccountModel {
       'fcmToken': fcmToken,
       'email': email,
       'isAnonymous': isAnonymous,
+      'isAdmin': isAdmin,
     };
   }
 
@@ -63,6 +68,7 @@ class UserAccountModel {
       fcmToken: map['fcmToken'] ?? '',
       email: map['email'] ?? '',
       isAnonymous: map['isAnonymous'] ?? true,
+      isAdmin: map['isAdmin'] ?? false,
     );
   }
 
@@ -73,7 +79,7 @@ class UserAccountModel {
 
   @override
   String toString() {
-    return 'UserModel(id: $id, platform: $platform, installedTimestamp: $installedTimestamp, isPremium: $isPremium, fcmToken :$fcmToken, email : $email, isAnonymous: $isAnonymous)';
+    return 'UserModel(id: $id, platform: $platform, installedTimestamp: $installedTimestamp, isPremium: $isPremium, fcmToken :$fcmToken, email : $email, isAnonymous: $isAnonymous, isAdmin: $isAdmin)';
   }
 
   @override
@@ -86,7 +92,8 @@ class UserAccountModel {
         other.isPremium == isPremium &&
         other.fcmToken == fcmToken &&
         other.email == email &&
-        other.isAnonymous == isAnonymous;
+        other.isAnonymous == isAnonymous &&
+        other.isAdmin == isAdmin;
   }
 
   @override
@@ -97,6 +104,7 @@ class UserAccountModel {
         isPremium.hashCode ^
         fcmToken.hashCode ^
         email.hashCode ^
-        isAnonymous.hashCode;
+        isAnonymous.hashCode ^
+        isAdmin.hashCode;
   }
 }

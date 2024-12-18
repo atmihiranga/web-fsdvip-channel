@@ -14,24 +14,28 @@ class UserAccountWidget extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final userAccount = ref.watch(userAccountViewmodelProvider);
     return userAccount.when(
-        data: (data) {
+        data: (userAcc) {
           return Column(
             children: [
               ListTile(
                 title: Text('ID'),
-                subtitle: Text(data.id),
+                subtitle: Text(userAcc.id),
               ),
               ListTile(
                 title: Text('Is Premium ?'),
-                subtitle: Text(data.isPremium.toString()),
+                subtitle: Text(userAcc.isPremium.toString()),
+              ),
+              ListTile(
+                title: Text('Is Admin ?'),
+                subtitle: Text(userAcc.isAdmin.toString()),
               ),
               ListTile(
                 title: Text('Installed on'),
-                subtitle: Text(formatTimestamp(data.installedTimestamp)),
+                subtitle: Text(formatTimestamp(userAcc.installedTimestamp)),
               ),
               ListTile(
                 title: Text('fcm token'),
-                subtitle: Text(data.fcmToken),
+                subtitle: Text(userAcc.fcmToken),
               )
             ],
           );

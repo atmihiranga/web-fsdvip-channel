@@ -39,21 +39,6 @@ class PremiumUserMoreSignalDetails extends StatelessWidget {
           price: signaldata.sl.toString(),
           isLocked: false,
         ),
-        SizedBox(
-          width: double.infinity,
-          child: TextButton(
-              onPressed: () {
-                // _showMyDialog();
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) =>
-                        UpdateSignalDataPage(signalData: signaldata),
-                  ),
-                );
-              },
-              child: Icon(Icons.edit)),
-        )
       ],
     );
   }

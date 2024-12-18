@@ -1,8 +1,6 @@
 import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/foundation.dart';
-import 'package:fpdart/fpdart.dart';
 import 'package:project_3_forex_signals_daily/core/models/user_account_model.dart';
 import 'package:project_3_forex_signals_daily/debug/print_debug.dart';
 import 'package:project_3_forex_signals_daily/features/anonymous_authentication/view_models/auth_viewmodel.dart';
@@ -14,7 +12,7 @@ part 'user_account_viewmodel.g.dart';
 @riverpod
 class UserAccountViewmodel extends _$UserAccountViewmodel {
   late UserAccountRepository _userAccountRepository;
-  StreamSubscription? _userAccountUpdatesSubscription;
+  StreamSubscription? _userAccountSubscription;
 
   @override
   AsyncValue<UserAccountModel> build() {
@@ -25,80 +23,73 @@ class UserAccountViewmodel extends _$UserAccountViewmodel {
       data: (user) {
         // You now have access to the authenticated user
         if (user != null) {
-          printDebug('=====> user account vm > name ${user.displayName}');
-          getUserAccount(user);
+          _initializeUserAccount(user);
           return AsyncValue.loading();
         } else {
           return AsyncValue.error('Error : User is null', StackTrace.current);
         }
       },
       loading: () {
-        // Handle loading state
         return const AsyncValue.loading();
       },
       error: (error, stackTrace) {
-        // Handle error state
         return AsyncValue.error(error, stackTrace);
       },
     );
 
     // Dispose of the subscription when the provider is disposed
     ref.onDispose(() {
-      _userAccountUpdatesSubscription?.cancel();
+      _userAccountSubscription?.cancel();
     });
     return AsyncValue.loading();
   }
 
-  Future<void> getUserAccount(User user) async {
-    String? fcmToken = await ref
-        .read(firebaseCloudMessagingViewmodelProvider.notifier)
-        .getFCMToken();
-
+  Future<void> _initializeUserAccount(User user) async {
     try {
-      final userResult = await _userAccountRepository.getOrCreateUserAccount(
-        user,
-        fcmToken ?? '',
-      );
-
-      if (userResult case Left(value: final l)) {
-        state = AsyncValue.error(l, StackTrace.current);
-      } else if (userResult case Right(value: final r)) {
-        state = AsyncValue.data(r);
-        listenToUserAccountUpdates(user.uid);
-        ref.read(firebaseCloudMessagingViewmodelProvider);
-      }
-    } catch (e, stackTrace) {
-      printDebug('=====> user account repo : error getting user');
-      AsyncValue.error(e, stackTrace);
+      final isAdmin = await _userAccountRepository.isAdmin(user.uid);
+      _subscribeToUserUpdates(user, isAdmin);
+    } catch (e, stack) {
+      state = AsyncError(e, stack);
     }
   }
 
-  void listenToUserAccountUpdates(String userId) {
-    _userAccountUpdatesSubscription =
-        _userAccountRepository.userAccountStream(userId).listen((docSnapshot) {
-      printDebug('=====> user account updated ');
-      final userdAccountData = docSnapshot.data() as Map<String, dynamic>;
-      final userAccount = UserAccountModel.fromMap(userdAccountData);
-      state = AsyncValue.data(userAccount);
-    });
+  void _subscribeToUserUpdates(User user, bool isAdmin) {
+    _userAccountSubscription?.cancel();
+
+    _userAccountSubscription =
+        _userAccountRepository.userAccountStream(user.uid).listen(
+              (userAccount) =>
+                  _handleUserAccountUpdate(user, userAccount, isAdmin),
+              onError: (e, stack) => state = AsyncError(e, stack),
+            );
   }
 
-  //UserAccountModel getCurrentUserAccount() {}
-
-  void setOrUpdateFcmToken(String userUid, String token) {
-    _userAccountRepository.setOrUpdateFcmToken(userUid, token);
+  Future<void> _handleUserAccountUpdate(
+    User user,
+    UserAccountModel? userAccount,
+    bool isAdmin,
+  ) async {
+    if (userAccount != null) {
+      state = AsyncValue.data(userAccount.copyWith(isAdmin: isAdmin));
+    } else {
+      try {
+        final fcmToken = await ref
+            .read(firebaseCloudMessagingViewmodelProvider.notifier)
+            .getFCMToken();
+        await _userAccountRepository.createUserAccount(
+            user, fcmToken ?? '', isAdmin);
+      } catch (e, stack) {
+        state = AsyncError(e, stack);
+      }
+    }
   }
 
-  // when googl sign in is implemented, write a method like below to reset the state when user signout
-  void resetState() {
-    state = AsyncValue.data(UserAccountModel(
-      id: '',
-      platform: defaultTargetPlatform.toString(),
-      installedTimestamp: 0,
-      isPremium: false,
-      fcmToken: '',
-      email: '',
-      isAnonymous: true,
-    ));
+  Future<void> updateFcmToken(String userUid, String token) async {
+    try {
+      await _userAccountRepository.updateFcmToken(userUid, token);
+    } catch (e) {
+      // Consider how you want to handle FCM token update failures
+      printDebug('Failed to update FCM token: $e');
+    }
   }
 }

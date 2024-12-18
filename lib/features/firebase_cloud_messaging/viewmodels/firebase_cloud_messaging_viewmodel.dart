@@ -15,6 +15,7 @@ class FirebaseCloudMessagingViewmodel
   FutureOr<void> build() async {
     _repository = ref.read(notificationRepositoryProvider);
     await _initializeNotifications();
+    printDebug('=====> init notifications');
   }
 
   Future<void> _initializeNotifications() async {
@@ -55,7 +56,7 @@ class FirebaseCloudMessagingViewmodel
         printDebug('====> FCM Refreshing Token: $token');
         ref
             .read(userAccountViewmodelProvider.notifier)
-            .setOrUpdateFcmToken(userUid, token);
+            .updateFcmToken(userUid, token);
       }
       printDebug('=====> Updated FCM Token: $token');
     }

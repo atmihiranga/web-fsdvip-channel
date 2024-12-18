@@ -348,26 +348,39 @@ class _UpdateSignalDataPageState extends ConsumerState<UpdateSignalDataPage> {
               ),
             ),
           ),
-          InkWell(
-              onLongPress: () {
-                final SignalModel updatedSignalData = _updateSignalData();
-                ref
-                    .read(signalsViewmodelProvider.notifier)
-                    .updateSignal(updatedSignalData);
-              },
-              child: Container(
-                padding: const EdgeInsets.all(8.0),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text('Update'),
-                    Visibility(visible: !isLoading, child: LoadingWidget())
+          TextButton(
+            onPressed: () {
+              ScaffoldMessenger.of(context).showMaterialBanner(
+                MaterialBanner(
+                  content: Text('Long Press to submit changes!'),
+                  leading: Icon(Icons.info),
+                  //backgroundColor: Colors.blue[50],
+                  actions: [
+                    TextButton(
+                      onPressed: () {
+                        ScaffoldMessenger.of(context)
+                            .hideCurrentMaterialBanner();
+                      },
+                      child: Text('Dismiss'),
+                    ),
                   ],
                 ),
-              ))
+              );
+            },
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text('Update'),
+                Visibility(visible: !isLoading, child: LoadingWidget())
+              ],
+            ),
+            onLongPress: () {
+              final SignalModel updatedSignalData = _updateSignalData();
+              ref
+                  .read(signalsViewmodelProvider.notifier)
+                  .updateSignal(updatedSignalData);
+            },
+          ),
         ],
       ),
     );

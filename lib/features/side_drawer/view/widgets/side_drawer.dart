@@ -3,34 +3,81 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:project_3_forex_signals_daily/features/anonymous_authentication/views/auth_widget.dart';
-import 'package:project_3_forex_signals_daily/features/user_account/views/widgets/user_account_widget.dart';
+import 'package:project_3_forex_signals_daily/core/models/user_account_model.dart';
+import 'package:project_3_forex_signals_daily/core/theme/app_colors.dart';
+import 'package:project_3_forex_signals_daily/features/anonymous_authentication/views/google_sign_in_button.dart';
+import 'package:project_3_forex_signals_daily/features/anonymous_authentication/views/sign_out_button.dart';
 
 class SideDrawer extends ConsumerWidget {
-  const SideDrawer({super.key});
+  final UserAccountModel userAccount;
+  const SideDrawer(this.userAccount, {super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Drawer(
+      backgroundColor: AppColors.backgroundDarker,
       child: ListView(
         padding: EdgeInsets.zero,
         children: <Widget>[
           const DrawerHeader(
+            margin: EdgeInsets.all(0),
+            padding: EdgeInsets.all(0),
             decoration: BoxDecoration(
-              color: Colors.blue,
+              color: AppColors.backgroundLighter,
             ),
-            child: AuthWidget(),
+            child: Center(child: GoogleSignInButton()),
           ),
-          UserAccountWidget(),
+          userAccount.isPremium
+              ? ListTile(
+                  leading: Icon(
+                    Icons.workspace_premium,
+                    color: AppColors.orange,
+                  ),
+                  title: Text('Premium Member'),
+                  subtitle: Text('click to see details'),
+                  onTap: () {},
+                )
+              : ListTile(
+                  leading: Icon(Icons.workspace_premium),
+                  title: Text('Join Premium'),
+                  subtitle: Text('click to see premium benefits'),
+                  onTap: () {},
+                ),
+
           ListTile(
-            title: const Text('Item 1'),
-            onTap: () {
-              // Update the state of the app
-              // ...
-              // Then close the drawer
-              Navigator.pop(context);
-            },
+            leading: Icon(Icons.telegram),
+            title: Text('Telegram Channel'),
+            trailing: Icon(Icons.open_in_new),
           ),
+          ListTile(
+            leading: Icon(Icons.star),
+            title: Text('Rate us'),
+          ),
+          ListTile(
+            leading: Icon(Icons.mail),
+            title: Text('Contact us'),
+          ),
+          ListTile(
+            title: Text('Other Apps'),
+          ),
+          ListTile(
+            leading: Icon(Icons.speed),
+            title: Text('Currency Strength Meter'),
+          ),
+
+          ListTile(
+            title: Text('Policies'),
+          ),
+          ListTile(
+            leading: Icon(Icons.privacy_tip),
+            title: Text('Privacy Policy'),
+          ),
+          ListTile(
+            leading: Icon(Icons.article),
+            title: Text('Terms'),
+          ),
+          //UserAccountWidget(),
+          SignOutButton()
         ],
       ),
     );

@@ -42,8 +42,8 @@ class SignalsViewmodel extends _$SignalsViewmodel {
               final signal =
                   SignalModel.fromMap(data).copyWith(isExpanded: false);
               _signalsMap[signal.id] = signal;
-              printDebug(
-                  '=====> signals_viewmodel : signal id: ${signal.id}, ${signal.isExpanded}');
+              // printDebug(
+              //     '=====> signals_viewmodel : signal id: ${signal.id}, expanded : ${signal.isExpanded}');
               return signal;
             } catch (e) {
               printDebug(
@@ -73,7 +73,7 @@ class SignalsViewmodel extends _$SignalsViewmodel {
     _isFetchingMoreSignalDocuments = true;
     try {
       printDebug(
-          '=====> fetching more from doc : ${_lastFirestoreSignalDocument?.id}');
+          '=====> signal vm fetching more from doc : ${_lastFirestoreSignalDocument?.id}');
       final querySnapshot = await _signalsRepository.fetchNextSignals(
         lastDocument: _lastFirestoreSignalDocument!,
         limit: 8,
@@ -84,7 +84,8 @@ class SignalsViewmodel extends _$SignalsViewmodel {
             final data = doc.data();
             data['id'] = doc.id;
             try {
-              final signal = SignalModel.fromMap(data);
+              final signal =
+                  SignalModel.fromMap(data).copyWith(isExpanded: false);
               _signalsMap[signal.id] = signal;
               printDebug('=====> signals_viewmodel : signal id: ${signal.id}');
               return signal;

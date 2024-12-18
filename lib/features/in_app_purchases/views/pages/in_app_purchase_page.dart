@@ -2,6 +2,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:project_3_forex_signals_daily/core/constants/constants.dart';
+import 'package:project_3_forex_signals_daily/core/theme/app_colors.dart';
 import 'package:project_3_forex_signals_daily/features/in_app_purchases/views/widgets/active_subscriptions.dart';
 import 'package:project_3_forex_signals_daily/features/in_app_purchases/views/widgets/reguler_products.dart';
 import 'package:project_3_forex_signals_daily/features/user_account/viewmodels/user_account_viewmodel.dart';
@@ -47,7 +48,10 @@ class InAppPurchasePage extends ConsumerWidget {
                 isPremium
                     ? 'You are a Premium Member!'
                     : 'Become a Premium Member',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: isPremium ? AppColors.orange : AppColors.white),
               ),
               SizedBox(
                 height: 24,

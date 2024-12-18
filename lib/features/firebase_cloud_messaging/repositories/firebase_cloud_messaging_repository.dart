@@ -126,6 +126,8 @@ class FirebaseCloudMessagingRepo {
       printDebug(
           '=====> App opened from terminated state with message: ${initialMessage.messageId}');
     }
+
+    await subscribeToTopic('common');
   }
 
   Future<String?> getFCMToken() async {
@@ -223,5 +225,23 @@ class FirebaseCloudMessagingRepo {
     _firebaseMessaging.onTokenRefresh.listen((String? token) {
       onToken?.call(token);
     });
+  }
+
+  Future<void> subscribeToTopic(String topic) async {
+    try {
+      await _firebaseMessaging.subscribeToTopic(topic);
+      printDebug('=====> Successfully subscribed to topic: $topic');
+    } catch (e) {
+      printDebug('=====> Error subscribing to topic: $e');
+    }
+  }
+
+  Future<void> unsubscribeFromTopic(String topic) async {
+    try {
+      await _firebaseMessaging.unsubscribeFromTopic(topic);
+      printDebug('=====> Successfully unsubscribed from topic: $topic');
+    } catch (e) {
+      printDebug('=====> Error unsubscribing from topic: $e');
+    }
   }
 }

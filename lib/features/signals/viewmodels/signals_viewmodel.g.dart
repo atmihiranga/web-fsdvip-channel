@@ -6,7 +6,7 @@ part of 'signals_viewmodel.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$signalsViewmodelHash() => r'846276b5566716f4a2b0eb91188f1ca8c4859620';
+String _$signalsViewmodelHash() => r'6d4f9a0535edf75a3324a32fe9367f1cb2378cd9';
 
 /// See also [SignalsViewmodel].
 @ProviderFor(SignalsViewmodel)
