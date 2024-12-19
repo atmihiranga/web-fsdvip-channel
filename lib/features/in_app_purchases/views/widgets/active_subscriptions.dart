@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:project_3_forex_signals_daily/core/failure/failure_widget.dart';
 import 'package:project_3_forex_signals_daily/core/helpers/convert_date.dart';
+import 'package:project_3_forex_signals_daily/core/theme/app_colors.dart';
 import 'package:project_3_forex_signals_daily/core/widgets/loading_widget.dart';
 import 'package:project_3_forex_signals_daily/features/in_app_purchases/view_models/in_app_purchase_view_model.dart';
 import 'package:project_3_forex_signals_daily/features/user_account/viewmodels/user_active_subscriptions_viewmodel.dart';
@@ -66,7 +67,10 @@ class ActiveSubscriptions extends ConsumerWidget {
                   .read(inAppPurchaseViewModelProvider.notifier)
                   .restorePurchases();
             },
-            title: const Text('Restore Purchases'),
+            title: const Text(
+              'Restore Purchases',
+              style: TextStyle(color: AppColors.green),
+            ),
           ),
         ],
       ),

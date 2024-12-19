@@ -36,10 +36,30 @@ class _AnalysisWebviewState extends State<AnalysisWebview> {
             });
           },
         ),
+
         if (isLoading)
           const Center(
             child: CircularProgressIndicator(),
           ),
+
+        // $ shows the chart as a zoomable image instead of webview, might need in future
+        // InteractiveViewer(
+        //   minScale: 0.5,
+        //   maxScale: 3,
+        //   child: Image.network(
+        //     widget.analysisLink,
+        //     loadingBuilder: (context, child, loadingProgress) {
+        //       if (loadingProgress == null) {
+        //         return child;
+        //       }
+        //       return Center(
+        //         child: SizedBox(
+        //           child: CircularProgressIndicator(),
+        //         ),
+        //       );
+        //     },
+        //   ),
+        // ),
       ],
     );
   }

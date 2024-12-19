@@ -9,7 +9,7 @@ class AnalysisPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Analysis'),
+        title: Text('Analysis Chart'),
       ),
       body: Column(
         children: [

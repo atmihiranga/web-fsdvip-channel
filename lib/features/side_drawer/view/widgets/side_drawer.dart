@@ -7,6 +7,7 @@ import 'package:project_3_forex_signals_daily/core/models/user_account_model.dar
 import 'package:project_3_forex_signals_daily/core/theme/app_colors.dart';
 import 'package:project_3_forex_signals_daily/features/anonymous_authentication/views/google_sign_in_button.dart';
 import 'package:project_3_forex_signals_daily/features/anonymous_authentication/views/sign_out_button.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class SideDrawer extends ConsumerWidget {
   final UserAccountModel userAccount;
@@ -48,6 +49,14 @@ class SideDrawer extends ConsumerWidget {
             leading: Icon(Icons.telegram),
             title: Text('Telegram Channel'),
             trailing: Icon(Icons.open_in_new),
+            onTap: () async {
+              final Uri url = Uri.parse('https://google.com');
+              if (await canLaunchUrl(url)) {
+                await launchUrl(url);
+              } else {
+                throw 'Could not launch $url';
+              }
+            },
           ),
           ListTile(
             leading: Icon(Icons.star),
