@@ -378,7 +378,10 @@ class _UpdateSignalDataPageState extends ConsumerState<UpdateSignalDataPage> {
               final SignalModel updatedSignalData = _updateSignalData();
               ref
                   .read(signalsViewmodelProvider.notifier)
-                  .updateSignal(updatedSignalData);
+                  .updateSignal(updatedSignalData)
+                  .then((onValue) {
+                printDebug('=====> updated');
+              });
             },
           ),
         ],

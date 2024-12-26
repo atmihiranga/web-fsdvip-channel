@@ -45,7 +45,12 @@ class ActiveSubscriptions extends ConsumerWidget {
               return Column(
                 children: purchaseList
                     .map((element) => ListTile(
-                          title: Text(element.productId),
+                          title: Text(
+                            element.productId
+                                .replaceAll('_', ' ')
+                                .replaceAll('ffs ', '')
+                                .toUpperCase(),
+                          ),
                           subtitle: Text(
                               'Expires : ${formatTimestamp(element.expiryDate.toDate().millisecondsSinceEpoch, showYear: true)}'),
                         ))

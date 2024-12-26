@@ -65,7 +65,7 @@ class InAppPurchaseViewModel extends _$InAppPurchaseViewModel {
           case PurchaseStatus.purchased:
             // Handle restored/purchased/pending state
             printDebug(
-                '=====> iap_repo : Purchase Updated : ${purchaseDetails.status}');
+                '=====> iap_repo : Purchase Updated : ${purchaseDetails.verificationData.localVerificationData}');
 
             bool valid =
                 await _inAppPurchaseRepository.verifyPurchase(purchaseDetails);

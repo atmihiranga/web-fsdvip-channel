@@ -70,6 +70,13 @@ class UserAccountViewmodel extends _$UserAccountViewmodel {
     bool isAdmin,
   ) async {
     if (userAccount != null) {
+      if (!user.isAnonymous && userAccount.isAnonymous) {
+        try {
+          await _userAccountRepository.updateExistingUserDoc(user);
+        } catch (e) {
+          printDebug('=====> error updating existing user : $e');
+        }
+      }
       state = AsyncValue.data(userAccount.copyWith(isAdmin: isAdmin));
     } else {
       try {
@@ -83,6 +90,15 @@ class UserAccountViewmodel extends _$UserAccountViewmodel {
       }
     }
   }
+
+  // Future<void> updateEmail(String userUid, String email) async {
+  //   try {
+  //     await _userAccountRepository.updateEmail(userUid, email);
+  //   } catch (e) {
+  //     // Consider how you want to handle FCM token update failures
+  //     printDebug('Failed to update email : $e');
+  //   }
+  // }
 
   Future<void> updateFcmToken(String userUid, String token) async {
     try {

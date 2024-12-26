@@ -16,6 +16,8 @@ class SignalsRepository {
   SignalsRepository({FirebaseFirestore? firebaseFirestore})
       : _firebaseFirestore = firebaseFirestore ?? FirebaseFirestore.instance;
 
+// TODO : since we only listen to the changes of first 10 items, we won't recieve updates on next items when we update the signal,
+// this cause state to keep on loading state
   Stream<QuerySnapshot<Map<String, dynamic>>> signalStream() {
     return _firebaseFirestore
         .collection('signaldb')

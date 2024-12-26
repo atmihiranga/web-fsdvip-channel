@@ -116,6 +116,7 @@ class SignalsViewmodel extends _$SignalsViewmodel {
   }
 
   Future<void> updateSignal(SignalModel updatedSignal) async {
+    printDebug('=====> signals_viewmodel : updating signal');
     final existingSignal = _signalsMap[updatedSignal.id];
     if (existingSignal == null) {
       printDebug('=====> signals_viewmodel : Signal not found locally.');
@@ -141,6 +142,4 @@ class SignalsViewmodel extends _$SignalsViewmodel {
     String docId = signal.id;
     await _signalsRepository.deleteSignalDoc(docId);
   }
-
-  void changeIsExpanded() {}
 }

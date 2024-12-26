@@ -9,7 +9,7 @@ class UserAccountModel {
   final int installedTimestamp;
   final bool isPremium;
   final String fcmToken;
-  final String email;
+  final String? email;
   final bool isAnonymous;
   final bool? isAdmin;
 

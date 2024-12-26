@@ -36,7 +36,7 @@ class UserAccountRepository {
       installedTimestamp: Timestamp.now().millisecondsSinceEpoch,
       isPremium: false,
       fcmToken: fcmToken,
-      email: '',
+      email: null,
       isAnonymous: true,
       isAdmin: null,
     ).toMap();
@@ -69,7 +69,6 @@ class UserAccountRepository {
     final updates = {
       'isAnonymous': false,
       'email': user.email,
-      'lastUpdated': Timestamp.now(),
     };
 
     try {
@@ -93,6 +92,18 @@ class UserAccountRepository {
       ),
     );
   }
+
+  // Future<void> updateEmail(String userUid, String email) async {
+  //   final userAccountDoc = _firebaseFirestore
+  //       .collection(FirestoreCollections.userDbCollection)
+  //       .doc(userUid);
+  //   await userAccountDoc.set(
+  //     {'email': email},
+  //     SetOptions(
+  //       merge: true,
+  //     ),
+  //   );
+  // }
 
   Future<bool> isAdmin(String userUid) async {
     final isAdminDoc = _firebaseFirestore

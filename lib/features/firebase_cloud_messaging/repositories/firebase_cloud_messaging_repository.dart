@@ -8,6 +8,8 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'firebase_cloud_messaging_repository.g.dart';
 
+//TODO : it looks like the background process starts over and over again when the app is started and it cause the function to run many times, fix it
+
 @pragma('vm:entry-point')
 Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   printDebug("=====> Handling a background message: ${message.messageId}");
@@ -48,6 +50,8 @@ Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
           importance: Importance.high,
           priority: Priority.high,
           playSound: true, // Added playSound
+          icon: 'notification_icon',
+          largeIcon: DrawableResourceAndroidBitmap('@mipmap/launcher_icon'),
         ),
         iOS: const DarwinNotificationDetails(
           presentSound: true,
@@ -95,7 +99,7 @@ class FirebaseCloudMessagingRepo {
 
     // Initialize local notifications with updated iOS settings
     const initializationSettingsAndroid =
-        AndroidInitializationSettings('@mipmap/ic_launcher');
+        AndroidInitializationSettings('@mipmap/launcher_icon');
     const initializationSettingsIOS = DarwinInitializationSettings(
       requestAlertPermission: true,
       requestBadgePermission: true,
@@ -163,6 +167,8 @@ class FirebaseCloudMessagingRepo {
       importance: Importance.high,
       priority: Priority.high,
       playSound: true,
+      icon: 'notification_icon',
+      largeIcon: DrawableResourceAndroidBitmap('@mipmap/launcher_icon'),
     );
 
     const iosDetails = DarwinNotificationDetails(

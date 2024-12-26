@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:project_3_forex_signals_daily/core/helpers/show_snackbar.dart';
 import 'package:project_3_forex_signals_daily/core/theme/app_colors.dart';
 import 'package:project_3_forex_signals_daily/features/in_app_purchases/views/pages/in_app_purchase_page.dart';
 
@@ -33,13 +34,8 @@ class SlTpPriceRow extends StatelessWidget {
             );
           } else {
             Clipboard.setData(ClipboardData(text: price));
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-              content: Text('$price copied to clipboard'),
-              elevation: 0,
-              behavior: SnackBarBehavior.floating, // Makes it floating
-              margin: EdgeInsets.all(10),
-              duration: Duration(milliseconds: 700),
-            ));
+            showSnackBar(
+                context: context, message: '$price copied to clipboard');
           }
         },
         child: Padding(
