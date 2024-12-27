@@ -102,7 +102,7 @@ class _PremiumSignalWidgetState extends ConsumerState<SignalWidget> {
                             horizontal: 8, vertical: 0),
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(6),
-                            color: AppColors.blue.withOpacity(0.2)),
+                            color: AppColors.blue.withAlpha(51)),
                         child: Text(
                           'active',
                           style: TextStyle(color: AppColors.blue),

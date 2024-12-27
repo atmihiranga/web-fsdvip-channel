@@ -15,7 +15,7 @@ class ListItemShimmer extends StatelessWidget {
         direction: ShimmerDirection.ltr,
         child: Container(
           decoration: BoxDecoration(
-            color: AppColors.backgroundDarker2.withOpacity(0.1),
+            color: AppColors.backgroundDarker2.withAlpha(26),
             borderRadius: BorderRadius.circular(8),
           ),
           padding: const EdgeInsets.all(16.0),

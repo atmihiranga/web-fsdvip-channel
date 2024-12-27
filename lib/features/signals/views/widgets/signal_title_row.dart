@@ -58,7 +58,7 @@ class SignalTitleRow extends ConsumerWidget {
                       const EdgeInsets.symmetric(horizontal: 8, vertical: 0),
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(6),
-                      color: AppColors.green.withOpacity(0.2)),
+                      color: AppColors.green.withAlpha(51)),
                   child: const Text(
                     ' TP1 ✓',
                     style: TextStyle(fontSize: 12, color: AppColors.green),
@@ -70,7 +70,7 @@ class SignalTitleRow extends ConsumerWidget {
                       const EdgeInsets.symmetric(horizontal: 8, vertical: 0),
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(6),
-                      color: AppColors.green.withOpacity(0.2)),
+                      color: AppColors.green.withAlpha(51)),
                   child: const Text(
                     ' TP2 ✓',
                     style: TextStyle(fontSize: 12, color: AppColors.green),
@@ -82,7 +82,7 @@ class SignalTitleRow extends ConsumerWidget {
                       const EdgeInsets.symmetric(horizontal: 8, vertical: 0),
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(6),
-                      color: AppColors.green.withOpacity(0.2)),
+                      color: AppColors.green.withAlpha(51)),
                   child: const Text(
                     ' TP3 ✓',
                     style: TextStyle(fontSize: 12, color: AppColors.green),
@@ -94,7 +94,7 @@ class SignalTitleRow extends ConsumerWidget {
                       const EdgeInsets.symmetric(horizontal: 8, vertical: 0),
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(6),
-                      color: AppColors.red.withOpacity(0.2)),
+                      color: AppColors.red.withAlpha(51)),
                   child: const Text(
                     ' SL ',
                     style: TextStyle(fontSize: 12, color: AppColors.red),

@@ -12,6 +12,7 @@ import 'package:project_3_forex_signals_daily/core/theme/app_colors.dart';
 import 'package:project_3_forex_signals_daily/features/anonymous_authentication/views/google_sign_in_button.dart';
 import 'package:project_3_forex_signals_daily/features/anonymous_authentication/views/sign_out_button.dart';
 import 'package:project_3_forex_signals_daily/features/in_app_purchases/views/pages/in_app_purchase_page.dart';
+import 'package:project_3_forex_signals_daily/features/side_drawer/view/widgets/app_version.dart';
 
 class SideDrawer extends ConsumerWidget {
   final UserAccountModel userAccount;
@@ -60,10 +61,6 @@ class SideDrawer extends ConsumerWidget {
                       ],
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
-                    ),
-                    border: Border.all(
-                      color: Colors.grey,
-                      width: 1,
                     ),
                   ),
                   child: ListTile(
@@ -134,7 +131,8 @@ class SideDrawer extends ConsumerWidget {
             },
           ),
           //UserAccountWidget(),
-          SignOutButton()
+          SignOutButton(),
+          AppVersion(),
         ],
       ),
     );

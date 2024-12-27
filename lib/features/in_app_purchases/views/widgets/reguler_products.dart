@@ -54,7 +54,7 @@ class RegularProducts extends ConsumerWidget {
                                       style: TextStyle(color: AppColors.green)),
                                   SizedBox(width: 8),
                                   Container(
-                                    color: AppColors.green.withOpacity(0.7),
+                                    color: AppColors.green.withAlpha(180),
                                     padding: EdgeInsets.symmetric(
                                         horizontal: 8, vertical: 2),
                                     child: Text(
