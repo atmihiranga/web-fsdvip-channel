@@ -59,7 +59,7 @@ class UserAccountRepository {
   Stream<QuerySnapshot<Map<String, dynamic>>> purchasesStream(String userId) {
     final purchasesStream = _firebaseFirestore
         .collection(FirestoreCollections.purchasesCollection)
-        .where('userId', isEqualTo: userId)
+        .where('userIds', arrayContains: userId)
         .where('status', isEqualTo: 'ACTIVE')
         .snapshots();
     return purchasesStream;
@@ -87,6 +87,18 @@ class UserAccountRepository {
         .doc(userUid);
     await userAccountDoc.set(
       {'fcmToken': fcmToken},
+      SetOptions(
+        merge: true,
+      ),
+    );
+  }
+
+  Future<void> updatePremiumState(String userUid) async {
+    final userAccountDoc = _firebaseFirestore
+        .collection(FirestoreCollections.userDbCollection)
+        .doc(userUid);
+    await userAccountDoc.set(
+      {'isPremium': false},
       SetOptions(
         merge: true,
       ),

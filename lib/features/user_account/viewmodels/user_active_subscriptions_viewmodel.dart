@@ -11,65 +11,76 @@ part 'user_active_subscriptions_viewmodel.g.dart';
 class UserActiveSubscriptionsViewmodel
     extends _$UserActiveSubscriptionsViewmodel {
   late UserAccountRepository _userAccountRepository;
-
   StreamSubscription? _purchasesStreamSubscription;
 
   @override
   AsyncValue<List<PurchaseDetailsModel>> build() {
-    // Watch the AnonymousAuthViewModel to get the current user
-    final authState = ref.watch(authViewModelProvider);
     _userAccountRepository = ref.watch(userAccountRepositoryProvider);
 
-    authState.when(data: (user) {
-      // You now have access to the authenticated user
+    // Watch the auth state and set up listener
+    final authState = ref.watch(authViewModelProvider);
+
+    // Handle auth state changes
+    authState.whenData((user) {
       if (user != null) {
-        String userUid = user.uid;
-        setUpPurchasesListner(userUid);
-      } else {
-        return AsyncValue.error('Error : User is null', StackTrace.current);
+        setUpPurchasesListner(user.uid);
       }
-    }, error: (error, stackTrace) {
-      return AsyncValue.error(error, stackTrace);
-    }, loading: () {
-      return AsyncValue.loading();
     });
+
+    // Clean up on dispose
     ref.onDispose(() {
       _purchasesStreamSubscription?.cancel();
     });
-    return AsyncValue.loading();
+
+    // Return initial loading state or error if no user
+    return authState.when(
+      data: (user) => user != null
+          ? const AsyncValue.loading()
+          : AsyncValue.error('No user logged in', StackTrace.current),
+      loading: () => const AsyncValue.loading(),
+      error: (error, stack) => AsyncValue.error(error, stack),
+    );
   }
 
-  // Keep track of signals using a Map to prevent duplicates
+  // Keep track of purchases using a Map
   final Map<String, PurchaseDetailsModel?> _purchasesMap = {};
 
   Future<void> setUpPurchasesListner(String userId) async {
-    _purchasesStreamSubscription?.cancel;
+    // Cancel existing subscription if any
+    await _purchasesStreamSubscription?.cancel();
 
     printDebug('=====> user active subs > getting active subs');
     _purchasesStreamSubscription =
-        _userAccountRepository.purchasesStream(userId).listen((snapshot) {
-      // below code will convert QuerySnapshot<Map<String, dynamic>> to a List<SignalModel?> and save in signalList variable
-      final purchasesList = snapshot.docs
-          .map((doc) {
-            final data = doc.data();
-            data['id'] = doc.id;
-            try {
-              final signal = PurchaseDetailsModel.fromMap(data);
-              _purchasesMap[signal.orderId] = signal;
-              printDebug(
-                  '=====> signals_viewmodel : signal id: ${signal.productId}, ${signal.status}');
-              return signal;
-            } catch (e) {
-              printDebug(
-                  '=====> signals_viewmodel : Error converting doc to SignalModel: doc : ${doc.id}, Error : $e');
-              _purchasesMap.remove(doc.id);
-              return null;
-            }
-          })
-          .whereType<
-              PurchaseDetailsModel>() // Filters out nulls and casts the list
-          .toList();
-      state = AsyncValue.data(purchasesList);
-    });
+        _userAccountRepository.purchasesStream(userId).listen(
+      (snapshot) {
+        try {
+          final purchasesList = snapshot.docs
+              .map((doc) {
+                final data = doc.data();
+                data['id'] = doc.id;
+                try {
+                  final purchaseDetails = PurchaseDetailsModel.fromMap(data);
+                  _purchasesMap[purchaseDetails.orderId] = purchaseDetails;
+                  printDebug(
+                      '=====> user active subs viewmodel : product id: ${purchaseDetails.productId}, status ${purchaseDetails.status}');
+                  return purchaseDetails;
+                } catch (e) {
+                  printDebug(
+                      '=====> user active subs viewmodel : Error converting doc to PurchaseDetailsModel: doc : ${doc.id}, Error : $e');
+                  _purchasesMap.remove(doc.id);
+                  return null;
+                }
+              })
+              .whereType<PurchaseDetailsModel>()
+              .toList();
+          state = AsyncValue.data(purchasesList);
+        } catch (e, stack) {
+          state = AsyncValue.error(e, stack);
+        }
+      },
+      onError: (error, stack) {
+        state = AsyncValue.error(error, stack);
+      },
+    );
   }
 }

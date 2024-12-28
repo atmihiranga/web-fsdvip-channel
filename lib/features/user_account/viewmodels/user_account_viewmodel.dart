@@ -22,6 +22,7 @@ class UserAccountViewmodel extends _$UserAccountViewmodel {
     authState.when(
       data: (user) {
         // You now have access to the authenticated user
+        printDebug('=====> user acc vm > got auth user ');
         if (user != null) {
           _initializeUserAccount(user);
           return AsyncValue.loading();
@@ -70,6 +71,8 @@ class UserAccountViewmodel extends _$UserAccountViewmodel {
     bool isAdmin,
   ) async {
     if (userAccount != null) {
+      // user account exists
+      printDebug('=====> user acc vm > handling existing user account update');
       if (!user.isAnonymous && userAccount.isAnonymous) {
         try {
           await _userAccountRepository.updateExistingUserDoc(user);
@@ -91,18 +94,18 @@ class UserAccountViewmodel extends _$UserAccountViewmodel {
     }
   }
 
-  // Future<void> updateEmail(String userUid, String email) async {
-  //   try {
-  //     await _userAccountRepository.updateEmail(userUid, email);
-  //   } catch (e) {
-  //     // Consider how you want to handle FCM token update failures
-  //     printDebug('Failed to update email : $e');
-  //   }
-  // }
-
   Future<void> updateFcmToken(String userUid, String token) async {
     try {
       await _userAccountRepository.updateFcmToken(userUid, token);
+    } catch (e) {
+      // Consider how you want to handle FCM token update failures
+      printDebug('Failed to update FCM token: $e');
+    }
+  }
+
+  Future<void> updatePreiumStatus(String userUid) async {
+    try {
+      await _userAccountRepository.updatePremiumState(userUid);
     } catch (e) {
       // Consider how you want to handle FCM token update failures
       printDebug('Failed to update FCM token: $e');

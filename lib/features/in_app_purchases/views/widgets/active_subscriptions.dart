@@ -76,6 +76,7 @@ class ActiveSubscriptions extends ConsumerWidget {
               'Restore Purchases',
               style: TextStyle(color: AppColors.green),
             ),
+            subtitle: Text('Tap this to restore missing purchases.'),
           ),
         ],
       ),

@@ -89,7 +89,7 @@ class AuthRepository {
           if (credential != null) {
             // Sign in with the existing account
             printDebug(
-                '=====> linking > already linked, signing with existing account');
+                '=====> auth repo > linking > already linked, signing with existing account');
             final userCredential =
                 await _firebaseAuth.signInWithCredential(credential);
             return Right(userCredential);
