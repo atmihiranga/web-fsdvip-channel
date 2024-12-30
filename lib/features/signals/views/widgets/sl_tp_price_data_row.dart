@@ -20,7 +20,7 @@ class SlTpPriceRow extends StatelessWidget {
   Widget build(BuildContext context) {
     return Material(
       borderRadius: BorderRadius.circular(8),
-      color: AppColors.backgroundDarker,
+      color: AppColors.backgroundDarker3,
       child: InkWell(
         // hoverColor: AppColors.orange,
         borderRadius: BorderRadius.circular(8),

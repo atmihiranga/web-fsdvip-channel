@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:project_3_forex_signals_daily/core/models/signal_model.dart';
 import 'package:project_3_forex_signals_daily/core/theme/app_colors.dart';
+import 'package:project_3_forex_signals_daily/features/ads/viewmodels/ads_viewmodel.dart';
 import 'package:project_3_forex_signals_daily/features/free_user/views/free_signal_more_details.dart';
 import 'package:project_3_forex_signals_daily/features/premium_user/view/widgets/premium_user_more_signal_details.dart';
 import 'package:project_3_forex_signals_daily/features/signals/views/widgets/signal_buttons_row.dart';
@@ -63,6 +64,7 @@ class _PremiumSignalWidgetState extends ConsumerState<SignalWidget> {
     return InkWell(
       splashFactory: NoSplash.splashFactory, // Disables the splash effect
       onTap: () {
+        ref.read(adsViewModelProvider.notifier).trackUserInteraction();
         setState(() {
           _currentSignalData = _currentSignalData.copyWith(
               isExpanded: !_currentSignalData.isExpanded);
@@ -109,9 +111,16 @@ class _PremiumSignalWidgetState extends ConsumerState<SignalWidget> {
                         ),
                       )
                     : _currentSignalData.result < 0
-                        ? const Icon(Icons.cancel, color: AppColors.red)
-                        : const Icon(Icons.check_circle,
-                            color: AppColors.green),
+                        ? const Icon(
+                            Icons.cancel,
+                            color: AppColors.red,
+                            size: 42,
+                          )
+                        : const Icon(
+                            Icons.check_circle,
+                            color: AppColors.green,
+                            size: 42,
+                          ),
               ],
             ),
             const SizedBox(height: 4),

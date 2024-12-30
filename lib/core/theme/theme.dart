@@ -15,7 +15,7 @@ class AppTheme {
     textButtonTheme: TextButtonThemeData(
       style: ButtonStyle(
         foregroundColor: WidgetStateProperty.all(AppColors.white),
-        backgroundColor: WidgetStateProperty.all(AppColors.darkOpacity1),
+        backgroundColor: WidgetStateProperty.all(AppColors.backgroundDarker2),
         shape: WidgetStateProperty.all(
           RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(8),

@@ -25,7 +25,7 @@ class SignalButtonsRow extends ConsumerWidget {
       children: <Widget>[
         Material(
           borderRadius: BorderRadius.circular(6),
-          color: AppColors.lightOpacity1,
+          color: AppColors.backgroundDarker3,
           child: InkWell(
             onTap: () {
               Navigator.push(

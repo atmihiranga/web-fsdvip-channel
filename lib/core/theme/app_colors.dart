@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 
 class AppColors {
-  static const Color background = Color.fromRGBO(36, 42, 61, 1);
+  static const Color background = Color.fromRGBO(9, 17, 35, 1);
   static const Color backgroundDarker = Color.fromRGBO(32, 38, 55, 1);
   static const Color backgroundDarker2 = Color.fromRGBO(29, 34, 49, 1);
+  static const Color backgroundDarker3 = Color.fromRGBO(36, 42, 61, 1);
   static const Color backgroundLighter = Color.fromRGBO(43, 49, 67, 1);
   static const Color backgroundLighter2 = Color.fromRGBO(36, 42, 61, 1);
   static Color white = Colors.white.withAlpha(225);

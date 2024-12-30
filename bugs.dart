@@ -1,3 +1,3 @@
 // TODO : Fix these
-// when a google signed in user has a premium subscription and if he signs out before the subscription expires,
-// the premium status won't change to false on that account, because a new anonymous account is linked to that subscription
+// when a notification comes in foreground, there were 4 notification items for the
+// same notification in the android device. check the code for duplicate notifications
