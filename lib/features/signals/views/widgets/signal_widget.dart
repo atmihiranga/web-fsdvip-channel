@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:project_3_forex_signals_daily/core/models/signal_model.dart';
 import 'package:project_3_forex_signals_daily/core/theme/app_colors.dart';
+import 'package:project_3_forex_signals_daily/debug/print_debug.dart';
 import 'package:project_3_forex_signals_daily/features/ads/viewmodels/ads_viewmodel.dart';
 import 'package:project_3_forex_signals_daily/features/free_user/views/free_signal_more_details.dart';
 import 'package:project_3_forex_signals_daily/features/premium_user/view/widgets/premium_user_more_signal_details.dart';
@@ -32,17 +33,20 @@ class _PremiumSignalWidgetState extends ConsumerState<SignalWidget> {
   bool isLocked = true;
   bool isPremium = false;
   bool isAdmin = false;
+  bool isExpanded = false;
 
   @override
   void initState() {
     _currentSignalData = widget.signaldata;
-    // printDebug(
-    //     '=====> signal widget init isExpanded: ${_currentSignalData.isExpanded}');
+    printDebug(
+        '=====> signal widget init isActive: ${_currentSignalData.isActive}');
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    _currentSignalData = widget.signaldata.copyWith(isExpanded: isExpanded);
+    printDebug('=====> building widget ${_currentSignalData.isActive}');
     final userAccountModel = ref.watch(userAccountViewmodelProvider);
     userAccountModel.whenData(
       (value) {
@@ -66,8 +70,9 @@ class _PremiumSignalWidgetState extends ConsumerState<SignalWidget> {
       onTap: () {
         ref.read(adsViewModelProvider.notifier).trackUserInteraction();
         setState(() {
-          _currentSignalData = _currentSignalData.copyWith(
-              isExpanded: !_currentSignalData.isExpanded);
+          // _currentSignalData = _currentSignalData.copyWith(
+          //     isExpanded: !_currentSignalData.isExpanded);
+          isExpanded = !isExpanded;
         });
       },
       child: Container(

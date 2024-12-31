@@ -18,6 +18,7 @@ class SignalTitleRow extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Column(
+      spacing: 6,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         RichText(
@@ -37,20 +38,13 @@ class SignalTitleRow extends ConsumerWidget {
             TextSpan(text: '${signaldata.entry} '),
           ],
         )),
-        const SizedBox(
-          height: 2,
-        ),
         Text('∙ ${formatTimestamp(signaldata.timestamp)}',
             style: TextStyle(fontSize: 12)),
-        const SizedBox(
-          height: 2,
-        ),
         Row(
+          spacing: 2,
           children: [
-            signaldata.isActive
-                ? Text('∙ active')
-                : Text(
-                    '∙ ${signaldata.result > 0 ? '+' : ''}${signaldata.result}'),
+            Text('∙'),
+            if (signaldata.isActive) Text('active'),
             if (signaldata.isTp1Hit)
               Container(
                   margin: EdgeInsets.only(left: 4),
@@ -99,6 +93,8 @@ class SignalTitleRow extends ConsumerWidget {
                     ' SL ',
                     style: TextStyle(fontSize: 12, color: AppColors.red),
                   )),
+            if (signaldata.result != 0.0)
+              Text(' ${signaldata.result > 0 ? '+' : ''}${signaldata.result}')
           ],
         ),
       ],

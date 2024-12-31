@@ -69,7 +69,7 @@ class _PremiumSignalsListState extends ConsumerState<SignalsList> {
             }
             if (data[index] != null) {
               SignalModel signal = data[index]!;
-
+              printDebug('=====> from list ${signal.isActive}');
               return Container(
                 margin: const EdgeInsets.all(8.0),
                 decoration: BoxDecoration(
