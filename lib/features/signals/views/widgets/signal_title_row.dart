@@ -54,7 +54,7 @@ class SignalTitleRow extends ConsumerWidget {
                       borderRadius: BorderRadius.circular(6),
                       color: AppColors.green.withAlpha(51)),
                   child: const Text(
-                    ' TP1 ✓',
+                    ' TP1 ',
                     style: TextStyle(fontSize: 12, color: AppColors.green),
                   )),
             if (signaldata.isTp2Hit)
@@ -66,7 +66,7 @@ class SignalTitleRow extends ConsumerWidget {
                       borderRadius: BorderRadius.circular(6),
                       color: AppColors.green.withAlpha(51)),
                   child: const Text(
-                    ' TP2 ✓',
+                    ' TP2 ',
                     style: TextStyle(fontSize: 12, color: AppColors.green),
                   )),
             if (signaldata.isTp3Hit)
@@ -78,7 +78,7 @@ class SignalTitleRow extends ConsumerWidget {
                       borderRadius: BorderRadius.circular(6),
                       color: AppColors.green.withAlpha(51)),
                   child: const Text(
-                    ' TP3 ✓',
+                    ' TP3 ',
                     style: TextStyle(fontSize: 12, color: AppColors.green),
                   )),
             if (signaldata.isSlHit)

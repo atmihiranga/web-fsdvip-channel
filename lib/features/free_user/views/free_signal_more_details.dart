@@ -7,30 +7,32 @@ class FreeUserMoreSignalDetails extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
+      spacing: 8,
       children: [
-        SizedBox(height: 10),
+        SizedBox(height: 6),
         SlTpPriceRow(
           priceLabel: 'Take Profit 1',
           price: 'Locked',
           isLocked: true,
+          isHit: false,
         ),
-        SizedBox(height: 4),
         SlTpPriceRow(
           priceLabel: 'Take Profit 2',
           price: 'Locked',
           isLocked: true,
+          isHit: false,
         ),
-        SizedBox(height: 4),
         SlTpPriceRow(
           priceLabel: 'Take Profit 3',
           price: 'Locked',
           isLocked: true,
+          isHit: false,
         ),
-        SizedBox(height: 4),
         SlTpPriceRow(
           priceLabel: 'Stop Loss',
           price: 'Locked',
           isLocked: true,
+          isHit: false,
         ),
       ],
     );

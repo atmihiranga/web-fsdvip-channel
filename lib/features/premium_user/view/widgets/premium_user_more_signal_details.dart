@@ -13,30 +13,32 @@ class PremiumUserMoreSignalDetails extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
+      spacing: 8,
       children: [
-        SizedBox(height: 10),
+        SizedBox(height: 6),
         SlTpPriceRow(
           priceLabel: 'Take Profit 1',
           price: signaldata.tp1.toString(),
           isLocked: false,
+          isHit: signaldata.isTp1Hit,
         ),
-        SizedBox(height: 4),
         SlTpPriceRow(
           priceLabel: 'Take Profit 2',
           price: signaldata.tp2.toString(),
           isLocked: false,
+          isHit: signaldata.isTp2Hit,
         ),
-        SizedBox(height: 4),
         SlTpPriceRow(
           priceLabel: 'Take Profit 3',
           price: signaldata.tp3.toString(),
           isLocked: false,
+          isHit: signaldata.isTp3Hit,
         ),
-        SizedBox(height: 4),
         SlTpPriceRow(
           priceLabel: 'Stop Loss',
           price: signaldata.sl.toString(),
           isLocked: false,
+          isHit: signaldata.isSlHit,
         ),
       ],
     );

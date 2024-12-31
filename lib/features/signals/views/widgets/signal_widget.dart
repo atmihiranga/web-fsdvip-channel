@@ -1,6 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:project_3_forex_signals_daily/core/models/signal_model.dart';
 import 'package:project_3_forex_signals_daily/core/theme/app_colors.dart';
 import 'package:project_3_forex_signals_daily/debug/print_debug.dart';
@@ -78,14 +79,17 @@ class _PremiumSignalWidgetState extends ConsumerState<SignalWidget> {
       child: Container(
         padding: const EdgeInsets.all(8),
         child: Column(
+          spacing: 6,
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 Container(
                     padding: const EdgeInsets.all(8),
-                    decoration: const BoxDecoration(
-                      color: AppColors.backgroundDarker,
+                    decoration: BoxDecoration(
+                      color: _currentSignalData.action.toUpperCase() == 'BUY'
+                          ? AppColors.green.withAlpha(20)
+                          : AppColors.red.withAlpha(20),
                       shape: BoxShape.circle,
                     ),
                     child: _currentSignalData.action.toUpperCase() == 'BUY'
@@ -103,17 +107,10 @@ class _PremiumSignalWidgetState extends ConsumerState<SignalWidget> {
                 )),
                 const SizedBox(width: 10),
                 _currentSignalData.isActive
-                    ? Container(
-                        margin: EdgeInsets.only(left: 4),
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 8, vertical: 0),
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(6),
-                            color: AppColors.blue.withAlpha(51)),
-                        child: Text(
-                          'active',
-                          style: TextStyle(color: AppColors.blue),
-                        ),
+                    ? SpinKitThreeBounce(
+                        size: 24,
+                        duration: Duration(milliseconds: 2000),
+                        color: AppColors.blue,
                       )
                     : _currentSignalData.result < 0
                         ? const Icon(
@@ -128,15 +125,17 @@ class _PremiumSignalWidgetState extends ConsumerState<SignalWidget> {
                           ),
               ],
             ),
-            const SizedBox(height: 4),
+            SizedBox(
+              height: 4,
+            ),
             SignalButtonsRow(
               isExpanded: _currentSignalData.isExpanded,
               symbol: _currentSignalData.symbol.toUpperCase(),
               analysisLink: _currentSignalData.analysisLink,
               note: _currentSignalData.note,
               isLocked: isLocked,
+              analysisResultLink: _currentSignalData.analysisResultLink ?? '',
             ),
-            const SizedBox(height: 4),
             Visibility(
                 visible: _currentSignalData.isExpanded,
                 child: isLocked

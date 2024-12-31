@@ -29,7 +29,7 @@ class SideDrawer extends ConsumerWidget {
             margin: EdgeInsets.all(0),
             padding: EdgeInsets.all(0),
             decoration: BoxDecoration(
-              color: AppColors.backgroundLighter,
+              color: AppColors.backgroundDarker2,
             ),
             child: Center(child: GoogleSignInButton()),
           ),

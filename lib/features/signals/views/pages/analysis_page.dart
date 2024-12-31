@@ -3,7 +3,12 @@ import 'package:project_3_forex_signals_daily/features/signals/views/widgets/ana
 
 class AnalysisPage extends StatelessWidget {
   final String analysisLink;
-  const AnalysisPage({super.key, required this.analysisLink});
+  final String analysisResultLink;
+  const AnalysisPage({
+    super.key,
+    required this.analysisLink,
+    required this.analysisResultLink,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -16,6 +21,7 @@ class AnalysisPage extends StatelessWidget {
           Expanded(
               child: AnalysisWebview(
             analysisLink: analysisLink,
+            analysisResultLink: analysisResultLink,
           ))
         ],
       ),

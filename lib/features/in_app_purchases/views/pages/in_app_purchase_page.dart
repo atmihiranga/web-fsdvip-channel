@@ -67,6 +67,15 @@ class InAppPurchasePage extends ConsumerWidget {
               ),
               ListTile(
                 leading: Icon(
+                  Icons.ssid_chart,
+                  size: 32,
+                ),
+                title: Text('Unlock All Analysis Charts'),
+                subtitle:
+                    Text('Get access to all the available Analysis Charts'),
+              ),
+              ListTile(
+                leading: Icon(
                   Icons.tv_off,
                   size: 32,
                 ),

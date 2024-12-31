@@ -28,6 +28,7 @@ class SignalModel {
   final String note;
   final bool isExpanded;
   final String analysisLink;
+  final String? analysisResultLink;
 
   SignalModel({
     required this.id,
@@ -48,6 +49,7 @@ class SignalModel {
     required this.note,
     required this.isExpanded,
     required this.analysisLink,
+    required this.analysisResultLink,
   });
 
   SignalModel copyWith({
@@ -69,6 +71,7 @@ class SignalModel {
     String? note,
     bool? isExpanded,
     String? analysisLink,
+    String? analysisResultLink,
   }) {
     return SignalModel(
       id: id ?? this.id,
@@ -89,6 +92,7 @@ class SignalModel {
       note: note ?? this.note,
       isExpanded: isExpanded ?? this.isExpanded,
       analysisLink: analysisLink ?? this.analysisLink,
+      analysisResultLink: analysisResultLink ?? this.analysisResultLink,
     );
   }
 
@@ -112,6 +116,7 @@ class SignalModel {
       'note': note,
       'isExpanded': isExpanded,
       'analysisLink': analysisLink,
+      'analysisResultLink': analysisResultLink,
     };
   }
 
@@ -134,7 +139,8 @@ class SignalModel {
         result: convertToDouble(map['result']) ?? 0.0,
         note: map['note'] ?? '',
         isExpanded: map['isExpanded'] ?? false,
-        analysisLink: map['analysisLink'] ?? '');
+        analysisLink: map['analysisLink'] ?? '',
+        analysisResultLink: map['analysisResultLink']);
   }
 
   String toJson() => json.encode(toMap());
@@ -144,7 +150,7 @@ class SignalModel {
 
   @override
   String toString() {
-    return 'SignalModel(id: $id, timestamp: $timestamp, symbol: $symbol, action: $action, entry: $entry, sl: $sl, isSlHit: $isSlHit, tp1: $tp1, isTp1Hit: $isTp1Hit, tp2: $tp2, isTp2Hit: $isTp2Hit, tp3: $tp3, isTp3Hit: $isTp3Hit, isActive: $isActive, result: $result, note: $note, isExpanded: $isExpanded), analysisLink: $analysisLink';
+    return 'SignalModel(id: $id, timestamp: $timestamp, symbol: $symbol, action: $action, entry: $entry, sl: $sl, isSlHit: $isSlHit, tp1: $tp1, isTp1Hit: $isTp1Hit, tp2: $tp2, isTp2Hit: $isTp2Hit, tp3: $tp3, isTp3Hit: $isTp3Hit, isActive: $isActive, result: $result, note: $note, isExpanded: $isExpanded, analysisLink: $analysisLink, analysisResultLink: $analysisResultLink)';
   }
 
   @override
@@ -168,7 +174,8 @@ class SignalModel {
         other.result == result &&
         other.note == note &&
         other.isExpanded == isExpanded &&
-        other.analysisLink == analysisLink;
+        other.analysisLink == analysisLink &&
+        other.analysisResultLink == analysisResultLink;
   }
 
   @override
@@ -190,6 +197,7 @@ class SignalModel {
         result.hashCode ^
         note.hashCode ^
         isExpanded.hashCode ^
-        analysisLink.hashCode;
+        analysisLink.hashCode ^
+        analysisResultLink.hashCode;
   }
 }

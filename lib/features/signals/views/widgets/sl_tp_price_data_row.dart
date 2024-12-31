@@ -10,17 +10,19 @@ class SlTpPriceRow extends StatelessWidget {
     required this.priceLabel,
     required this.price,
     required this.isLocked,
+    required this.isHit,
   });
 
   final String priceLabel;
   final String price;
   final bool isLocked;
+  final bool isHit;
 
   @override
   Widget build(BuildContext context) {
     return Material(
       borderRadius: BorderRadius.circular(8),
-      color: AppColors.backgroundDarker3,
+      color: AppColors.backgroundDarker,
       child: InkWell(
         // hoverColor: AppColors.orange,
         borderRadius: BorderRadius.circular(8),
@@ -63,9 +65,18 @@ class SlTpPriceRow extends StatelessWidget {
                         ),
                       ],
                     )
-                  : const Icon(
-                      Icons.copy,
+                  : Icon(
+                      isHit
+                          ? priceLabel == 'Stop Loss'
+                              ? Icons.close
+                              : Icons.done
+                          : Icons.copy,
                       size: 12.0,
+                      color: isHit
+                          ? priceLabel == 'Stop Loss'
+                              ? AppColors.red
+                              : AppColors.green
+                          : AppColors.white,
                     ),
             ],
           ),

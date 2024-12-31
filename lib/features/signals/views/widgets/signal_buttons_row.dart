@@ -11,15 +11,16 @@ class SignalButtonsRow extends ConsumerWidget {
   final String analysisLink;
   final String note;
   final bool isLocked;
+  final String analysisResultLink;
 
-  const SignalButtonsRow({
-    super.key,
-    required this.isExpanded,
-    required this.symbol,
-    required this.analysisLink,
-    required this.note,
-    required this.isLocked,
-  });
+  const SignalButtonsRow(
+      {super.key,
+      required this.isExpanded,
+      required this.symbol,
+      required this.analysisLink,
+      required this.note,
+      required this.isLocked,
+      required this.analysisResultLink});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -88,6 +89,7 @@ class SignalButtonsRow extends ConsumerWidget {
                     MaterialPageRoute(
                       builder: (context) => AnalysisPage(
                         analysisLink: analysisLink,
+                        analysisResultLink: analysisResultLink,
                       ),
                     ),
                   );
@@ -101,7 +103,7 @@ class SignalButtonsRow extends ConsumerWidget {
                 children: <Widget>[
                   Icon(
                       size: 14,
-                      isLocked ? Icons.lock_open_outlined : Icons.auto_graph,
+                      isLocked ? Icons.lock_outline : Icons.auto_graph,
                       color: isLocked
                           ? AppColors.white
                           : analysisLink == ''
