@@ -135,7 +135,9 @@ class FirebaseCloudMessagingRepo {
   }
 
   Future<String?> getFCMToken() async {
-    final token = await _firebaseMessaging.getToken();
+    final token = await _firebaseMessaging.getToken(
+        vapidKey:
+            'BKFSJam_tm2zGBq9WZaCi0CsHqNTEphzAiObWPGaheTJont1-x_ntpXqOytGOEXFIBehd0IB9LROTiBTaO85ziU');
     printDebug('=====>> getting token : $token');
     return token;
   }

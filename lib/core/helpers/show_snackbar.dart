@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 
-void showSnackBar({
+void showSnackBarMessage({
   required BuildContext context,
   required String message,
   Duration duration = const Duration(seconds: 2),
   Color backgroundColor = Colors.white,
   Color textColor = Colors.black,
   double elevation = 0.0,
-  EdgeInsetsGeometry margin = const EdgeInsets.all(16.0),
+  EdgeInsetsGeometry margin =
+      const EdgeInsets.only(left: 16.0, right: 16, bottom: 96),
   BorderRadius? borderRadius,
   SnackBarAction? action,
 }) {

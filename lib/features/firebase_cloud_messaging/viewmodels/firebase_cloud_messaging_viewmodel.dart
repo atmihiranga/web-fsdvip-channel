@@ -13,9 +13,9 @@ class FirebaseCloudMessagingViewmodel
 
   @override
   FutureOr<void> build() async {
+    printDebug('=====> init notifications');
     _repository = ref.read(notificationRepositoryProvider);
     await _initializeNotifications();
-    printDebug('=====> init notifications');
   }
 
   Future<void> _initializeNotifications() async {
@@ -70,7 +70,13 @@ class FirebaseCloudMessagingViewmodel
   }
 
   Future<String?> getFCMToken() async {
-    final token = await _repository.getFCMToken();
+    String? token = '';
+    try {
+      token = await _repository.getFCMToken();
+    } catch (e) {
+      printDebug('=====> Error getting fcm token : $e');
+    }
+
     return token;
   }
 

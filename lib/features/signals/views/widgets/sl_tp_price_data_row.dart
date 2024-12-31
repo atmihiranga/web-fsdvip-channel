@@ -34,7 +34,7 @@ class SlTpPriceRow extends StatelessWidget {
             );
           } else {
             Clipboard.setData(ClipboardData(text: price));
-            showSnackBar(
+            showSnackBarMessage(
                 context: context, message: '$price copied to clipboard');
           }
         },

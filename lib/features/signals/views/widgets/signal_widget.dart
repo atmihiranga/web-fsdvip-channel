@@ -129,6 +129,7 @@ class _PremiumSignalWidgetState extends ConsumerState<SignalWidget> {
               symbol: _currentSignalData.symbol.toUpperCase(),
               analysisLink: _currentSignalData.analysisLink,
               note: _currentSignalData.note,
+              isLocked: isLocked,
             ),
             const SizedBox(height: 4),
             Visibility(
