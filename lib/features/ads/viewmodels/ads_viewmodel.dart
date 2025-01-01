@@ -10,10 +10,11 @@ class AdsViewModel extends _$AdsViewModel {
   late final AdsRepository _adsRepository;
   static const int _defaultClickThreshold = 5;
   int _clickCounter = 0;
-  final int clickThreshold;
-  bool isPremium = true;
+  final int _clickThreshold;
+  bool _isPremium = true;
 
-  AdsViewModel({this.clickThreshold = _defaultClickThreshold});
+  AdsViewModel({int clickThreshold = _defaultClickThreshold})
+      : _clickThreshold = clickThreshold;
 
   @override
   AsyncValue<BannerAd> build() {
@@ -22,9 +23,9 @@ class AdsViewModel extends _$AdsViewModel {
       if (!userAccount.isPremium) {
         _adsRepository = ref.watch(adsRepositoryProvider);
         _initializeMobileAds();
-        isPremium = false;
+        _isPremium = false;
       } else {
-        isPremium = true;
+        _isPremium = true;
       }
     });
 
@@ -32,10 +33,10 @@ class AdsViewModel extends _$AdsViewModel {
   }
 
   Future<void> trackUserInteraction() async {
-    if (!isPremium) {
+    if (!_isPremium) {
       _clickCounter++;
       printDebug('=====> tracking taps : $_clickCounter');
-      if (_clickCounter >= clickThreshold) {
+      if (_clickCounter >= _clickThreshold) {
         final adShown = await _adsRepository.showInterstitialAd();
         if (adShown) {
           _clickCounter = 0; // Reset counter only if ad was actually shown

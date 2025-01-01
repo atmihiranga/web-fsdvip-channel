@@ -7,7 +7,7 @@ part of 'in_app_purchase_view_model.dart';
 // **************************************************************************
 
 String _$inAppPurchaseViewModelHash() =>
-    r'8d1554efc33bdb00d3212f6282a42c1035cfe34b';
+    r'6e65b204e984a5f41ce9e44020cdc243865fc1ce';
 
 /// See also [InAppPurchaseViewModel].
 @ProviderFor(InAppPurchaseViewModel)

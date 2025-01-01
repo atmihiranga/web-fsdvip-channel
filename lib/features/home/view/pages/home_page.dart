@@ -5,6 +5,7 @@ import 'package:project_3_forex_signals_daily/core/pages/loading_page.dart';
 import 'package:project_3_forex_signals_daily/core/theme/app_colors.dart';
 import 'package:project_3_forex_signals_daily/features/ads/views/banner_ad.dart';
 import 'package:project_3_forex_signals_daily/features/firebase_cloud_messaging/viewmodels/firebase_cloud_messaging_viewmodel.dart';
+import 'package:project_3_forex_signals_daily/features/help/view/widgets/help.dart';
 import 'package:project_3_forex_signals_daily/features/in_app_purchases/views/pages/in_app_purchase_page.dart';
 import 'package:project_3_forex_signals_daily/features/signals/views/widgets/signals_list.dart';
 import 'package:project_3_forex_signals_daily/features/side_drawer/view/widgets/side_drawer.dart';
@@ -24,7 +25,9 @@ class HomePage extends ConsumerWidget {
             appBar: AppBar(
               title: const Text('Forex Signals Daily'),
               actions: [
+                Help(),
                 InkWell(
+                  borderRadius: BorderRadius.circular(24),
                   onTap: () {
                     Navigator.push(
                       context,

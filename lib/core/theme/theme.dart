@@ -8,9 +8,6 @@ class AppTheme {
       appBarTheme: const AppBarTheme(
         color: AppColors.background,
         elevation: 0,
-        iconTheme: IconThemeData(
-          color: AppColors.orange,
-        ),
       ),
       textButtonTheme: TextButtonThemeData(
         style: ButtonStyle(
@@ -37,5 +34,7 @@ class AppTheme {
         ),
       ),
       dialogTheme: DialogThemeData()
+          .copyWith(backgroundColor: AppColors.backgroundDarker2),
+      bottomSheetTheme: BottomSheetThemeData()
           .copyWith(backgroundColor: AppColors.backgroundDarker2));
 }

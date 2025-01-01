@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 
 class AnalysisWebview extends StatefulWidget {
   final String analysisLink;
@@ -77,7 +76,6 @@ class _AnalysisWebviewState extends State<AnalysisWebview> {
         //     child: CircularProgressIndicator(),
         //   ),
 
-        // $ shows the chart as a zoomable image instead of webview, might need in future
         Column(
           spacing: 4,
           children: [

@@ -4,7 +4,6 @@ import 'package:fpdart/fpdart.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:project_3_forex_signals_daily/debug/print_debug.dart';
 import 'package:project_3_forex_signals_daily/features/in_app_purchases/repositories/in_app_purchase_repository.dart';
-import 'package:project_3_forex_signals_daily/features/user_account/viewmodels/user_account_viewmodel.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'in_app_purchase_view_model.g.dart';
@@ -24,7 +23,6 @@ class InAppPurchaseViewModel extends _$InAppPurchaseViewModel {
       _purchaseUpdatesSubscription?.cancel();
     });
 
-    //restorePurchases();
     return AsyncValue.data(List.empty());
   }
 
@@ -49,6 +47,7 @@ class InAppPurchaseViewModel extends _$InAppPurchaseViewModel {
       printDebug('=====> iap viewmodel > stream subscription : data updated');
       _handlePurchaseUpdate(onData);
     });
+    restorePurchases();
   }
 
   Future<void> _handlePurchaseUpdate(
@@ -101,6 +100,7 @@ class InAppPurchaseViewModel extends _$InAppPurchaseViewModel {
   }
 
   Future<void> restorePurchases() async {
+    printDebug('=====> iap vm > restoring purchases');
     state = AsyncValue.loading();
     await _inAppPurchaseRepository.restorePurchases();
   }

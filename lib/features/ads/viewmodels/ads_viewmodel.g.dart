@@ -6,7 +6,7 @@ part of 'ads_viewmodel.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$adsViewModelHash() => r'5f1f409c698377420ba89531db79e8f7403171c7';
+String _$adsViewModelHash() => r'6632be638570b3cccc7436ba41356736f1e11afa';
 
 /// See also [AdsViewModel].
 @ProviderFor(AdsViewModel)
