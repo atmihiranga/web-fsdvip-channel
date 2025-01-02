@@ -7,7 +7,7 @@ part of 'firebase_cloud_messaging_viewmodel.dart';
 // **************************************************************************
 
 String _$firebaseCloudMessagingViewmodelHash() =>
-    r'71d9830b52ecf2151b8e5c53b2c3d33b2550008f';
+    r'44ff6e814a37bb5b7d9164efcd806373427a9811';
 
 /// See also [FirebaseCloudMessagingViewmodel].
 @ProviderFor(FirebaseCloudMessagingViewmodel)

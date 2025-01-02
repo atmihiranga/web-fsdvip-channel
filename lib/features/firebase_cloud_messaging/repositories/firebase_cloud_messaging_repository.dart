@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -8,19 +7,25 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'firebase_cloud_messaging_repository.g.dart';
 
-//TODO : it looks like the background process starts over and over again when the app is started and it cause the function to run many times, fix it
+/// A simple in-memory set to keep track of recently processed message IDs
+final Set<String> _processedMessageIds = {};
 
 @pragma('vm:entry-point')
 Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  printDebug("=====> Handling a background message: ${message.messageId}");
+  printDebug(
+      "=====> fcm repo > Handling a background message: ${message.messageId}");
 
-  // For background messages on Android, let the system handle the notification
-  // Don't show a local notification
+  // For background messages on Android, let the system handle the notification.
+  // We usually don't show a local notification here for Android, because the
+  // system tray automatically shows it if it has a 'notification' payload.
   if (Platform.isAndroid) {
+    printDebug(
+        "=====> fcm repo > Platform is Android. Not showing local background notification.");
     return;
   }
 
-  // The rest of the handler is for iOS background notifications if needed
+  // For iOS background messages, we may need to display a local notification
+  // if we want it to behave similarly to Android’s system-handled notifications.
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
 
@@ -29,7 +34,7 @@ Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
     'High Importance Notifications',
     description: 'This channel is used for important notifications.',
     importance: Importance.high,
-    playSound: true, // Added playSound
+    playSound: true,
   );
 
   await flutterLocalNotificationsPlugin
@@ -38,8 +43,21 @@ Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
       ?.createNotificationChannel(androidChannel);
 
   if (message.notification != null) {
+    // Deduplicate by messageId
+    if (message.messageId != null &&
+        _processedMessageIds.contains(message.messageId)) {
+      printDebug(
+          "=====> fcm repo > Background: Duplicate message. Skipping local notification.");
+      return;
+    } else if (message.messageId != null) {
+      _processedMessageIds.add(message.messageId!);
+    }
+
+    printDebug(
+        "=====> fcm repo > Showing a local notification for iOS background message");
     await flutterLocalNotificationsPlugin.show(
-      message.notification.hashCode,
+      // Use messageId's hashCode or fallback to DateTime
+      message.messageId?.hashCode ?? DateTime.now().millisecondsSinceEpoch,
       message.notification!.title,
       message.notification!.body,
       NotificationDetails(
@@ -49,7 +67,7 @@ Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
           channelDescription: androidChannel.description,
           importance: Importance.high,
           priority: Priority.high,
-          playSound: true, // Added playSound
+          playSound: true,
           icon: 'notification_icon',
           largeIcon: DrawableResourceAndroidBitmap('@mipmap/launcher_icon'),
         ),
@@ -72,9 +90,9 @@ class FirebaseCloudMessagingRepo {
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
   final FlutterLocalNotificationsPlugin _localNotifications =
       FlutterLocalNotificationsPlugin();
+  bool _isConfigured = false;
 
   Future<void> initialize() async {
-    // Set background message handler first
     FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
 
     // Request permission for notifications
@@ -83,13 +101,12 @@ class FirebaseCloudMessagingRepo {
       badge: true,
       sound: true,
       provisional: false,
-      criticalAlert: true, // Added critical alert permission
+      criticalAlert: true,
     );
-
     printDebug(
-        '=====> User granted permission: ${settings.authorizationStatus}');
+        '=====> fcm repo > User granted permission: ${settings.authorizationStatus}');
 
-    // Set foreground notification presentation options for iOS
+    // iOS: show notifications while in the foreground
     await FirebaseMessaging.instance
         .setForegroundNotificationPresentationOptions(
       alert: true,
@@ -97,7 +114,7 @@ class FirebaseCloudMessagingRepo {
       sound: true,
     );
 
-    // Initialize local notifications with updated iOS settings
+    // Initialize local notifications
     const initializationSettingsAndroid =
         AndroidInitializationSettings('@mipmap/launcher_icon');
     const initializationSettingsIOS = DarwinInitializationSettings(
@@ -107,7 +124,7 @@ class FirebaseCloudMessagingRepo {
       defaultPresentSound: true,
       defaultPresentAlert: true,
       defaultPresentBadge: true,
-      requestCriticalPermission: true, // Added critical permission request
+      requestCriticalPermission: true,
     );
 
     const initializationSettings = InitializationSettings(
@@ -124,21 +141,24 @@ class FirebaseCloudMessagingRepo {
 
     await _createNotificationChannel();
 
-    // Handle initial message if app was terminated
+    // Check if the app was opened via a notification tap from terminated state
     final initialMessage = await FirebaseMessaging.instance.getInitialMessage();
     if (initialMessage != null) {
       printDebug(
-          '=====> App opened from terminated state with message: ${initialMessage.messageId}');
+        '=====> fcm repo > App opened from terminated state with message: ${initialMessage.messageId}',
+      );
     }
 
+    // Optionally subscribe to a topic
     await subscribeToTopic('common');
   }
 
   Future<String?> getFCMToken() async {
     final token = await _firebaseMessaging.getToken(
-        vapidKey:
-            'BKFSJam_tm2zGBq9WZaCi0CsHqNTEphzAiObWPGaheTJont1-x_ntpXqOytGOEXFIBehd0IB9LROTiBTaO85ziU');
-    printDebug('=====>> getting token : $token');
+      vapidKey:
+          'BKFSJam_tm2zGBq9WZaCi0CsHqNTEphzAiObWPGaheTJont1-x_ntpXqOytGOEXFIBehd0IB9LROTiBTaO85ziU',
+    );
+    printDebug('=====>> fcm repo > getting token : $token');
     return token;
   }
 
@@ -161,7 +181,22 @@ class FirebaseCloudMessagingRepo {
     required String title,
     required String body,
     String? payload,
+    // Optionally pass in a messageId to deduplicate
+    String? messageId,
   }) async {
+    // Use the messageId’s hashCode if available, otherwise fallback
+    final uniqueId =
+        messageId?.hashCode ?? DateTime.now().millisecondsSinceEpoch;
+
+    // Deduplicate logic if needed
+    if (messageId != null && _processedMessageIds.contains(messageId)) {
+      printDebug(
+          "=====> fcm repo > showLocalNotification: Duplicate message. Skipping local notification.");
+      return;
+    } else if (messageId != null) {
+      _processedMessageIds.add(messageId);
+    }
+
     const androidDetails = AndroidNotificationDetails(
       'high_importance_channel',
       'High Importance Notifications',
@@ -176,7 +211,7 @@ class FirebaseCloudMessagingRepo {
     const iosDetails = DarwinNotificationDetails(
       presentSound: true,
       sound: 'default',
-      badgeNumber: 1, // Added badge number
+      badgeNumber: 1,
     );
 
     const notificationDetails = NotificationDetails(
@@ -185,8 +220,7 @@ class FirebaseCloudMessagingRepo {
     );
 
     await _localNotifications.show(
-      DateTime.now()
-          .microsecond, // Changed from millisecond to microsecond for more unique IDs
+      uniqueId,
       title,
       body,
       notificationDetails,
@@ -199,29 +233,39 @@ class FirebaseCloudMessagingRepo {
     Function(RemoteMessage)? onMessageOpenedApp,
     Function(String?)? onToken,
   }) {
+    if (_isConfigured) return; // <--- prevent multiple subscriptions
+    _isConfigured = true;
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       onMessage?.call(message);
 
-      // Show local notification only when app is in foreground
+      // In the foreground on Android, we won't see a system notification unless
+      // the payload is purely a 'notification' payload with high priority.
+      // If we *also* call showLocalNotification() here, that can lead to duplicates
+      // if the system also decides to show the notification.
+      // If you are controlling FCM from your own server, consider sending only data payloads
+      // for foreground notifications, and then you manually showLocalNotification.
+
       if (message.notification != null) {
         printDebug(
-            '=====> fcm.onMessage > checking if should show local notification');
+            '=====> fcm repo > onMessage > has notification. Checking platform...');
 
-        // Show local notification only in foreground for both platforms
-        bool shouldShowLocalNotification = true;
-
-        // On iOS, Firebase already shows the notification in foreground
-        if (Platform.isIOS) {
-          shouldShowLocalNotification = false;
-        }
+        // By default, we skip local notification on iOS foreground
+        // because setForegroundNotificationPresentationOptions = true
+        // already shows it. This avoids duplicates.
+        bool shouldShowLocalNotification = !Platform.isIOS;
 
         if (shouldShowLocalNotification) {
-          printDebug('=====> fcm.onMessage > showing local notification');
+          printDebug(
+              '=====> fcm repo > onMessage > showing local notification on Android');
           showLocalNotification(
             title: message.notification!.title ?? '',
             body: message.notification!.body ?? '',
             payload: message.data.toString(),
+            messageId: message.messageId,
           );
+        } else {
+          printDebug(
+              '=====> fcm repo > onMessage > iOS: Let the system handle the foreground notification');
         }
       }
     });
@@ -238,7 +282,7 @@ class FirebaseCloudMessagingRepo {
   Future<void> subscribeToTopic(String topic) async {
     try {
       await _firebaseMessaging.subscribeToTopic(topic);
-      printDebug('=====> Successfully subscribed to topic: $topic');
+      printDebug('=====> fcm repo > Successfully subscribed to topic: $topic');
     } catch (e) {
       printDebug('=====> Error subscribing to topic: $e');
     }
@@ -247,9 +291,10 @@ class FirebaseCloudMessagingRepo {
   Future<void> unsubscribeFromTopic(String topic) async {
     try {
       await _firebaseMessaging.unsubscribeFromTopic(topic);
-      printDebug('=====> Successfully unsubscribed from topic: $topic');
+      printDebug(
+          '=====> fcm repo > Successfully unsubscribed from topic: $topic');
     } catch (e) {
-      printDebug('=====> Error unsubscribing from topic: $e');
+      printDebug('=====> fcm repo > Error unsubscribing from topic: $e');
     }
   }
 }

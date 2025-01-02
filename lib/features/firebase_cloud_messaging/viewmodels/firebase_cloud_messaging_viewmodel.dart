@@ -13,8 +13,8 @@ class FirebaseCloudMessagingViewmodel
 
   @override
   FutureOr<void> build() async {
-    printDebug('=====> init notifications');
-    _repository = ref.read(notificationRepositoryProvider);
+    printDebug('=====> fcm vm > init notifications');
+    _repository = ref.watch(notificationRepositoryProvider);
     await _initializeNotifications();
   }
 
@@ -36,13 +36,13 @@ class FirebaseCloudMessagingViewmodel
 
   void _handleForegroundMessage(RemoteMessage message) {
     printDebug(
-        '=====> Received foreground message: ${message.notification?.title}');
+        '=====> fcm vm > Received foreground message: ${message.notification?.title}');
     // Handle the message according to your app's needs
   }
 
   void _handleMessageOpenedApp(RemoteMessage message) {
     printDebug(
-        '=====> App opened from notification: ${message.notification?.title}');
+        '=====> fcm vm > App opened from notification: ${message.notification?.title}');
     // Navigate to appropriate screen based on message data
   }
 
@@ -53,19 +53,20 @@ class FirebaseCloudMessagingViewmodel
 
       if (user != null) {
         final userUid = user.uid;
-        printDebug('====> FCM Refreshing Token: $token');
+        printDebug('====> fcm vm > FCM Refreshing Token: $token');
         ref
             .read(userAccountViewmodelProvider.notifier)
             .updateFcmToken(userUid, token);
       }
-      printDebug('=====> Updated FCM Token: $token');
+      printDebug('=====> fcm vm > Updated FCM Token: $token');
     }
   }
 
   void sendFcmTokenToBackend(String token) {}
 
   void _handleInitialMessage(RemoteMessage message) {
-    printDebug('Handling initial message: ${message.messageId}');
+    printDebug(
+        '=====> fcm vm > Handling initial message: ${message.messageId}');
     // Navigate or perform actions based on the initial message
   }
 

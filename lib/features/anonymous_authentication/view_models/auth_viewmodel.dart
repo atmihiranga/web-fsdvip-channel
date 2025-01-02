@@ -29,7 +29,7 @@ class AuthViewModel extends _$AuthViewModel {
     // and AsyncValue.loading() state. if user is not null, that means user is already signed, then we return currentUser as AsyncValue
     final currentUser = _authRepository.getCurrentUser();
     if (currentUser != null) {
-      printDebug('=====> auth vm > got current user');
+      printDebug('=====> auth vm > got current user ${currentUser.uid}');
 
       return AsyncValue.data(currentUser);
     }
