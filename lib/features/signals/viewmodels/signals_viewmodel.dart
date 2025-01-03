@@ -43,9 +43,9 @@ class SignalsViewmodel extends _$SignalsViewmodel {
             try {
               final signal =
                   SignalModel.fromMap(data).copyWith(isExpanded: false);
+              printDebug('=====> signals vm : symbol : ${signal.toString()}');
               _signalsMap[signal.id] = signal;
-              // printDebug(
-              //     '=====> signals_viewmodel : signal id: ${signal.id}, expanded : ${signal.isExpanded}');
+
               return signal;
             } catch (e) {
               printDebug(
@@ -78,7 +78,10 @@ class SignalsViewmodel extends _$SignalsViewmodel {
         }
         printDebug(
             '=====> signals vm > setting signals state with updated signal map');
-        state = AsyncValue.data(_signalsMap.values.toList());
+        final updatedSignalList = _signalsMap.values.toList();
+        // sort signal list by timestamp
+        updatedSignalList.sort((a, b) => b!.timestamp.compareTo(a!.timestamp));
+        state = AsyncValue.data(updatedSignalList);
       }
     });
   }

@@ -52,45 +52,67 @@ class _PremiumSignalsListState extends ConsumerState<SignalsList> {
 
     return signalList.when(
       data: (data) {
-        return ListView.builder(
-          controller: _scrollController, // Attach the controller
-          itemCount: data.length + 1,
-          itemBuilder: (context, index) {
-            if (index == data.length) {
-              // Display a loading indicator at the end of the list
-              return _isLoadingMore
-                  ? Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Center(
-                        child: LoadingWidget(),
-                      ),
-                    )
-                  : SizedBox.shrink();
-            }
-            if (data[index] != null) {
-              SignalModel signal = data[index]!;
-
-              return Container(
-                margin: const EdgeInsets.all(8.0),
-                decoration: BoxDecoration(
-                  color: AppColors.backgroundDarker2,
-                  borderRadius: BorderRadius.circular(8),
-                  // border: snapshot.data![index].isActive
-                  //     ? Border(left: BorderSide(color: AppColors.blue))
-                  //     : Border(),
-                ),
-                child: Column(
+        return DefaultTabController(
+          length: 3,
+          child: Column(
+            children: [
+              const TabBar(
+                tabs: [
+                  Tab(text: 'All'),
+                  Tab(text: 'Active'),
+                  Tab(text: 'Closed'),
+                ],
+              ),
+              Expanded(
+                child: TabBarView(
                   children: [
-                    SignalWidget(
-                      signaldata: signal,
+                    ListView.builder(
+                      controller: _scrollController, // Attach the controller
+                      itemCount: data.length + 1,
+                      itemBuilder: (context, index) {
+                        if (index == data.length) {
+                          // Display a loading indicator at the end of the list
+                          return _isLoadingMore
+                              ? Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Center(
+                                    child: LoadingWidget(),
+                                  ),
+                                )
+                              : SizedBox.shrink();
+                        }
+                        if (data[index] != null) {
+                          SignalModel signal = data[index]!;
+
+                          return Container(
+                            margin: const EdgeInsets.all(8.0),
+                            decoration: BoxDecoration(
+                              color: AppColors.backgroundDarker2,
+                              borderRadius: BorderRadius.circular(8),
+                              // border: snapshot.data![index].isActive
+                              //     ? Border(left: BorderSide(color: AppColors.blue))
+                              //     : Border(),
+                            ),
+                            child: Column(
+                              children: [
+                                SignalWidget(
+                                  signaldata: signal,
+                                ),
+                              ],
+                            ),
+                          );
+                        } else {
+                          return SizedBox.shrink();
+                        }
+                      },
                     ),
+                    Icon(Icons.directions_transit),
+                    Icon(Icons.directions_bike),
                   ],
                 ),
-              );
-            } else {
-              return SizedBox.shrink();
-            }
-          },
+              ),
+            ],
+          ),
         );
       },
       error: (error, stackTrace) => FailurePage(

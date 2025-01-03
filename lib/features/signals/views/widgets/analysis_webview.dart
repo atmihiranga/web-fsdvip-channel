@@ -84,7 +84,7 @@ class _AnalysisWebviewState extends State<AnalysisWebview> {
                 width: MediaQuery.of(context).size.width,
                 child: InteractiveViewer(
                   minScale: 0.5,
-                  maxScale: 3,
+                  maxScale: 5,
                   child: Image.network(
                     widget.analysisLink,
                     loadingBuilder: (context, child, loadingProgress) {
@@ -107,7 +107,7 @@ class _AnalysisWebviewState extends State<AnalysisWebview> {
                   width: MediaQuery.of(context).size.width,
                   child: InteractiveViewer(
                     minScale: 0.5,
-                    maxScale: 3,
+                    maxScale: 5,
                     child: Image.network(
                       widget.analysisResultLink,
                       loadingBuilder: (context, child, loadingProgress) {
