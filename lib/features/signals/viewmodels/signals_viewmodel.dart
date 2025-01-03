@@ -16,6 +16,7 @@ class SignalsViewmodel extends _$SignalsViewmodel {
   DocumentSnapshot? _lastFirestoreSignalDocument;
   bool _isFetchingMoreSignalDocuments = false;
   bool _hasMoreData = true;
+  bool _isInitiailActiveSignalUpdate = true;
 
   @override
   AsyncValue<List<SignalModel?>> build() {
@@ -31,8 +32,9 @@ class SignalsViewmodel extends _$SignalsViewmodel {
 
   void _setupFirestoreSignalsListner() {
     _signalsSubscription?.cancel();
-    _signalsSubscription = _signalsRepository.signalStream().listen((snapshot) {
-      printDebug('=====> signals_viewmodel : data changed');
+    _signalsSubscription =
+        _signalsRepository.activeSignalsStream().listen((snapshot) {
+      printDebug('=====> signals vm : data changed');
       // below code will convert QuerySnapshot<Map<String, dynamic>> to a List<SignalModel?> and save in signalList variable
       final signalList = snapshot.docs
           .map((doc) {
@@ -47,7 +49,7 @@ class SignalsViewmodel extends _$SignalsViewmodel {
               return signal;
             } catch (e) {
               printDebug(
-                  '=====> signals_viewmodel : Error converting doc to SignalModel: doc : ${doc.id}, Error : $e');
+                  '=====> signals vm : Error converting doc to SignalModel: doc : ${doc.id}, Error : $e');
               _signalsMap.remove(doc.id);
               return null;
             }
@@ -55,15 +57,77 @@ class SignalsViewmodel extends _$SignalsViewmodel {
           .whereType<SignalModel>() // Filters out nulls and casts the list
           .toList();
 
-      // Update _lastDocument for pagination
-      if (signalList.isNotEmpty && _lastFirestoreSignalDocument == null) {
-        _lastFirestoreSignalDocument = snapshot.docs.last;
-      }
       // sort signal list by timestamp
       signalList.sort((a, b) => b.timestamp.compareTo(a.timestamp));
-
-      state = AsyncValue.data(signalList);
+      if (_isInitiailActiveSignalUpdate) {
+        printDebug(
+            '=====> signals vm > initial active signals stream update > updated docs : ${signalList.length}');
+        fetchInitialInactiveSignals();
+        _isInitiailActiveSignalUpdate = false;
+      } else {
+        printDebug(
+            '=====> signals vm > active signals stream update > updated docs : ${signalList.length}');
+        if (signalList.isEmpty) {
+          printDebug(
+              '=====> signals vm > active signals list is empty after update');
+          _signalsMap.forEach((key, signal) {
+            if (signal?.isActive == true) {
+              _signalsMap[key] = signal?.copyWith(isActive: false);
+            }
+          });
+        }
+        printDebug(
+            '=====> signals vm > setting signals state with updated signal map');
+        state = AsyncValue.data(_signalsMap.values.toList());
+      }
     });
+  }
+
+  Future<void> fetchInitialInactiveSignals() async {
+    try {
+      printDebug('=====> signals vm > fetching initial inactive signals');
+      final querySnapshot =
+          await _signalsRepository.fetchInitialInactiveSignals(
+        limit: 10,
+      );
+
+      final newSignals = querySnapshot.docs
+          .map((doc) {
+            final data = doc.data();
+            data['id'] = doc.id;
+            try {
+              final signal =
+                  SignalModel.fromMap(data).copyWith(isExpanded: false);
+              _signalsMap[signal.id] = signal;
+              // printDebug('=====> signals_viewmodel : signal id: ${signal.id}');
+              return signal;
+            } catch (e) {
+              printDebug(
+                  '=====> signals vm > Error converting document to SignalModel: $e');
+              return null;
+            }
+          })
+          .whereType<SignalModel>() // Filters out nulls and casts the list
+          .toList();
+      printDebug(
+          '=====> signals vm > fetched initial inactive signals, docs : ${newSignals.length} ');
+      final updatedSignalList = _signalsMap.values.toList();
+      // sort signal list by timestamp
+      updatedSignalList.sort((a, b) => b!.timestamp.compareTo(a!.timestamp));
+
+      if (newSignals.isNotEmpty) {
+        _lastFirestoreSignalDocument = querySnapshot.docs.last;
+        printDebug(
+            '=====> signals vm > setting signals state with initial active signals and inactive signals');
+        state = AsyncValue.data(updatedSignalList);
+      } else {
+        _hasMoreData = false;
+      }
+    } catch (e, st) {
+      state = AsyncValue.error(e, st);
+    } finally {
+      _isFetchingMoreSignalDocuments = false;
+    }
   }
 
   Future<void> fetchMoreSignals() async {
@@ -73,8 +137,8 @@ class SignalsViewmodel extends _$SignalsViewmodel {
     _isFetchingMoreSignalDocuments = true;
     try {
       printDebug(
-          '=====> signal vm fetching more from doc : ${_lastFirestoreSignalDocument?.id}');
-      final querySnapshot = await _signalsRepository.fetchNextSignals(
+          '=====> signals vm > fetching 8 more on scroll, starting from doc : ${_lastFirestoreSignalDocument?.id}');
+      final querySnapshot = await _signalsRepository.fetchNextInactiveSignals(
         lastDocument: _lastFirestoreSignalDocument!,
         limit: 8,
       );
@@ -87,11 +151,11 @@ class SignalsViewmodel extends _$SignalsViewmodel {
               final signal =
                   SignalModel.fromMap(data).copyWith(isExpanded: false);
               _signalsMap[signal.id] = signal;
-              printDebug('=====> signals_viewmodel : signal id: ${signal.id}');
+              printDebug('=====> signals vm : signal id: ${signal.id}');
               return signal;
             } catch (e) {
               printDebug(
-                  '=====> signals_viewmodel : Error converting document to SignalModel: $e');
+                  '=====> signals vm : Error converting document to SignalModel: $e');
               return null;
             }
           })

@@ -27,7 +27,25 @@ class SignalsRepository {
         .snapshots();
   }
 
-  Future<QuerySnapshot<Map<String, dynamic>>> fetchNextSignals({
+  Stream<QuerySnapshot<Map<String, dynamic>>> activeSignalsStream() {
+    return _firebaseFirestore
+        .collection('signaldb')
+        .where('isActive', isEqualTo: true)
+        .orderBy('timestamp', descending: true)
+        .snapshots();
+  }
+
+  Future<QuerySnapshot<Map<String, dynamic>>> fetchInitialInactiveSignals({
+    required int limit,
+  }) async {
+    return await _firebaseFirestore
+        .collection('signaldb')
+        .orderBy('timestamp', descending: true)
+        .limit(limit)
+        .get();
+  }
+
+  Future<QuerySnapshot<Map<String, dynamic>>> fetchNextInactiveSignals({
     required DocumentSnapshot lastDocument,
     required int limit,
   }) async {
