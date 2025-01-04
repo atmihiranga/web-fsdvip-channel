@@ -31,7 +31,7 @@ class Help extends StatelessWidget {
                       ListTile(
                         leading: Icon(Icons.circle),
                         title: Text(
-                            'Take Profit hits and Stop Loss hits are updated manually for now. Due to this, there can be delays in updating them, and you may see a signal as active even after it has already hit a TP or SL'),
+                            'Take Profit hits and Stop Loss hits are updated manually for now. Due to this, there can be delays in updating them, and you may see a signal as active even after it has already hit a TP or SL.'),
                       ),
                       ListTile(
                         leading: Icon(Icons.circle),
