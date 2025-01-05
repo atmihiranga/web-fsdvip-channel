@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:project_3_forex_signals_daily/features/signals/views/widgets/analysis_webview.dart';
+import 'package:project_3_forex_signals_daily/features/signals/views/widgets/analysis_chart_images.dart';
 
 class AnalysisPage extends StatelessWidget {
   final String analysisLink;
@@ -19,7 +19,7 @@ class AnalysisPage extends StatelessWidget {
       body: Column(
         children: [
           Expanded(
-              child: AnalysisWebview(
+              child: AnalysisChartImages(
             analysisLink: analysisLink,
             analysisResultLink: analysisResultLink,
           ))
