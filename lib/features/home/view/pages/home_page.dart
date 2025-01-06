@@ -25,7 +25,6 @@ class HomePage extends ConsumerWidget {
             appBar: AppBar(
               title: const Text('Forex Signals Daily'),
               actions: [
-                Help(),
                 InkWell(
                   borderRadius: BorderRadius.circular(24),
                   onTap: () {
@@ -45,6 +44,7 @@ class HomePage extends ConsumerWidget {
                     ),
                   ),
                 ),
+                Help(),
               ],
             ),
             body: Column(

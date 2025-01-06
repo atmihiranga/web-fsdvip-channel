@@ -1,16 +1,20 @@
 import 'package:intl/intl.dart';
 
-String formatTimestamp(int timestamp, {bool showYear = false}) {
+String formatTimestamp(
+  int timestamp, {
+  bool showYear = false,
+  bool showTime = true,
+}) {
   // Convert the milliseconds timestamp to a DateTime object
   DateTime date = DateTime.fromMillisecondsSinceEpoch(timestamp);
 
   // Define the desired format
-  DateFormat formatter = DateFormat('hh:mm a, MMM dd');
 
-  DateFormat formatterWithYear = DateFormat('hh:mm a, MMM dd, yyyy');
+  DateFormat formatter = DateFormat(
+      '${showTime ? "hh:mm a, " : ""}MMM dd${showYear ? ", yyyy" : ""}');
 
   // Format the date and return it as a string
-  return showYear ? formatterWithYear.format(date) : formatter.format(date);
+  return formatter.format(date);
 }
 
 // Helper function to safely convert numeric values to double

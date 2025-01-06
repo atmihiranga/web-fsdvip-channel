@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class Help extends StatelessWidget {
@@ -18,6 +19,12 @@ class Help extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: IconButton(
+                            onPressed: () => Navigator.pop(context),
+                            icon: Icon(Icons.close)),
+                      ),
                       const Text(
                         'Important',
                         style: TextStyle(
@@ -27,6 +34,11 @@ class Help extends StatelessWidget {
                         leading: Icon(Icons.circle),
                         title: Text(
                             'Signals are published automatically through a system; always double check the signal details such as entry & exit prices before placing an order.'),
+                      ),
+                      ListTile(
+                        leading: Icon(Icons.circle),
+                        title: Text(
+                            'We try our best to publish 1 signal per day. But on bad market conditions, we will not publish signals.This is for your own safety, we prefer quality over quantity.'),
                       ),
                       ListTile(
                         leading: Icon(Icons.circle),

@@ -4,6 +4,8 @@ import 'package:project_3_forex_signals_daily/core/failure/failure_page.dart';
 import 'package:project_3_forex_signals_daily/core/models/signal_model.dart';
 import 'package:project_3_forex_signals_daily/core/theme/app_colors.dart';
 import 'package:project_3_forex_signals_daily/core/widgets/loading_widget.dart';
+import 'package:project_3_forex_signals_daily/features/signal_stats/views/widgets/results_charts.dart';
+import 'package:project_3_forex_signals_daily/features/signal_stats/views/widgets/get_stats.dart';
 import 'package:project_3_forex_signals_daily/features/signals/viewmodels/signals_viewmodel.dart';
 import 'package:project_3_forex_signals_daily/features/signals/views/widgets/list_item_shimmer.dart';
 import 'package:project_3_forex_signals_daily/features/signals/views/widgets/signal_widget.dart';
@@ -111,18 +113,19 @@ class SignalsListState extends ConsumerState<SignalsList> {
                 signalsList.where((s) => s?.isActive == false).toList();
 
             return DefaultTabController(
-              length: 3,
+              length: 4,
               child: Column(
                 children: [
                   TabBar(
-                    labelColor: AppColors.orange,
-                    indicatorColor: AppColors.orange,
+                    labelColor: AppColors.white,
+                    indicatorColor: AppColors.white,
                     dividerHeight: 0,
                     indicatorSize: TabBarIndicatorSize.tab,
                     tabs: [
                       Tab(text: 'All'),
                       Tab(text: 'Active'),
                       Tab(text: 'Closed'),
+                      Tab(text: 'Stats'),
                     ],
                   ),
                   Expanded(
@@ -135,6 +138,11 @@ class SignalsListState extends ConsumerState<SignalsList> {
                                 activeSignals, _scrollStates['active']!),
                         _buildSignalList(
                             closedSignals, _scrollStates['closed']!),
+                        SingleChildScrollView(
+                          child: Column(
+                            children: [ResultsChart()],
+                          ),
+                        ),
                       ],
                     ),
                   ),
