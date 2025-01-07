@@ -4,8 +4,7 @@ import 'package:project_3_forex_signals_daily/core/failure/failure_page.dart';
 import 'package:project_3_forex_signals_daily/core/models/signal_model.dart';
 import 'package:project_3_forex_signals_daily/core/theme/app_colors.dart';
 import 'package:project_3_forex_signals_daily/core/widgets/loading_widget.dart';
-import 'package:project_3_forex_signals_daily/features/signal_stats/views/widgets/results_charts.dart';
-import 'package:project_3_forex_signals_daily/features/signal_stats/views/widgets/get_stats.dart';
+import 'package:project_3_forex_signals_daily/features/signal_stats/views/widgets/stats_tab.dart';
 import 'package:project_3_forex_signals_daily/features/signals/viewmodels/signals_viewmodel.dart';
 import 'package:project_3_forex_signals_daily/features/signals/views/widgets/list_item_shimmer.dart';
 import 'package:project_3_forex_signals_daily/features/signals/views/widgets/signal_widget.dart';
@@ -140,7 +139,7 @@ class SignalsListState extends ConsumerState<SignalsList> {
                             closedSignals, _scrollStates['closed']!),
                         SingleChildScrollView(
                           child: Column(
-                            children: [ResultsChart()],
+                            children: [StatsTab()],
                           ),
                         ),
                       ],

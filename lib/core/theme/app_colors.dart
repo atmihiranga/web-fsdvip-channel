@@ -8,6 +8,7 @@ class AppColors {
   static const Color backgroundLighter = Color.fromRGBO(43, 49, 67, 1);
   static const Color backgroundLighter2 = Color.fromRGBO(36, 42, 61, 1);
   static Color white = Colors.white.withAlpha(225);
+  static Color whiteDisabled = Colors.white.withAlpha(125);
   static const Color green = Color.fromRGBO(62, 251, 188, 1);
   static const Color red = Color.fromRGBO(255, 106, 106, 1);
   static const Color blue = Color.fromRGBO(88, 166, 255, 1);
