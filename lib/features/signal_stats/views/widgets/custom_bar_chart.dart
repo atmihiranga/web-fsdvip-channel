@@ -98,7 +98,7 @@ class _CustomBarChartState extends State<CustomBarChart> {
       child: Column(
         spacing: 20,
         children: [
-          Text('• Individiual Signal PnL Pips Graph'),
+          Text('• Signal PnL(Pips) Distribution Graph'),
           AspectRatio(
             aspectRatio: 1.6,
             child: BarChart(

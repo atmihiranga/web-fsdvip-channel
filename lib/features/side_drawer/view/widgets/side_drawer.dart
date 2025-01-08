@@ -56,20 +56,27 @@ class SideDrawer extends ConsumerWidget {
                     borderRadius: BorderRadius.circular(10),
                     gradient: LinearGradient(
                       colors: [
-                        AppColors.red.withAlpha(200),
-                        AppColors.orange.withAlpha(200),
+                        AppColors.red,
+                        AppColors.orange,
                       ],
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
                     ),
                   ),
                   child: ListTile(
-                    leading: Icon(Icons.workspace_premium),
+                    leading: Icon(
+                      Icons.workspace_premium,
+                      color: AppColors.white,
+                    ),
                     title: Text(
                       'Join Premium',
-                      style: TextStyle(fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold, color: AppColors.white),
                     ),
-                    subtitle: Text('click to see premium benefits'),
+                    subtitle: Text(
+                      'click to see premium benefits',
+                      style: TextStyle(color: AppColors.white),
+                    ),
                     onTap: () {
                       Navigator.push(
                         context,

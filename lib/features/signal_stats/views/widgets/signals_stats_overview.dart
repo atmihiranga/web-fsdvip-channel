@@ -74,9 +74,54 @@ class SignalsStatsOverview extends ConsumerWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text('TP1 ${signalStats.tp1Hit.toString()} '),
-                    Text('TP2 ${signalStats.tp2Hit.toString()}'),
-                    Text('TP3 ${signalStats.tp3Hit.toString()}'),
+                    RichText(
+                      text: TextSpan(
+                        // Use the default text style for the overall RichText
+                        style: DefaultTextStyle.of(context).style,
+                        children: [
+                          TextSpan(
+                            text: '•TP1 ',
+                            style: TextStyle(color: AppColors.whiteDisabled),
+                          ),
+                          TextSpan(
+                            text: signalStats.tp1Hit.toString(),
+                            // No style here, so it uses the default color
+                          ),
+                        ],
+                      ),
+                    ),
+                    RichText(
+                      text: TextSpan(
+                        // Use the default text style for the overall RichText
+                        style: DefaultTextStyle.of(context).style,
+                        children: [
+                          TextSpan(
+                            text: '•TP2 ',
+                            style: TextStyle(color: AppColors.whiteDisabled),
+                          ),
+                          TextSpan(
+                            text: signalStats.tp2Hit.toString(),
+                            // No style here, so it uses the default color
+                          ),
+                        ],
+                      ),
+                    ),
+                    RichText(
+                      text: TextSpan(
+                        // Use the default text style for the overall RichText
+                        style: DefaultTextStyle.of(context).style,
+                        children: [
+                          TextSpan(
+                            text: '•TP3 ',
+                            style: TextStyle(color: AppColors.whiteDisabled),
+                          ),
+                          TextSpan(
+                            text: signalStats.tp3Hit.toString(),
+                            // No style here, so it uses the default color
+                          ),
+                        ],
+                      ),
+                    ),
                   ],
                 ),
               )
@@ -94,13 +139,13 @@ class SignalsStatsOverview extends ConsumerWidget {
                       style: TextStyle(color: AppColors.red))
                 ],
               ),
-              Text((signalStats.slHit).toString()),
+              Text('•${(signalStats.slHit).toString()}'),
             ],
           ),
           Divider(),
           Text(
               style: TextStyle(color: AppColors.whiteDisabled),
-              '* ${signalStats.closed - (signalStats.slHit + signalStats.tp1Hit)} Signals has been closed without hitting Stop Loss or a Take Profit')
+              '•${signalStats.closed - (signalStats.slHit + signalStats.tp1Hit)} Signals has been closed without hitting Stop Loss or a Take Profit')
         ],
       ),
     );

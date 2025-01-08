@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
@@ -18,6 +20,9 @@ class BannerAdBottom extends ConsumerWidget {
       final adState = ref.watch(adsViewModelProvider);
       return adState.when(
           data: (ad) {
+            if (Platform.isIOS) {
+              return SizedBox.shrink();
+            }
             return Padding(
               padding: const EdgeInsets.only(top: 2.0),
               child: SafeArea(

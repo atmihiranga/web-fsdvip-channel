@@ -35,8 +35,7 @@ class AdUnitIds {
     if (Platform.isAndroid) {
       return 'ca-app-pub-7407448922396490/3516632271';
     } else if (Platform.isIOS) {
-      //TODO : change below test id for iOS
-      return 'ca-app-pub-3940256099942544/9214589741';
+      return 'ca-app-pub-7407448922396490/9420168405';
     } else {
       throw UnsupportedError('Unsupported platform');
     }
@@ -46,8 +45,7 @@ class AdUnitIds {
     if (Platform.isAndroid) {
       return 'ca-app-pub-7407448922396490/5951223924';
     } else if (Platform.isIOS) {
-      //TODO : change below test id for iOS
-      return 'ca-app-pub-3940256099942544/4411468910';
+      return 'ca-app-pub-7407448922396490/4608731404';
     } else {
       throw UnsupportedError('Unsupported platform');
     }
