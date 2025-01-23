@@ -20,9 +20,6 @@ class BannerAdBottom extends ConsumerWidget {
       final adState = ref.watch(adsViewModelProvider);
       return adState.when(
           data: (ad) {
-            if (Platform.isIOS) {
-              return SizedBox.shrink();
-            }
             return Padding(
               padding: const EdgeInsets.only(top: 2.0),
               child: SafeArea(

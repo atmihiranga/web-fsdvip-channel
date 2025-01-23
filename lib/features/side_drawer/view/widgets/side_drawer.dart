@@ -1,6 +1,8 @@
 // Side drawer widget
 // This widget is used to display the side drawer in the app.
 
+import 'dart:io';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -20,63 +22,32 @@ class SideDrawer extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Drawer(
-      backgroundColor: AppColors.backgroundDarker,
-      child: ListView(
-        padding: EdgeInsets.zero,
-        children: <Widget>[
-          const DrawerHeader(
-            margin: EdgeInsets.all(0),
-            padding: EdgeInsets.all(0),
-            decoration: BoxDecoration(
-              color: AppColors.backgroundDarker2,
-            ),
-            child: Center(child: GoogleSignInButton()),
-          ),
-          userAccount.isPremium
-              ? ListTile(
-                  leading: Icon(
-                    Icons.workspace_premium,
-                    color: AppColors.orange,
-                  ),
-                  title: Text('Premium Member'),
-                  subtitle: Text('click to see details'),
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => InAppPurchasePage(),
-                      ),
-                    );
-                  },
-                )
-              : Container(
-                  margin: EdgeInsets.all(4),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    gradient: LinearGradient(
-                      colors: [
-                        AppColors.red,
-                        AppColors.orange,
-                      ],
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
+    return SafeArea(
+      child: Drawer(
+        backgroundColor: AppColors.backgroundDarker,
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: <Widget>[
+            Platform.isAndroid
+                ? const DrawerHeader(
+                    margin: EdgeInsets.all(0),
+                    padding: EdgeInsets.all(0),
+                    decoration: BoxDecoration(
+                      color: AppColors.backgroundDarker2,
                     ),
+                    child: Center(child: GoogleSignInButton()),
+                  )
+                : SizedBox(
+                    height: 36,
                   ),
-                  child: ListTile(
+            userAccount.isPremium
+                ? ListTile(
                     leading: Icon(
                       Icons.workspace_premium,
-                      color: AppColors.white,
+                      color: AppColors.orange,
                     ),
-                    title: Text(
-                      'Join Premium',
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold, color: AppColors.white),
-                    ),
-                    subtitle: Text(
-                      'click to see premium benefits',
-                      style: TextStyle(color: AppColors.white),
-                    ),
+                    title: Text('Premium Member'),
+                    subtitle: Text('click to see details'),
                     onTap: () {
                       Navigator.push(
                         context,
@@ -85,62 +56,100 @@ class SideDrawer extends ConsumerWidget {
                         ),
                       );
                     },
+                  )
+                : Container(
+                    margin: EdgeInsets.all(4),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      gradient: LinearGradient(
+                        colors: [
+                          AppColors.red,
+                          AppColors.orange,
+                        ],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                      ),
+                    ),
+                    child: ListTile(
+                      leading: Icon(
+                        Icons.workspace_premium,
+                        color: AppColors.white,
+                      ),
+                      title: Text(
+                        'Join Premium',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.white),
+                      ),
+                      subtitle: Text(
+                        'click to see premium benefits',
+                        style: TextStyle(color: AppColors.white),
+                      ),
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => InAppPurchasePage(),
+                          ),
+                        );
+                      },
+                    ),
                   ),
-                ),
 
-          ListTile(
-            leading: Icon(Icons.telegram),
-            title: Text('Telegram Channel'),
-            trailing: Icon(Icons.open_in_new),
-            onTap: () async {
-              openUrl(Links.telegramChannel);
-            },
-          ),
-          ListTile(
-            leading: Icon(Icons.mail),
-            title: Text('Contact us'),
-            onTap: () {
-              launchMailto(
-                  Links.contactEmail,
-                  'Contact/FSD/${defaultTargetPlatform.toString().replaceAll('TargetPlatform.', '')}',
-                  '');
-            },
-          ),
-          ListTile(
-            title: Text('Other Apps'),
-          ),
-          ListTile(
-              leading: Icon(Icons.speed),
-              title: Text('Currency Strength Meter'),
+            ListTile(
+              leading: Icon(Icons.telegram),
+              title: Text('Telegram Channel'),
+              trailing: Icon(Icons.open_in_new),
+              onTap: () async {
+                openUrl(Links.telegramChannel);
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.mail),
+              title: Text('Contact us'),
               onTap: () {
-                if (defaultTargetPlatform == TargetPlatform.android) {
-                  openUrl(Links.csmAndroid);
-                } else if (defaultTargetPlatform == TargetPlatform.iOS) {
-                  openUrl(Links.csmIos);
-                }
-              }),
+                launchMailto(
+                    Links.contactEmail,
+                    'Contact/FSD/${defaultTargetPlatform.toString().replaceAll('TargetPlatform.', '')}',
+                    '');
+              },
+            ),
+            ListTile(
+              title: Text('Other Apps'),
+            ),
+            ListTile(
+                leading: Icon(Icons.speed),
+                title: Text('Currency Strength Meter'),
+                onTap: () {
+                  if (defaultTargetPlatform == TargetPlatform.android) {
+                    openUrl(Links.csmAndroid);
+                  } else if (defaultTargetPlatform == TargetPlatform.iOS) {
+                    openUrl(Links.csmIos);
+                  }
+                }),
 
-          ListTile(
-            title: Text('Policies'),
-          ),
-          ListTile(
-            leading: Icon(Icons.privacy_tip),
-            title: Text('Privacy Policy'),
-            onTap: () {
-              openUrl(Links.privacyPolicy);
-            },
-          ),
-          ListTile(
-            leading: Icon(Icons.article),
-            title: Text('Terms'),
-            onTap: () {
-              openUrl(Links.terms);
-            },
-          ),
-          //UserAccountWidget(),
-          SignOutButton(),
-          AppVersion(),
-        ],
+            ListTile(
+              title: Text('Policies'),
+            ),
+            ListTile(
+              leading: Icon(Icons.privacy_tip),
+              title: Text('Privacy Policy'),
+              onTap: () {
+                openUrl(Links.privacyPolicy);
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.article),
+              title: Text('Terms'),
+              onTap: () {
+                openUrl(Links.terms);
+              },
+            ),
+            //UserAccountWidget(),
+            SignOutButton(),
+            AppVersion(),
+          ],
+        ),
       ),
     );
   }
