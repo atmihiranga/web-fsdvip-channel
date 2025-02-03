@@ -26,14 +26,51 @@ class _AnalysisChartImagesState extends State<AnalysisChartImages> {
     return Column(
       spacing: 4,
       children: [
-        Expanded(
-          child: SizedBox(
+        if (widget.analysisResultLink != '')
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [Text('Before')],
+          ),
+        SizedBox(
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.width * 0.64,
+          child: InteractiveViewer(
+            minScale: 0.5,
+            maxScale: 5,
+            child: Image.network(
+              widget.analysisLink,
+              loadingBuilder: (context, child, loadingProgress) {
+                if (loadingProgress == null) {
+                  return child;
+                }
+                return Center(
+                  child: SizedBox(
+                    child: CircularProgressIndicator(),
+                  ),
+                );
+              },
+            ),
+          ),
+        ),
+        if (widget.analysisResultLink != '')
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(top: 8.0),
+                child: Text('After'),
+              )
+            ],
+          ),
+        if (widget.analysisResultLink != '')
+          SizedBox(
             width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.width * 0.64,
             child: InteractiveViewer(
               minScale: 0.5,
               maxScale: 5,
               child: Image.network(
-                widget.analysisLink,
+                widget.analysisResultLink,
                 loadingBuilder: (context, child, loadingProgress) {
                   if (loadingProgress == null) {
                     return child;
@@ -44,30 +81,6 @@ class _AnalysisChartImagesState extends State<AnalysisChartImages> {
                     ),
                   );
                 },
-              ),
-            ),
-          ),
-        ),
-        if (widget.analysisResultLink != '')
-          Expanded(
-            child: SizedBox(
-              width: MediaQuery.of(context).size.width,
-              child: InteractiveViewer(
-                minScale: 0.5,
-                maxScale: 5,
-                child: Image.network(
-                  widget.analysisResultLink,
-                  loadingBuilder: (context, child, loadingProgress) {
-                    if (loadingProgress == null) {
-                      return child;
-                    }
-                    return Center(
-                      child: SizedBox(
-                        child: CircularProgressIndicator(),
-                      ),
-                    );
-                  },
-                ),
               ),
             ),
           ),
