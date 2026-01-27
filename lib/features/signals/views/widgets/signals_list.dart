@@ -91,25 +91,30 @@ class SignalsListState extends ConsumerState<SignalsList> {
           _buildHeaderCell('Symbol', 110),
           _buildHeaderCell('Signal Link', 100),
           _buildHeaderCell('Entry', 80),
-          _buildHeaderCell('TP1', 80),
-          _buildHeaderCell('TP2', 80),
-          _buildHeaderCell('TP3', 80),
-          _buildHeaderCell('SL', 80),
+          _buildHeaderCell('TP1', 100, addPadding: true),
+          _buildHeaderCell('TP2', 100, addPadding: true),
+          _buildHeaderCell('TP3', 100, addPadding: true),
+          _buildHeaderCell('SL', 100, addPadding: true),
           _buildHeaderCell('Result', 90),
         ],
       ),
     );
   }
 
-  Widget _buildHeaderCell(String text, double width) {
+  Widget _buildHeaderCell(String text, double width,
+      {bool addPadding = false}) {
     return SizedBox(
       width: width,
-      child: Text(
-        text,
-        style: TextStyle(
-          color: AppColors.white.withAlpha(150),
-          fontWeight: FontWeight.bold,
-          fontSize: 12,
+      child: Padding(
+        padding:
+            addPadding ? const EdgeInsets.only(left: 22.0) : EdgeInsets.zero,
+        child: Text(
+          text,
+          style: TextStyle(
+            color: AppColors.white.withAlpha(150),
+            fontWeight: FontWeight.bold,
+            fontSize: 12,
+          ),
         ),
       ),
     );
@@ -120,7 +125,7 @@ class SignalsListState extends ConsumerState<SignalsList> {
       child: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         child: SizedBox(
-          width: 960, // Total width: 920 (columns) + padding
+          width: 1040, // Total width: 920 (columns) + padding
           child: Column(
             children: [
               _buildTableHeader(),

@@ -48,13 +48,13 @@ class SignalWidget extends StatelessWidget {
           _buildSymbolCell(),
           _buildTelegramCell(),
           _buildCell(signaldata.entry.toString(), 80, bold: true),
-          _buildTpSlCell(signaldata.tp1, signaldata.isTp1Hit, 80,
+          _buildTpSlCell(signaldata.tp1, signaldata.isTp1Hit, 100,
               isSL: false, isVip: isVip),
-          _buildTpSlCell(signaldata.tp2, signaldata.isTp2Hit, 80,
+          _buildTpSlCell(signaldata.tp2, signaldata.isTp2Hit, 100,
               isSL: false, isVip: isVip),
-          _buildTpSlCell(signaldata.tp3, signaldata.isTp3Hit, 80,
+          _buildTpSlCell(signaldata.tp3, signaldata.isTp3Hit, 100,
               isSL: false, isVip: isVip),
-          _buildTpSlCell(signaldata.sl, signaldata.isSlHit, 80,
+          _buildTpSlCell(signaldata.sl, signaldata.isSlHit, 100,
               isSL: true, isVip: isVip),
           _buildResultCell(),
         ],
@@ -206,21 +206,35 @@ class SignalWidget extends StatelessWidget {
       child: Row(
         spacing: 4,
         children: [
+          if (isHit && !isVip) ...[
+            Container(
+              padding: const EdgeInsets.all(4),
+              decoration: BoxDecoration(
+                color: isSL
+                    ? AppColors.red.withAlpha(30)
+                    : AppColors.green.withAlpha(30),
+                borderRadius: BorderRadius.circular(16),
+              ),
+              child: Icon(
+                isSL ? Icons.close : Icons.check,
+                size: 14,
+                color: isSL ? AppColors.red : AppColors.green,
+              ),
+            ),
+          ],
+          if (!isHit || isVip) ...[
+            SizedBox(
+              width: 22,
+            ),
+          ],
           Text(
-            isVip ? 'VIP' : value.toString(),
+            isVip ? 'VIP' : '${value.toString()}',
             style: TextStyle(
               color: isVip ? AppColors.orange : AppColors.white.withAlpha(200),
               fontWeight: isVip ? FontWeight.bold : FontWeight.normal,
               fontSize: 13,
             ),
           ),
-          if (isHit && !isVip) ...[
-            Icon(
-              isSL ? Icons.close : Icons.check,
-              size: 14,
-              color: isSL ? AppColors.red : AppColors.green,
-            ),
-          ],
         ],
       ),
     );
