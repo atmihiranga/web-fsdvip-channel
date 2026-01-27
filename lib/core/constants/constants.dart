@@ -28,26 +28,5 @@ class FirestoreCollections {
   static const String userDbCollection = 'userdb';
   static const String adminCollection = 'admin';
   static const String purchasesCollection = 'purchases';
-}
-
-class AdUnitIds {
-  static String getBannerAdUnitId() {
-    if (Platform.isAndroid) {
-      return 'ca-app-pub-7407448922396490/3516632271';
-    } else if (Platform.isIOS) {
-      return 'ca-app-pub-7407448922396490/9420168405';
-    } else {
-      throw UnsupportedError('Unsupported platform');
-    }
-  }
-
-  static String getInterstitialAdUnitId() {
-    if (Platform.isAndroid) {
-      return 'ca-app-pub-7407448922396490/5951223924';
-    } else if (Platform.isIOS) {
-      return 'ca-app-pub-7407448922396490/4608731404';
-    } else {
-      throw UnsupportedError('Unsupported platform');
-    }
-  }
+  static const String signalCollection = 'all-signals';
 }

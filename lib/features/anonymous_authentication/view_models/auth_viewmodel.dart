@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:project_3_forex_signals_daily/debug/print_debug.dart';
 import 'package:project_3_forex_signals_daily/features/anonymous_authentication/repositories/auth_repository.dart';
-import 'package:project_3_forex_signals_daily/features/in_app_purchases/view_models/in_app_purchase_view_model.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 part 'auth_viewmodel.g.dart';
 
@@ -41,45 +40,6 @@ class AuthViewModel extends _$AuthViewModel {
     state = const AsyncValue.loading();
 
     final signInResult = await _authRepository.signInAnonymously();
-
-    state = signInResult.fold(
-      (failure) => AsyncValue.error(failure, StackTrace.current),
-      (credential) => AsyncValue.data(credential.user),
-    );
-  }
-
-  Future<void> linkWithGoogle() async {
-    state = const AsyncValue.loading();
-
-    final linkResult = await _authRepository.linkAnonymousWithGoogle();
-
-    state = linkResult.fold(
-      (failure) {
-        printDebug(
-            '=====> auth vm > link with google failed, trying to get current user');
-        final currentUser = _authRepository.getCurrentUser();
-
-        if (currentUser != null) {
-          printDebug(
-              '=====> auth vm > current user present, returning current user');
-          return AsyncValue.data(currentUser);
-        }
-        printDebug(
-            '=====> auth vm > current user not exist, signing in anonymously');
-        _checkAndSignInAnonymously();
-        return const AsyncValue.loading();
-      },
-      (credential) {
-        ref.read(inAppPurchaseViewModelProvider.notifier).restorePurchases();
-        return AsyncValue.data(credential.user);
-      },
-    );
-  }
-
-  Future<void> signInWithGoogle() async {
-    state = const AsyncValue.loading();
-
-    final signInResult = await _authRepository.signInWithGoogle();
 
     state = signInResult.fold(
       (failure) => AsyncValue.error(failure, StackTrace.current),

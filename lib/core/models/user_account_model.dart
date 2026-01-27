@@ -61,14 +61,16 @@ class UserAccountModel {
 
   factory UserAccountModel.fromMap(Map<String, dynamic> map) {
     return UserAccountModel(
-      id: map['id'] ?? '',
-      platform: map['platform'] ?? defaultTargetPlatform.toString(),
-      installedTimestamp: map['installedTimestamp'] ?? 0,
-      isPremium: map['isPremium'] ?? false,
-      fcmToken: map['fcmToken'] ?? '',
-      email: map['email'] ?? '',
-      isAnonymous: map['isAnonymous'] ?? true,
-      isAdmin: map['isAdmin'] ?? false,
+      id: map['id']?.toString() ?? '',
+      platform: map['platform']?.toString() ?? defaultTargetPlatform.toString(),
+      installedTimestamp: (map['installedTimestamp'] is num)
+          ? (map['installedTimestamp'] as num).toInt()
+          : 0,
+      isPremium: map['isPremium'] == true,
+      fcmToken: map['fcmToken']?.toString() ?? '',
+      email: map['email']?.toString() ?? '',
+      isAnonymous: map['isAnonymous'] == true,
+      isAdmin: map['isAdmin'] == true,
     );
   }
 

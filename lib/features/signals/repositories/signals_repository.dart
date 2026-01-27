@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:project_3_forex_signals_daily/core/constants/constants.dart';
 import 'package:project_3_forex_signals_daily/debug/print_debug.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -20,18 +21,18 @@ class SignalsRepository {
 // this cause state to keep on loading state
   Stream<QuerySnapshot<Map<String, dynamic>>> signalStream() {
     return _firebaseFirestore
-        .collection('signaldb')
+        .collection(FirestoreCollections.signalCollection)
         // .where('isActive', isEqualTo: true)
-        .orderBy('timestamp', descending: true)
+        .orderBy('trackingTimestamp', descending: true)
         .limit(10)
         .snapshots();
   }
 
   Stream<QuerySnapshot<Map<String, dynamic>>> activeSignalsStream() {
     return _firebaseFirestore
-        .collection('signaldb')
+        .collection(FirestoreCollections.signalCollection)
         .where('isActive', isEqualTo: true)
-        .orderBy('timestamp', descending: true)
+        .orderBy('trackingTimestamp', descending: true)
         .snapshots();
   }
 
@@ -39,8 +40,8 @@ class SignalsRepository {
     required int limit,
   }) async {
     return await _firebaseFirestore
-        .collection('signaldb')
-        .orderBy('timestamp', descending: true)
+        .collection(FirestoreCollections.signalCollection)
+        .orderBy('trackingTimestamp', descending: true)
         .limit(limit)
         .get();
   }
@@ -50,8 +51,8 @@ class SignalsRepository {
     required int limit,
   }) async {
     return await _firebaseFirestore
-        .collection('signaldb')
-        .orderBy('timestamp', descending: true)
+        .collection(FirestoreCollections.signalCollection)
+        .orderBy('trackingTimestamp', descending: true)
         .startAfterDocument(lastDocument)
         .limit(limit)
         .get();

@@ -1,171 +1,260 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:project_3_forex_signals_daily/core/models/signal_model.dart';
+import 'package:intl/intl.dart';
+import 'package:project_3_forex_signals_daily/features/signals/models/signal_model.dart';
 import 'package:project_3_forex_signals_daily/core/theme/app_colors.dart';
-import 'package:project_3_forex_signals_daily/features/ads/viewmodels/ads_viewmodel.dart';
-import 'package:project_3_forex_signals_daily/features/free_user/views/free_signal_more_details.dart';
-import 'package:project_3_forex_signals_daily/features/premium_user/view/widgets/premium_user_more_signal_details.dart';
-import 'package:project_3_forex_signals_daily/features/signals/views/widgets/signal_buttons_row.dart';
-import 'package:project_3_forex_signals_daily/features/signals/views/widgets/signal_title_row.dart';
-import 'package:project_3_forex_signals_daily/features/update_signal/views/pages/update_signal_data.dart';
-import 'package:project_3_forex_signals_daily/features/user_account/viewmodels/user_account_viewmodel.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:url_launcher/url_launcher.dart';
 
-class SignalWidget extends ConsumerStatefulWidget {
+class SignalWidget extends StatelessWidget {
   final SignalModel signaldata;
-  //final bool isLocked;
 
   const SignalWidget({
     super.key,
     required this.signaldata,
-    // required this.isLocked,
   });
 
-  @override
-  ConsumerState<SignalWidget> createState() => _PremiumSignalWidgetState();
-}
-
-// bool showDetails = false;
-
-class _PremiumSignalWidgetState extends ConsumerState<SignalWidget> {
-  late SignalModel _currentSignalData;
-  bool isLocked = true;
-  bool isPremium = false;
-  bool isAdmin = false;
-  bool isExpanded = false;
-
-  @override
-  void initState() {
-    _currentSignalData = widget.signaldata;
-
-    super.initState();
+  String _formatDate(int timestamp) {
+    if (timestamp == 0) return '-';
+    return DateFormat('MMM dd HH:mm')
+        .format(DateTime.fromMillisecondsSinceEpoch(timestamp * 1000));
   }
 
   @override
   Widget build(BuildContext context) {
-    _currentSignalData = widget.signaldata.copyWith(isExpanded: isExpanded);
+    final isVip = signaldata.isActive && !signaldata.isTp1Hit;
 
-    final userAccountModel = ref.watch(userAccountViewmodelProvider);
-    userAccountModel.whenData(
-      (value) {
-        isPremium = value.isPremium;
-        isAdmin = value.isAdmin ?? false;
-      },
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+      decoration: BoxDecoration(
+        border: Border(
+          bottom: BorderSide(
+            color: AppColors.white.withAlpha(15),
+            width: 1,
+          ),
+        ),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          _buildCell(_formatDate(signaldata.timestamp), 110),
+          _buildCell(
+            !signaldata.isActive
+                ? _formatDate(signaldata.trackingTimestamp)
+                : 'Active',
+            110,
+            color:
+                signaldata.isActive ? AppColors.blue : AppColors.whiteDisabled,
+          ),
+          _buildSymbolCell(),
+          _buildTelegramCell(),
+          _buildCell(signaldata.entry.toString(), 80, bold: true),
+          _buildTpSlCell(signaldata.tp1, signaldata.isTp1Hit, 80,
+              isSL: false, isVip: isVip),
+          _buildTpSlCell(signaldata.tp2, signaldata.isTp2Hit, 80,
+              isSL: false, isVip: isVip),
+          _buildTpSlCell(signaldata.tp3, signaldata.isTp3Hit, 80,
+              isSL: false, isVip: isVip),
+          _buildTpSlCell(signaldata.sl, signaldata.isSlHit, 80,
+              isSL: true, isVip: isVip),
+          _buildResultCell(),
+        ],
+      ),
     );
+  }
 
-    if (isPremium) {
-      isLocked = false;
-    } else {
-      if (_currentSignalData.isSlHit || _currentSignalData.isTp1Hit) {
-        isLocked = false;
-      } else {
-        isLocked = true;
-      }
-    }
-
-    return InkWell(
-      splashFactory: NoSplash.splashFactory, // Disables the splash effect
-      onTap: () {
-        ref.read(adsViewModelProvider.notifier).trackUserInteraction();
-        setState(() {
-          // _currentSignalData = _currentSignalData.copyWith(
-          //     isExpanded: !_currentSignalData.isExpanded);
-          isExpanded = !isExpanded;
-        });
-      },
-      child: Container(
-        padding: const EdgeInsets.all(8),
-        child: Column(
-          spacing: 6,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Container(
-                    padding: const EdgeInsets.all(8),
-                    decoration: BoxDecoration(
-                      color: _currentSignalData.action.toUpperCase() == 'BUY'
-                          ? AppColors.green.withAlpha(20)
-                          : AppColors.red.withAlpha(20),
-                      shape: BoxShape.circle,
-                    ),
-                    child: _currentSignalData.action.toUpperCase() == 'BUY'
-                        ? const Icon(
-                            Icons.trending_up,
-                            size: 24,
-                            color: AppColors.green,
-                          )
-                        : const Icon(Icons.trending_down,
-                            size: 24, color: AppColors.red)),
-                const SizedBox(width: 10),
-                Expanded(
-                    child: SignalTitleRow(
-                  signaldata: _currentSignalData,
-                )),
-                const SizedBox(width: 10),
-                _currentSignalData.isActive
-                    ? SpinKitThreeBounce(
-                        size: 24,
-                        duration: Duration(milliseconds: 2000),
-                        color: AppColors.blue,
-                      )
-                    : _currentSignalData.result < 0
-                        ? const Icon(
-                            Icons.cancel,
-                            color: AppColors.red,
-                            size: 42,
-                          )
-                        : const Icon(
-                            Icons.check_circle,
-                            color: AppColors.green,
-                            size: 42,
-                          ),
-              ],
-            ),
-            SizedBox(
-              height: 4,
-            ),
-            SignalButtonsRow(
-              isExpanded: _currentSignalData.isExpanded,
-              symbol: _currentSignalData.symbol.toUpperCase(),
-              analysisLink: _currentSignalData.analysisLink,
-              note: _currentSignalData.note,
-              isLocked: isLocked,
-              analysisResultLink: _currentSignalData.analysisResultLink ?? '',
-            ),
-            Visibility(
-                visible: _currentSignalData.isExpanded,
-                child: isLocked
-                    ? FreeUserMoreSignalDetails()
-                    : PremiumUserMoreSignalDetails(
-                        signaldata: _currentSignalData,
-                      )),
-            Visibility(
-              visible: isAdmin,
-              child: Row(
-                children: [
-                  TextButton.icon(
-                      icon: Icon(Icons.send),
-                      onPressed: () {},
-                      label: Text('Send Notification')),
-                  TextButton.icon(
-                    icon: Icon(Icons.edit),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => UpdateSignalDataPage(
-                              signalData: _currentSignalData),
-                        ),
-                      );
-                    },
-                    label: Text('Edit'),
-                  )
-                ],
+  Widget _buildTelegramCell() {
+    return SizedBox(
+      width: 100,
+      child: Row(
+        spacing: 8,
+        children: [
+          Align(
+            alignment: Alignment.centerLeft,
+            child: InkWell(
+              borderRadius: BorderRadius.circular(4),
+              onTap: () async {
+                if (signaldata.freeChannelMessageID == 0) return;
+                final url = Uri.parse(
+                    'https://t.me/forexsignalsdailyapp/${signaldata.freeChannelMessageID}');
+                if (await launchUrl(url)) {
+                  // URL launched successfully
+                }
+              },
+              child: Container(
+                decoration: BoxDecoration(
+                  color: AppColors.blue.withAlpha(20),
+                  borderRadius: BorderRadius.circular(4),
+                ),
+                child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+                  child: Icon(
+                    FontAwesomeIcons.telegram,
+                    color: AppColors.blue,
+                    size: 20,
+                  ),
+                ),
               ),
-            )
+            ),
+          ),
+          Align(
+            alignment: Alignment.centerLeft,
+            child: InkWell(
+              borderRadius: BorderRadius.circular(4),
+              onTap: () async {
+                if (signaldata.freeChannelMessageID == 0) return;
+                final url = Uri.parse(
+                    'https://t.me/c/1966931051/${signaldata.vipChannelMessageID}');
+                if (await launchUrl(url)) {
+                  // URL launched successfully
+                }
+              },
+              child: Container(
+                decoration: BoxDecoration(
+                  color: AppColors.blue.withAlpha(20),
+                  borderRadius: BorderRadius.circular(4),
+                ),
+                child: Stack(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 8, horizontal: 8),
+                      child: Icon(
+                        FontAwesomeIcons.telegram,
+                        color: AppColors.blue,
+                        size: 20,
+                      ),
+                    ),
+                    Positioned(
+                      top: 0,
+                      right: 0,
+                      child: Padding(
+                        padding: const EdgeInsets.all(4.0),
+                        child: FaIcon(
+                          FontAwesomeIcons.crown,
+                          size: 6,
+                          color: AppColors.orange,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildCell(String text, double width,
+      {Color? color, bool bold = false}) {
+    return SizedBox(
+      width: width,
+      child: Text(
+        text,
+        style: TextStyle(
+          color: color ?? AppColors.white,
+          fontWeight: bold ? FontWeight.bold : FontWeight.normal,
+          fontSize: 13,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildSymbolCell() {
+    return SizedBox(
+      width: 110,
+      child: Row(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(4),
+            decoration: BoxDecoration(
+              color: signaldata.action.toUpperCase() == 'BUY'
+                  ? AppColors.green.withAlpha(30)
+                  : AppColors.red.withAlpha(30),
+              borderRadius: BorderRadius.circular(4),
+            ),
+            child: Icon(
+              signaldata.action.toUpperCase() == 'BUY'
+                  ? Icons.trending_up
+                  : Icons.trending_down,
+              size: 14,
+              color: signaldata.action.toUpperCase() == 'BUY'
+                  ? AppColors.green
+                  : AppColors.red,
+            ),
+          ),
+          const SizedBox(width: 8),
+          Text(
+            signaldata.symbol,
+            style: TextStyle(
+              color: AppColors.white,
+              fontWeight: FontWeight.bold,
+              fontSize: 13,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildTpSlCell(double value, bool isHit, double width,
+      {required bool isSL, bool isVip = false}) {
+    return SizedBox(
+      width: width,
+      child: Row(
+        spacing: 4,
+        children: [
+          Text(
+            isVip ? 'VIP' : value.toString(),
+            style: TextStyle(
+              color: isVip ? AppColors.orange : AppColors.white.withAlpha(200),
+              fontWeight: isVip ? FontWeight.bold : FontWeight.normal,
+              fontSize: 13,
+            ),
+          ),
+          if (isHit && !isVip) ...[
+            Icon(
+              isSL ? Icons.close : Icons.check,
+              size: 14,
+              color: isSL ? AppColors.red : AppColors.green,
+            ),
           ],
+        ],
+      ),
+    );
+  }
+
+  Widget _buildResultCell() {
+    final result = signaldata.pnlPips;
+    final isProfit = result > 0;
+    final isZero = result == 0;
+
+    return SizedBox(
+      width: 90,
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+        decoration: BoxDecoration(
+          color: isZero
+              ? AppColors.blue.withAlpha(20)
+              : isProfit
+                  ? AppColors.green.withAlpha(20)
+                  : AppColors.red.withAlpha(20),
+          borderRadius: BorderRadius.circular(4),
+        ),
+        child: Text(
+          '${isProfit ? '+' : ''}${result.toStringAsFixed(1)}',
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            color: isZero
+                ? AppColors.blue
+                : isProfit
+                    ? AppColors.green
+                    : AppColors.red,
+            fontWeight: FontWeight.bold,
+            fontSize: 13,
+          ),
         ),
       ),
     );

@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:project_3_forex_signals_daily/core/models/signal_model.dart';
+import 'package:project_3_forex_signals_daily/features/signals/models/signal_model.dart';
 import 'package:project_3_forex_signals_daily/debug/print_debug.dart';
 import 'package:project_3_forex_signals_daily/features/signals/repositories/signals_repository.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -91,7 +91,7 @@ class SignalsViewmodel extends _$SignalsViewmodel {
       printDebug('=====> signals vm > fetching initial inactive signals');
       final querySnapshot =
           await _signalsRepository.fetchInitialInactiveSignals(
-        limit: 10,
+        limit: 20,
       );
 
       final newSignals = querySnapshot.docs
@@ -120,12 +120,13 @@ class SignalsViewmodel extends _$SignalsViewmodel {
 
       if (newSignals.isNotEmpty) {
         _lastFirestoreSignalDocument = querySnapshot.docs.last;
-        printDebug(
-            '=====> signals vm > setting signals state with initial active signals and inactive signals');
-        state = AsyncValue.data(updatedSignalList);
       } else {
         _hasMoreData = false;
       }
+
+      printDebug(
+          '=====> signals vm > setting signals state with initial active signals and inactive signals');
+      state = AsyncValue.data(updatedSignalList);
     } catch (e, st) {
       state = AsyncValue.error(e, st);
     } finally {

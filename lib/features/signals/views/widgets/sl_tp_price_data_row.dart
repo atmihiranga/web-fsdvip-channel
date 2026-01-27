@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:project_3_forex_signals_daily/core/helpers/show_snackbar.dart';
 import 'package:project_3_forex_signals_daily/core/theme/app_colors.dart';
-import 'package:project_3_forex_signals_daily/features/in_app_purchases/views/pages/in_app_purchase_page.dart';
 
 class SlTpPriceRow extends StatelessWidget {
   const SlTpPriceRow({
@@ -26,20 +25,7 @@ class SlTpPriceRow extends StatelessWidget {
       child: InkWell(
         // hoverColor: AppColors.orange,
         borderRadius: BorderRadius.circular(8),
-        onTap: () {
-          if (isLocked) {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => InAppPurchasePage(),
-              ),
-            );
-          } else {
-            Clipboard.setData(ClipboardData(text: price));
-            showSnackBarMessage(
-                context: context, message: '$price copied to clipboard');
-          }
-        },
+        onTap: () {},
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Row(

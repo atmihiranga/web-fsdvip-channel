@@ -7,99 +7,45 @@ class ListItemShimmer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Shimmer.fromColors(
-        baseColor: AppColors.backgroundDarker2,
-        highlightColor: AppColors.background,
-        direction: ShimmerDirection.ltr,
-        child: Container(
-          decoration: BoxDecoration(
-            color: AppColors.backgroundDarker2.withAlpha(26),
-            borderRadius: BorderRadius.circular(8),
-          ),
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Currency pair and price row
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    children: [
-                      Container(
-                        width: 100,
-                        height: 24,
-                        decoration: BoxDecoration(
-                          color: AppColors.background,
-                          borderRadius: BorderRadius.circular(4),
-                        ),
-                      ),
-                      const SizedBox(width: 8),
-                      Container(
-                        width: 60,
-                        height: 24,
-                        decoration: BoxDecoration(
-                          color: AppColors.background,
-                          borderRadius: BorderRadius.circular(4),
-                        ),
-                      ),
-                    ],
-                  ),
-                  // Status indicator
-                  Container(
-                    width: 60,
-                    height: 24,
-                    decoration: BoxDecoration(
-                      color: AppColors.background,
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 8),
-              // Time and status row
-              Row(
-                children: [
-                  Container(
-                    width: 120,
-                    height: 16,
-                    decoration: BoxDecoration(
-                      color: AppColors.background,
-                      borderRadius: BorderRadius.circular(4),
-                    ),
-                  ),
-                  const SizedBox(width: 8),
-                  Container(
-                    width: 50,
-                    height: 16,
-                    decoration: BoxDecoration(
-                      color: AppColors.background,
-                      borderRadius: BorderRadius.circular(4),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 16),
-              // Bottom action buttons row
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: List.generate(
-                  4,
-                  (index) => Container(
-                    width: 80,
-                    height: 32,
-                    decoration: BoxDecoration(
-                      color: AppColors.background,
-                      borderRadius: BorderRadius.circular(4),
-                    ),
-                  ),
-                ),
-              ),
-            ],
+    return Shimmer.fromColors(
+      baseColor: AppColors.backgroundDarker2,
+      highlightColor: AppColors.backgroundLighter,
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
+        decoration: BoxDecoration(
+          border: Border(
+            bottom: BorderSide(
+              color: AppColors.white.withAlpha(10),
+              width: 1,
+            ),
           ),
         ),
+        child: Row(
+          children: [
+            _buildBlock(110),
+            _buildBlock(110),
+            _buildBlock(110),
+            _buildBlock(100),
+            _buildBlock(80),
+            _buildBlock(80),
+            _buildBlock(80),
+            _buildBlock(80),
+            _buildBlock(80),
+            _buildBlock(90),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildBlock(double width) {
+    return Container(
+      width: width * 0.7,
+      height: 12,
+      margin: EdgeInsets.only(right: width * 0.3),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(2),
       ),
     );
   }

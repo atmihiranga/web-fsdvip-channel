@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:project_3_forex_signals_daily/core/helpers/convert_date.dart';
-import 'package:project_3_forex_signals_daily/core/models/signal_model.dart';
+import 'package:project_3_forex_signals_daily/features/signals/models/signal_model.dart';
 
 import 'package:project_3_forex_signals_daily/core/theme/app_colors.dart';
 

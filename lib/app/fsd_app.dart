@@ -10,7 +10,6 @@ import 'package:project_3_forex_signals_daily/features/connectivity_check/view_m
 import 'package:project_3_forex_signals_daily/features/connectivity_check/views/pages/no_internet_page.dart';
 import 'package:project_3_forex_signals_daily/features/anonymous_authentication/view_models/auth_viewmodel.dart';
 import 'package:project_3_forex_signals_daily/features/home/view/pages/home_page.dart';
-import 'package:project_3_forex_signals_daily/features/in_app_purchases/view_models/in_app_purchase_view_model.dart';
 
 class FsdApp extends ConsumerWidget {
   const FsdApp({super.key});
@@ -21,6 +20,7 @@ class FsdApp extends ConsumerWidget {
     final authentication = ref.watch(authViewModelProvider);
 
     return MaterialApp(
+        title: 'Forex Signals Daily',
         debugShowCheckedModeBanner: false,
         theme: AppTheme.darkTheme,
         home: kIsWeb
@@ -30,11 +30,6 @@ class FsdApp extends ConsumerWidget {
                   return isConnected
                       ? authentication.when(
                           data: (userData) {
-                            // we initialize iap when android user first open the app, this calls 'restore purchases' function
-                            // iOS guidlines says to not to do this on app launch, so we're avoiding iOS
-                            if (Platform.isAndroid) {
-                              ref.read(inAppPurchaseViewModelProvider);
-                            }
                             return HomePage();
                           },
                           error: (error, stackTrace) {
