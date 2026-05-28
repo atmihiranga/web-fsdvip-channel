@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -10,6 +8,7 @@ import 'package:project_3_forex_signals_daily/features/connectivity_check/view_m
 import 'package:project_3_forex_signals_daily/features/connectivity_check/views/pages/no_internet_page.dart';
 import 'package:project_3_forex_signals_daily/features/anonymous_authentication/view_models/auth_viewmodel.dart';
 import 'package:project_3_forex_signals_daily/features/home/view/pages/home_page.dart';
+import 'package:project_3_forex_signals_daily/core/theme/theme_provider.dart';
 
 class FsdApp extends ConsumerWidget {
   const FsdApp({super.key});
@@ -18,11 +17,14 @@ class FsdApp extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final internetConnection = ref.watch(connectivityViewModelProvider);
     final authentication = ref.watch(authViewModelProvider);
+    final themeMode = ref.watch(themeModeProvider);
 
     return MaterialApp(
         title: 'Forex Signals Daily',
         debugShowCheckedModeBanner: false,
-        theme: AppTheme.darkTheme,
+        theme: AppTheme.lightTheme,
+        darkTheme: AppTheme.darkTheme,
+        themeMode: themeMode,
         home: kIsWeb
             ? HomePage()
             : internetConnection.when(
